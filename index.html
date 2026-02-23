@@ -943,6 +943,7 @@ async function callGemini(parts) {
 /* ══════════════════════════════════════════════════
    INVOICE SCAN → HTML TABLE (not raw text)
 ══════════════════════════════════════════════════ */
+let invoiceBase64 = '';
 function handleInvoiceImg(e) {
   const f=e.target.files[0]; if(!f)return;
   const r=new FileReader();
@@ -1035,4 +1036,186 @@ async function generateFbPost() {
   const prompt=`Phân tích ảnh sản phẩm và trả về JSON hợp lệ (không markdown):
 {"productName":"tên ngắn","category":"Mì tôm|Trứng gà|Nước mắm|Gạo|Bia/Nước ngọt|Bánh kẹo|Thủ công|Rau củ|Khác","fbPost":"Bài đăng Facebook hoàn chỉnh với emoji và hashtag","tiktokIdea":"Ý tưởng TikTok 1 câu"}`;
   try {
-    const raw=await callGemini([{inline_data:{mime_type:'i
+    const raw=await callGemini([{inline_data:{mime_type:'image/jpeg',data:fbBase64}},{text:prompt}]);
+    let parsed; try{parsed=JSON.parse(raw.replace(/```json|```/g,'').trim());}catch{parsed=null;}
+    loader.classList.remove('show');
+    if (parsed) {
+      aiDetectedProduct=parsed.productName||'';
+      document.getElementById('ttProduct').value=aiDetectedProduct;
+      document.getElementById('incCatInput').value=parsed.category||'';
+      document.getElementById('impCatInput').value=parsed.category||'';
+      const det=document.getElementById('fbDetected');
+      det.style.display='block'; det.innerHTML=`✅ <strong>${parsed.productName}</strong> · ${parsed.category} · 💡 ${parsed.tiktokIdea||''}`;
+      box.textContent=parsed.fbPost||raw;
+      showToast('✅ Đã đồng bộ sang TikTok & Thu/Chi!');
+    } else { box.textContent=raw; }
+    box.classList.add('show'); btn.classList.add('show');
+  } catch(err){loader.classList.remove('show');box.textContent='❌ '+err.message;box.classList.add('show');}
+  document.getElementById('fbPostBtn').disabled=false;
+}
+
+/* ══════════════════════════════════════════════════
+   TIKTOK — "Bình dân hóa" prompt
+══════════════════════════════════════════════════ */
+async function generateScript() {
+  if(!API_KEY){showToast('⚠️ Nhập API Key!',true);return;}
+  const product=document.getElementById('ttProduct').value.trim();
+  if(!product){showToast('⚠️ Nhập tên sản phẩm!',true);return;}
+  const roleMap={ba:'bà',chu:'chú',me:'mẹ',ban:'bạn'};
+  const xung=roleMap[document.getElementById('ttRole').value]||'bạn';
+  const card=document.getElementById('videoResult'),loader=document.getElementById('videoLoader'),box=document.getElementById('scriptBox'),btn=document.getElementById('copyScript');
+  card.style.display='block'; loader.classList.add('show'); box.classList.remove('show'); btn.classList.remove('show');
+  document.getElementById('scriptBtn').disabled=true;
+  const prompt=`Bạn là người cháu hiếu thảo, hướng dẫn ${xung} quay TikTok bán "${product}".
+Viết hướng dẫn cực kỳ đơn giản, xưng hô "con/cháu" và "${xung}". Chỉ đúng 3 bước:
+
+BƯỚC 1 — CHUẨN BỊ: Chỉ cách đặt điện thoại và đứng ở đâu. Cụ thể, dễ làm ngay.
+BƯỚC 2 — HÀNH ĐỘNG: Đúng 1 việc ${xung} cần làm với sản phẩm. Đơn giản thôi.
+BƯỚC 3 — LỜI NÓI: Viết sẵn 2-3 câu ngắn, tự nhiên, ${xung} đọc theo được.
+
+TUYỆT ĐỐI KHÔNG dùng: góc máy, medium shot, ánh sáng kỹ thuật, dựng video, chuyển cảnh, content creator.
+
+Kết thúc bằng đúng câu này: "${xung.charAt(0).toUpperCase()+xung.slice(1)} không cần chỉnh sửa gì cả, cứ quay xong đăng luôn — sự chân chất chính là điểm cộng của mình đó ${xung} ơi! 💚"`;
+  try {
+    const text=await callGemini([{text:prompt}]);
+    loader.classList.remove('show'); box.textContent=text; box.classList.add('show'); btn.classList.add('show');
+  } catch(err){loader.classList.remove('show');box.textContent='❌ '+err.message;box.classList.add('show');}
+  document.getElementById('scriptBtn').disabled=false;
+}
+
+/* ══════════════════════════════════════════════════
+   CHARTS — destroy before re-render, no fake data
+══════════════════════════════════════════════════ */
+const chartInst = {pie:null,bar:null,line:null};
+function destroyAll() { Object.keys(chartInst).forEach(k=>{if(chartInst[k]){chartInst[k].destroy();chartInst[k]=null;}}); }
+
+function refreshCharts() {
+  destroyAll(); // Always destroy before new Chart() to prevent accumulation
+  const thu=monthData.income.reduce((s,x)=>s+x.amount,0);
+  const imp=monthData.expense.filter(x=>x.expenseType==='import').reduce((s,x)=>s+x.amount,0);
+  const op=monthData.expense.filter(x=>x.expenseType==='operational').reduce((s,x)=>s+x.amount,0);
+  const hasData = thu>0||imp>0||op>0;
+
+  // If no data, show empty state — DO NOT generate sample data
+  document.getElementById('noChartData').style.display=hasData?'none':'block';
+  document.getElementById('chartContent').style.display=hasData?'block':'none';
+  if (!hasData) return;
+
+  chartInst.pie=new Chart(document.getElementById('pieChart'),{
+    type:'doughnut',
+    data:{labels:['Thu 💰','Nhập hàng','Chi phí thêm'],datasets:[{data:[thu,imp,op],backgroundColor:['#1B6B3A','#0C5460','#856404'],borderWidth:0,hoverOffset:8}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:10},padding:7}}}}
+  });
+
+  // Bar: expense breakdown
+  const expItems=[...new Set(monthData.expense.map(x=>x.desc))].slice(0,5);
+  const expVals=expItems.map(desc=>monthData.expense.filter(x=>x.desc===desc).reduce((s,x)=>s+x.amount,0));
+  chartInst.bar=new Chart(document.getElementById('barChart'),{
+    type:'bar',
+    data:{labels:expItems.length?expItems:['Chưa có'],datasets:[{label:'đ',data:expItems.length?expVals:[0],backgroundColor:'rgba(27,107,58,.7)',borderRadius:7,borderSkipped:false}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,grid:{color:'#eee'}},x:{grid:{display:false},ticks:{font:{size:9}}}}}
+  });
+
+  // Line: real 7-day cash flow from actual data
+  const days=[]; const thuLine=[]; const chiLine=[];
+  for (let i=6;i>=0;i--) {
+    const d=new Date(); d.setDate(d.getDate()-i);
+    const key=d.toISOString().slice(0,10);
+    const lbl=['CN','T2','T3','T4','T5','T6','T7'][d.getDay()];
+    days.push(lbl);
+    thuLine.push(monthData.income.filter(x=>x.date===key).reduce((s,x)=>s+x.amount,0));
+    chiLine.push(monthData.expense.filter(x=>x.date===key).reduce((s,x)=>s+x.amount,0));
+  }
+  chartInst.line=new Chart(document.getElementById('lineChart'),{
+    type:'line',
+    data:{labels:days,datasets:[
+      {label:'Thu',data:thuLine,borderColor:'#1B6B3A',backgroundColor:'rgba(27,107,58,.08)',tension:.4,fill:true,pointRadius:4,pointBackgroundColor:'#1B6B3A'},
+      {label:'Chi',data:chiLine,borderColor:'#D94F3D',backgroundColor:'rgba(217,79,61,.06)',tension:.4,fill:true,pointRadius:4,pointBackgroundColor:'#D94F3D'}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}}},
+      scales:{y:{beginAtZero:true,grid:{color:'#eee'},ticks:{callback:v=>v>=1e6?(v/1e6).toFixed(1)+'M':(v/1e3)+'K'}},x:{grid:{display:false}}}}
+  });
+}
+
+/* ══════════════════════════════════════════════════
+   QR SCAN — html5-qrcode integration
+══════════════════════════════════════════════════ */
+let qrScanner = null;
+function openQR() {
+  document.getElementById('qrModal').classList.add('show');
+  const container=document.getElementById('qr-reader-container');
+  // Check if html5-qrcode is loaded
+  if (typeof Html5Qrcode === 'undefined') {
+    document.getElementById('qrFallback').innerHTML=`<div style="padding:20px;text-align:center;color:var(--muted);font-size:.82rem"><div style="font-size:1.8rem;margin-bottom:8px">⚠️</div><strong>Thư viện QR chưa được tải</strong><br><br>Để dùng quét QR thực, thêm script này vào trang:<br><code style="font-size:.7rem">&lt;script src="https://unpkg.com/html5-qrcode"&gt;&lt;/script&gt;</code><br><br>Hoặc nhập thủ công bên dưới</div>`;
+    return;
+  }
+  // html5-qrcode available — start scanner
+  container.innerHTML='<div id="qr-reader" style="width:100%"></div>';
+  try {
+    qrScanner = new Html5Qrcode('qr-reader');
+    qrScanner.start({facingMode:'environment'},{fps:10,qrbox:220},
+      qrText=>{
+        // Parse QR result: try JSON or plain text
+        let amount='',name='';
+        try { const p=JSON.parse(qrText); amount=p.amount||p.sotien||''; name=p.name||p.ten||''; }
+        catch { amount=qrText.replace(/\D/g,''); }
+        document.getElementById('qrAmount').value=amount;
+        document.getElementById('qrName').value=name;
+        qrScanner.stop().catch(()=>{});
+        showToast('✅ Quét QR thành công!');
+      },
+      ()=>{}
+    ).catch(err=>{ container.innerHTML=`<div class="qr-fallback">❌ Không mở được camera: ${err}</div>`; });
+  } catch(err){ container.innerHTML=`<div class="qr-fallback">❌ ${err}</div>`; }
+}
+function closeQR() {
+  if (qrScanner) { qrScanner.stop().catch(()=>{}); qrScanner=null; }
+  document.getElementById('qrModal').classList.remove('show');
+  document.getElementById('qrAmount').value=''; document.getElementById('qrName').value='';
+  document.getElementById('qr-reader-container').innerHTML='<div class="qr-fallback" id="qrFallback"><div style="font-size:2rem;margin-bottom:8px">📷</div><p>Đang tải thư viện QR...</p></div>';
+}
+function fillFromQR() {
+  const amount=document.getElementById('qrAmount').value.replace(/\D/g,'');
+  const name=document.getElementById('qrName').value.trim();
+  if (amount){const el=document.getElementById('incAmount');el.dataset.raw=amount;el.value=parseInt(amount,10).toLocaleString('vi-VN');}
+  if (name) document.getElementById('incDesc').value=name;
+  document.getElementById('incDate').valueAsDate=new Date();
+  closeQR(); showToast('✅ Đã điền vào form!');
+}
+
+/* ══════════════════════════════════════════════════
+   AI CHAT
+══════════════════════════════════════════════════ */
+const SYS=`Bạn là Trợ lý Tiểu Thương AI. Chuyên tư vấn cho hộ kinh doanh nhỏ tại Việt Nam. Ngắn gọn, thực tế, thân thiện, dùng emoji. Không dùng từ kỹ thuật khó hiểu.`;
+async function sendChat() {
+  const inp=document.getElementById('chatInp'); const msg=inp.value.trim(); if(!msg)return;
+  if(!API_KEY){showToast('⚠️ Nhập API Key!',true);return;}
+  inp.value=''; addMsg(msg,'user'); chatHistory.push({role:'user',parts:[{text:msg}]});
+  const typing=document.getElementById('chatTyping'); typing.classList.add('show'); scrollChat();
+  try {
+    const text=await callGemini([{text:SYS+'\n\nCâu hỏi: '+msg}]);
+    chatHistory.push({role:'model',parts:[{text}]}); typing.classList.remove('show'); addMsg(text,'bot');
+  } catch(err){typing.classList.remove('show');addMsg('❌ '+err.message,'bot');}
+}
+function addMsg(text,role){const msgs=document.getElementById('chatMsgs');const d=document.createElement('div');d.className='msg '+role;d.textContent=text;msgs.insertBefore(d,document.getElementById('chatTyping'));scrollChat();}
+function scrollChat(){const m=document.getElementById('chatMsgs');m.scrollTop=m.scrollHeight;}
+
+/* ══════════════════════════════════════════════════
+   TOAST
+══════════════════════════════════════════════════ */
+let toastTimer=null;
+function showToast(msg,isErr=false){
+  const t=document.getElementById('toast'); t.textContent=msg; t.className=isErr?'err':''; t.classList.add('show');
+  clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove('show'),2500);
+}
+
+/* ══════════════════════════════════════════════════
+   INIT — set defaults, load current month
+══════════════════════════════════════════════════ */
+// Default dates = today
+['incDate','impDate','opDate'].forEach(id=>{ const e=document.getElementById(id); if(e) e.valueAsDate=new Date(); });
+buildMonthSelect();
+renderAll();
+</script>
+</body>
+</html>
