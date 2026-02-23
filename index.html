@@ -507,7 +507,7 @@ code{background:var(--surface);border:1px solid var(--border);border-radius:5px;
    GLOBAL STATE — khai báo hết ở đây, tránh
    lỗi "variable not defined" khi gọi hàm
 ───────────────────────────────────────── */
-const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-preview:generateContent";
+const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent";
 let API_KEY = localStorage.getItem('tt40_key') || '';
 let fbBase64 = '';        // base64 ảnh Facebook
 let invoiceBase64 = '';   // base64 ảnh hóa đơn
@@ -1528,3 +1528,4 @@ renderAll();
 </script>
 </body>
 </html>
+
