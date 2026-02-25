@@ -746,7 +746,7 @@ tr:nth-child(even) td{background:var(--p50)}
 /* ══════════════════════════════════════
    CONFIG
 ══════════════════════════════════════ */
-const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash:generateContent";
+const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent";
 let API_KEY = localStorage.getItem('tt40_key') || '';
 const TODAY = new Date().toISOString().slice(0,10);
 
@@ -1482,3 +1482,4 @@ setTimeout(refreshHomeChart,100);
 </script>
 </body>
 </html>
+
