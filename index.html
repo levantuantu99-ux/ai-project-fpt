@@ -17,46 +17,52 @@
   --border:#DDE8E2;--border-strong:#B8D0C2;
   --text:#1A2E23;--muted:#5A7A66;--subtle:#8FA89A;
   --shadow-sm:0 2px 8px rgba(0,0,0,.09);
-  --shadow-md:0 4px 18px rgba(0,0,0,.11);
+  --shadow-md:0 4px 18px rgba(0,0,0,.13);
   --r-sm:10px;--r-md:16px;--r-lg:22px;
   --font:'Segoe UI',system-ui,Arial,sans-serif;
   --nav-h:64px;
 }
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:var(--font);background:var(--surface);color:var(--text);min-height:100vh;padding-bottom:calc(var(--nav-h)+10px)}
+body{font-family:var(--font);background:var(--surface);color:var(--text);min-height:100vh;padding-bottom:calc(var(--nav-h)+14px);overflow-x:hidden}
 ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-thumb{background:var(--border-strong);border-radius:10px}
 
+/* HEADER */
 header{background:linear-gradient(135deg,var(--p800),var(--p600));color:#fff;padding:13px 16px 10px;text-align:center;position:sticky;top:0;z-index:300;box-shadow:0 2px 12px rgba(0,0,0,.22)}
 header h1{font-size:1.3rem;font-weight:800}
 header p{font-size:.7rem;opacity:.75;margin-top:1px}
 .badge{background:var(--a400);color:#1A2E23;font-size:.58rem;font-weight:900;padding:2px 7px;border-radius:20px;margin-left:5px;vertical-align:middle}
 
+/* API BAR */
 #apiSetup{background:#FFFDE7;border-bottom:2px solid var(--a400);padding:8px 12px;display:flex;align-items:center;flex-wrap:wrap;gap:6px}
 #apiSetup label{font-size:.74rem;font-weight:800;color:#7A5200;white-space:nowrap}
 #apiKeyInput{flex:1;min-width:120px;padding:7px 10px;border:2px solid var(--a400);border-radius:var(--r-sm);font-size:.83rem}
 #apiKeyInput:focus{outline:none;border-color:var(--a600)}
-#saveKeyBtn{background:var(--a400);color:#1A2E23;border:none;padding:7px 11px;border-radius:var(--r-sm);font-weight:800;cursor:pointer;font-size:.78rem;white-space:nowrap}
+#saveKeyBtn{background:var(--a400);color:#1A2E23;border:none;padding:7px 11px;border-radius:var(--r-sm);font-weight:800;cursor:pointer;font-size:.78rem}
 #apiStatus{font-size:.7rem;width:100%;margin-top:-2px}
 
+/* MONTH BAR */
 #monthBar{background:var(--card);border-bottom:2px solid var(--border);padding:7px 12px;display:flex;align-items:center;gap:7px;flex-wrap:wrap;position:sticky;top:52px;z-index:290}
 #monthBar label{font-size:.72rem;font-weight:800;color:var(--muted);white-space:nowrap}
 #monthSelect{padding:6px 9px;border:2px solid var(--border);border-radius:var(--r-sm);font-size:.81rem;font-weight:700;color:var(--p600);background:var(--surface);cursor:pointer}
-.month-badge{font-size:.66rem;background:var(--p50);color:var(--p600);padding:3px 9px;border-radius:20px;font-weight:800;border:1.5px solid var(--p100);margin-left:auto;white-space:nowrap}
+.month-badge{font-size:.66rem;background:var(--p50);color:var(--p600);padding:3px 9px;border-radius:20px;font-weight:800;border:1.5px solid var(--p100);margin-left:auto}
 
+/* BOTTOM NAV */
 .bottom-nav{position:fixed;bottom:0;left:0;right:0;height:var(--nav-h);background:var(--card);border-top:2px solid var(--border);display:flex;z-index:400;box-shadow:0 -3px 16px rgba(0,0,0,.10)}
 .bn-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;border:none;background:none;cursor:pointer;padding:4px 2px;border-top:3px solid transparent;transition:.18s;color:var(--muted);font-family:var(--font)}
 .bn-btn .ni{font-size:1.25rem;line-height:1}
 .bn-btn .nl{font-size:.55rem;font-weight:800;white-space:nowrap}
 .bn-btn.active{color:var(--p600);border-top-color:var(--p600);background:var(--p50)}
-.bn-btn:hover:not(.active){background:var(--p50);color:var(--p600)}
 
+/* PAGES */
 .page{display:none;padding:11px;max-width:660px;margin:0 auto}
 .page.active{display:block}
 
+/* CARDS */
 .card{background:var(--card);border-radius:var(--r-md);padding:14px;margin-bottom:11px;box-shadow:var(--shadow-sm);border:1px solid var(--border)}
 .card-title{font-size:.92rem;font-weight:800;color:var(--p700);margin-bottom:9px;display:flex;align-items:center;gap:6px}
-.card-sub{font-size:.72rem;color:var(--muted);margin-top:-5px;margin-bottom:9px}
+.card-sub{font-size:.72rem;color:var(--muted);margin-top:-5px;margin-bottom:9px;line-height:1.6}
 
+/* FIELDS */
 .field{margin-bottom:9px}
 .field label{font-size:.71rem;font-weight:800;color:var(--muted);display:block;margin-bottom:3px}
 .inp{width:100%;padding:10px 11px;border:2px solid var(--border);border-radius:var(--r-sm);font-size:.88rem;font-family:var(--font);background:#fff;color:var(--text);transition:.18s}
@@ -65,14 +71,16 @@ header p{font-size:.7rem;opacity:.75;margin-top:1px}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 @media(max-width:380px){.row2{grid-template-columns:1fr}}
 
+/* DROPDOWNS */
 .cat-wrap,.sug-wrap{position:relative}
-.cat-dropdown,.sug-dropdown{position:absolute;top:100%;left:0;right:0;background:#fff;border:2px solid var(--p100);border-top:none;border-radius:0 0 var(--r-sm) var(--r-sm);z-index:500;max-height:170px;overflow-y:auto;display:none;box-shadow:var(--shadow-md)}
+.cat-dropdown,.sug-dropdown{position:absolute;top:100%;left:0;right:0;background:#fff;border:2px solid var(--p100);border-top:none;border-radius:0 0 var(--r-sm) var(--r-sm);z-index:600;max-height:180px;overflow-y:auto;display:none;box-shadow:var(--shadow-md)}
 .cat-dropdown.open,.sug-dropdown.open{display:block}
 .cat-opt,.sug-opt{padding:9px 12px;cursor:pointer;font-size:.85rem;border-bottom:1px solid var(--border);transition:.15s}
 .cat-opt:last-child,.sug-opt:last-child{border-bottom:none}
 .cat-opt:hover,.sug-opt:hover{background:var(--p50);color:var(--p600)}
 .cat-opt.new-item{color:var(--p600);font-weight:800;font-style:italic}
 
+/* BUTTONS */
 .btn{width:100%;padding:12px;border:none;border-radius:var(--r-md);font-size:.87rem;font-weight:800;cursor:pointer;transition:.2s;display:flex;align-items:center;justify-content:center;gap:7px;margin-bottom:8px;font-family:var(--font)}
 .btn-primary{background:var(--p600);color:#fff;box-shadow:0 3px 10px rgba(27,107,58,.22)}
 .btn-primary:hover:not(:disabled){background:var(--p700);transform:translateY(-1px)}
@@ -81,26 +89,21 @@ header p{font-size:.7rem;opacity:.75;margin-top:1px}
 .btn-danger{background:var(--red-bg);color:var(--red);border:2px solid #F5C6C0}
 .btn-danger:hover:not(:disabled){background:var(--red);color:#fff}
 .btn-warning{background:#FFF8E1;color:#7A5200;border:2px solid var(--a400)}
-.btn-warning:hover:not(:disabled){background:var(--a400);color:#1A2E23}
 .btn-sm{padding:6px 12px;font-size:.75rem;border-radius:var(--r-sm);width:auto;margin:0;display:inline-flex}
 .btn:disabled{opacity:.45;cursor:not-allowed;transform:none!important;box-shadow:none!important}
 
-.upload-area{border:3px dashed var(--border-strong);border-radius:var(--r-md);padding:18px 12px;text-align:center;cursor:pointer;transition:.2s;background:var(--p50)}
+/* UPLOAD / IMAGE PREVIEW */
+.upload-area{border:3px dashed var(--border-strong);border-radius:var(--r-md);padding:20px 12px;text-align:center;cursor:pointer;transition:.2s;background:var(--p50)}
 .upload-area:hover{border-color:var(--p600);background:var(--p100)}
 .upload-area .u-icon{font-size:2rem;margin-bottom:4px}
 .upload-area strong{display:block;font-size:.84rem;color:var(--p700);margin-bottom:2px}
 .upload-area small{color:var(--subtle);font-size:.7rem}
 .img-preview-box{position:relative;margin-bottom:8px;display:none}
 .img-preview-box img{width:100%;max-height:180px;object-fit:cover;border-radius:var(--r-sm);border:2px solid var(--p300);display:block}
-.img-preview-box .img-change-btn{position:absolute;top:7px;right:7px;background:rgba(0,0,0,.55);color:#fff;border:none;border-radius:20px;padding:4px 10px;font-size:.7rem;font-weight:800;cursor:pointer}
-.img-preview-box .img-change-btn:hover{background:var(--p600)}
+.img-change-btn{position:absolute;top:7px;right:7px;background:rgba(0,0,0,.55);color:#fff;border:none;border-radius:20px;padding:4px 10px;font-size:.7rem;font-weight:800;cursor:pointer}
 
-.copy-btn{display:none;align-items:center;gap:5px;background:var(--p50);color:var(--p700);border:2px solid var(--p100);padding:7px 13px;border-radius:var(--r-sm);font-size:.78rem;font-weight:800;cursor:pointer;margin-top:7px;transition:.2s;font-family:var(--font)}
-.copy-btn:hover{background:var(--p600);color:#fff;border-color:var(--p600)}
-.copy-btn.show{display:inline-flex}
-.copy-btn.ok{background:#27AE60;color:#fff;border-color:#27AE60}
-
-.result-box{background:var(--p50);border:2px solid var(--p100);border-radius:var(--r-sm);padding:12px;margin-top:8px;white-space:pre-wrap;font-size:.82rem;line-height:1.7;max-height:280px;overflow-y:auto;display:none}
+/* RESULT / LOADER */
+.result-box{background:var(--p50);border:2px solid var(--p100);border-radius:var(--r-sm);padding:12px;margin-top:8px;white-space:pre-wrap;font-size:.82rem;line-height:1.7;max-height:260px;overflow-y:auto;display:none}
 .result-box.show{display:block}
 .loader{display:none;text-align:center;padding:16px}
 .loader.show{display:block}
@@ -108,9 +111,17 @@ header p{font-size:.7rem;opacity:.75;margin-top:1px}
 @keyframes spin{to{transform:rotate(360deg)}}
 .loader p{color:var(--p600);font-weight:700;font-size:.8rem}
 
+/* COPY BTN */
+.copy-btn{display:none;align-items:center;gap:5px;background:var(--p50);color:var(--p700);border:2px solid var(--p100);padding:7px 13px;border-radius:var(--r-sm);font-size:.78rem;font-weight:800;cursor:pointer;margin-top:7px;transition:.2s;font-family:var(--font)}
+.copy-btn:hover{background:var(--p600);color:#fff;border-color:var(--p600)}
+.copy-btn.show{display:inline-flex}
+.copy-btn.ok{background:#27AE60;color:#fff;border-color:#27AE60}
+
+/* AUTOFILL */
 .autofill-notice{background:#E8F5E9;border:1.5px solid var(--p300);border-radius:var(--r-sm);padding:9px 12px;font-size:.78rem;color:var(--p700);margin-top:7px;display:none}
 .autofill-notice.show{display:block}
 
+/* SUB-TABS */
 .sub-tabs{display:flex;gap:5px;margin-bottom:11px;flex-wrap:wrap}
 .sub-tab{padding:6px 13px;border:2px solid var(--border);background:#fff;border-radius:30px;font-size:.75rem;font-weight:800;color:var(--muted);cursor:pointer;transition:.18s}
 .sub-tab.active{background:var(--p600);color:#fff;border-color:var(--p600)}
@@ -120,23 +131,26 @@ header p{font-size:.7rem;opacity:.75;margin-top:1px}
 .modal-sub-tab{flex:1;padding:7px;border:2px solid var(--border);background:#fff;border-radius:var(--r-sm);font-size:.75rem;font-weight:800;color:var(--muted);cursor:pointer;text-align:center;transition:.18s}
 .modal-sub-tab.active{background:var(--p600);color:#fff;border-color:var(--p600)}
 
+/* CHIPS */
 .chip-group{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px;min-height:6px}
 .chip{background:var(--p50);border:1.5px solid var(--p100);color:var(--p700);padding:4px 10px;border-radius:20px;font-size:.71rem;font-weight:800;cursor:pointer;transition:.18s}
 .chip:hover{background:var(--p600);color:#fff;border-color:var(--p600)}
 .chip.chi-c{border-color:#F5C6C0;color:var(--red)}
 .chip.chi-c:hover{background:var(--red);color:#fff;border-color:var(--red)}
 
+/* SUMMARY */
 .sum-strip{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-bottom:11px}
 .s-card{background:var(--card);border-radius:var(--r-sm);padding:10px 7px;text-align:center;border:1px solid var(--border)}
 .s-lbl{font-size:.63rem;font-weight:800;color:var(--muted);margin-bottom:2px}
 .s-val{font-size:.9rem;font-weight:900}
 .s-thu .s-val{color:var(--p600)}.s-chi .s-val{color:var(--red)}.s-profit .s-val{color:var(--p700)}
 
-.tbl-wrap{overflow-x:auto;border-radius:var(--r-sm);border:1px solid var(--border)}
+/* TABLES */
+.tbl-wrap{overflow-x:auto;border-radius:var(--r-sm);border:1px solid var(--border);max-height:420px;overflow-y:auto}
 table{width:100%;border-collapse:collapse;font-size:.79rem}
+thead{position:sticky;top:0;z-index:10}
 thead tr{background:var(--p600)}
 th{padding:8px 9px;text-align:left;color:#fff;font-size:.7rem;font-weight:800;white-space:nowrap}
-th:first-child{border-radius:var(--r-sm) 0 0 0}th:last-child{border-radius:0 var(--r-sm) 0 0}
 td{padding:8px 9px;border-bottom:1px solid var(--border);vertical-align:middle}
 tr:last-child td{border-bottom:none}
 tr:nth-child(even) td{background:var(--p50)}
@@ -149,11 +163,42 @@ tr:nth-child(even) td{background:var(--p50)}
 .tag-imp{background:#D1ECF1;color:#0C5460}
 .tag-op{background:#FFF3CD;color:#856404}
 
+/* BULK */
 .bulk-bar{display:flex;align-items:center;gap:8px;margin-bottom:9px;flex-wrap:wrap}
 .bulk-bar input[type=checkbox]{width:15px;height:15px;accent-color:var(--p600);cursor:pointer}
 .bulk-bar label{font-size:.76rem;font-weight:800;color:var(--muted);cursor:pointer}
 .cb-cell input[type=checkbox]{width:14px;height:14px;accent-color:var(--p600);cursor:pointer}
 
+/* INVENTORY */
+.inv-kho-row{display:flex;align-items:center;gap:8px;padding:10px 0;border-bottom:1px solid var(--border)}
+.inv-kho-row:last-child{border-bottom:none}
+.inv-kho-name{flex:1;font-size:.9rem;font-weight:700}
+.inv-qty{background:var(--p50);border:1.5px solid var(--p100);color:var(--p700);padding:3px 10px;border-radius:20px;font-size:.8rem;font-weight:800}
+.inv-qty.low{background:#FFF8E1;border-color:var(--a400);color:#7A5200}
+.inv-qty.out{background:var(--red-bg);border-color:var(--red);color:var(--red)}
+.inv-price{color:var(--muted);font-size:.72rem}
+.stock-warn{background:var(--red-bg);border:2.5px solid var(--red);border-radius:var(--r-sm);padding:13px 15px;margin-bottom:10px;font-size:1.1rem;font-weight:800;color:var(--red);line-height:1.7;display:none}
+.stock-warn.show{display:block}
+
+/* INVOICE TABLE */
+.invoice-table-wrap{margin-top:9px;overflow-x:auto;display:none}
+.invoice-table-wrap.show{display:block}
+.inv-tbl{width:100%;border-collapse:collapse;font-size:.81rem}
+.inv-tbl th{background:var(--p600);color:#fff;padding:8px 9px;text-align:left;font-size:.72rem;font-weight:800}
+.inv-tbl td{padding:8px 9px;border-bottom:1px solid var(--border)}
+.inv-tbl tr:last-child td{border-bottom:none}
+.inv-tbl tr:nth-child(even) td{background:var(--p50)}
+
+/* PLANS */
+.plan-item{background:var(--p50);border:1.5px solid var(--p100);border-radius:var(--r-sm);padding:10px 12px;margin-bottom:7px;display:flex;align-items:center;gap:9px}
+.plan-body{flex:1}
+.plan-name{font-size:.85rem;font-weight:800;color:var(--p700)}
+.plan-meta{font-size:.71rem;color:var(--muted);margin-top:2px}
+.plan-amount{font-size:.9rem;font-weight:900;color:var(--red)}
+.plan-del{background:none;border:none;cursor:pointer;font-size:.85rem;color:var(--subtle);padding:3px 5px;border-radius:6px;transition:.15s}
+.plan-del:hover{background:var(--red-bg);color:var(--red)}
+
+/* COMPARE */
 .compare-box{background:var(--p50);border:2px solid var(--p100);border-radius:var(--r-md);padding:13px;margin-bottom:11px;display:none}
 .compare-box.show{display:block}
 .compare-box h3{font-size:.85rem;font-weight:800;color:var(--p700);margin-bottom:9px}
@@ -165,6 +210,7 @@ tr:nth-child(even) td{background:var(--p50)}
 .cmp-delta{font-size:.68rem;font-weight:800;margin-top:2px}
 .delta-up{color:var(--p600)}.delta-down{color:var(--red)}
 
+/* CHARTS */
 .charts-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:11px}
 @media(max-width:480px){.charts-grid{grid-template-columns:1fr}}
 .ch-card{background:var(--card);border-radius:var(--r-sm);padding:11px;border:1px solid var(--border)}
@@ -172,18 +218,22 @@ tr:nth-child(even) td{background:var(--p50)}
 .ch-wrap{position:relative;height:150px}
 .ch-full{position:relative;height:170px}
 
+/* PERIOD */
 .period-tabs{display:flex;gap:5px;margin-bottom:11px;flex-wrap:wrap}
 .period-tab{padding:5px 12px;border:2px solid var(--border);background:#fff;border-radius:20px;font-size:.72rem;font-weight:800;color:var(--muted);cursor:pointer;transition:.18s}
 .period-tab.active{background:var(--p600);color:#fff;border-color:var(--p600)}
 .period-tab:hover:not(.active){background:var(--p50);color:var(--p600)}
 
+/* HISTORY FILTERS */
 .history-filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;align-items:center}
 .history-filters input,.history-filters select{padding:7px 10px;border:2px solid var(--border);border-radius:var(--r-sm);font-size:.79rem;background:#fff;font-family:var(--font)}
-.history-filters input{flex:1;min-width:120px}
+.history-filters input{flex:1;min-width:110px}
+.history-filters input:focus,.history-filters select:focus{outline:none;border-color:var(--p600)}
 .hist-row-clickable{cursor:pointer;transition:.15s}
 .hist-row-clickable:hover td{background:var(--p100)!important}
-.jump-badge{display:inline-block;background:var(--p50);color:var(--p600);border:1px solid var(--p100);border-radius:6px;font-size:.62rem;padding:1px 5px;margin-left:3px;font-weight:800;cursor:pointer}
+.jump-badge{display:inline-block;background:var(--p50);color:var(--p600);border:1px solid var(--p100);border-radius:6px;font-size:.62rem;padding:1px 5px;font-weight:800;cursor:pointer}
 
+/* CHAT */
 .chat-box{background:var(--card);border-radius:var(--r-md);overflow:hidden;box-shadow:var(--shadow-md);border:1px solid var(--border)}
 .chat-head{background:var(--p600);color:#fff;padding:11px 14px;display:flex;align-items:center;gap:9px}
 .chat-av{width:32px;height:32px;border-radius:50%;background:var(--a400);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
@@ -193,84 +243,76 @@ tr:nth-child(even) td{background:var(--p50)}
 .msg{max-width:88%;padding:9px 12px;border-radius:14px;font-size:.83rem;line-height:1.6}
 .msg.bot{background:var(--p50);border:1.5px solid var(--p100);align-self:flex-start;border-bottom-left-radius:4px}
 .msg.user{background:var(--p600);color:#fff;align-self:flex-end;border-bottom-right-radius:4px}
+.msg.system{background:#FFF8E1;border:1.5px solid var(--a400);align-self:center;border-radius:10px;font-size:.78rem;color:#7A5200;max-width:95%;text-align:center}
 .typing{display:none;align-self:flex-start}.typing.show{display:flex}
 .dots{display:flex;gap:4px;padding:8px 12px;background:var(--p50);border:1.5px solid var(--p100);border-radius:14px;border-bottom-left-radius:4px}
 .dot{width:6px;height:6px;border-radius:50%;background:var(--p300);animation:bob 1.1s infinite}
 .dot:nth-child(2){animation-delay:.18s}.dot:nth-child(3){animation-delay:.36s}
 @keyframes bob{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-6px)}}
 .chat-foot{display:flex;gap:6px;padding:9px 11px;border-top:2px solid var(--border);background:var(--surface)}
-.chat-inp{flex:1;padding:8px 11px;border:2px solid var(--border);border-radius:var(--r-sm);font-size:.84rem;font-family:var(--font)}
+.chat-inp{flex:1;padding:9px 11px;border:2px solid var(--border);border-radius:var(--r-sm);font-size:.84rem;font-family:var(--font)}
 .chat-inp:focus{outline:none;border-color:var(--p600)}
-.chat-send{background:var(--p600);color:#fff;border:none;padding:8px 13px;border-radius:var(--r-sm);font-size:.9rem;cursor:pointer;transition:.18s}
+.chat-send{background:var(--p600);color:#fff;border:none;padding:9px 14px;border-radius:var(--r-sm);font-size:.9rem;cursor:pointer;transition:.18s}
 .chat-send:hover{background:var(--p700)}
 
-.inv-kho-row{display:flex;align-items:center;gap:7px;padding:9px 0;border-bottom:1px solid var(--border)}
-.inv-kho-row:last-child{border-bottom:none}
-.inv-kho-name{flex:1;font-size:.9rem;font-weight:700}
-.inv-qty{background:var(--p50);border:1.5px solid var(--p100);color:var(--p700);padding:3px 10px;border-radius:20px;font-size:.8rem;font-weight:800}
-.inv-qty.low{background:#FDF0EE;border-color:#F5C6C0;color:var(--red)}
-.inv-price{color:var(--muted);font-size:.73rem}
-/* ⚠️ Cảnh báo tồn kho thấp — chữ to cho người lớn tuổi */
-.stock-warn{background:#FDF0EE;border:2px solid var(--red);border-radius:var(--r-sm);padding:12px 14px;margin-bottom:9px;font-size:1.1rem;font-weight:800;color:var(--red);line-height:1.6;display:none}
-.stock-warn.show{display:block}
+/* CONFIRM PILL (in chat) */
+.confirm-pill{display:inline-flex;gap:7px;margin-top:7px;flex-wrap:wrap}
+.confirm-pill button{padding:7px 14px;border-radius:20px;font-size:.8rem;font-weight:800;cursor:pointer;border:2px solid;transition:.18s;font-family:var(--font)}
+.pill-yes{background:var(--p600);color:#fff;border-color:var(--p600)}
+.pill-yes:hover{background:var(--p700)}
+.pill-no{background:#fff;color:var(--red);border-color:var(--red)}
+.pill-no:hover{background:var(--red);color:#fff}
 
-.invoice-table-wrap{margin-top:9px;overflow-x:auto;display:none}
-.invoice-table-wrap.show{display:block}
-.inv-tbl{width:100%;border-collapse:collapse;font-size:.81rem}
-.inv-tbl th{background:var(--p600);color:#fff;padding:8px 9px;text-align:left;font-size:.72rem;font-weight:800}
-.inv-tbl td{padding:8px 9px;border-bottom:1px solid var(--border)}
-.inv-tbl tr:last-child td{border-bottom:none}
-.inv-tbl tr:nth-child(even) td{background:var(--p50)}
-
-.plan-item{background:var(--p50);border:1.5px solid var(--p100);border-radius:var(--r-sm);padding:10px 12px;margin-bottom:7px;display:flex;align-items:center;gap:9px}
-.plan-body{flex:1}
-.plan-name{font-size:.85rem;font-weight:800;color:var(--p700)}
-.plan-meta{font-size:.71rem;color:var(--muted);margin-top:2px}
-.plan-amount{font-size:.9rem;font-weight:900;color:var(--red)}
-.plan-del{background:none;border:none;cursor:pointer;font-size:.85rem;color:var(--subtle);padding:3px 5px;border-radius:6px;transition:.15s}
-.plan-del:hover{background:var(--red-bg);color:var(--red)}
-
-/* ═══ TAX ASSISTANT BOX — chữ to, rõ ràng ═══ */
+/* TAX BOX */
 .tax-box{border-radius:var(--r-md);padding:16px;margin-bottom:12px;border:3px solid}
 .tax-safe{background:#E8F5E9;border-color:#4CAF50}
 .tax-warn{background:#FFF8E1;border-color:var(--a400)}
-.tax-danger{background:#FDF0EE;border-color:var(--red)}
+.tax-danger{background:var(--red-bg);border-color:var(--red)}
 .tax-box .tx-icon{font-size:2rem;margin-bottom:6px;display:block;text-align:center}
-.tax-box .tx-msg{font-size:1.25rem;font-weight:800;line-height:1.5;text-align:center;margin-bottom:8px}
+.tax-box .tx-msg{font-size:1.2rem;font-weight:800;line-height:1.5;text-align:center;margin-bottom:8px}
 .tax-safe .tx-msg{color:#2E7D32}
 .tax-warn .tx-msg{color:#7A5200}
 .tax-danger .tx-msg{color:var(--red)}
-.tax-box .tx-detail{font-size:.82rem;color:var(--muted);line-height:1.7;background:rgba(255,255,255,.6);border-radius:var(--r-sm);padding:9px 11px;margin-top:6px}
+.tax-box .tx-detail{font-size:.82rem;color:var(--muted);line-height:1.8;background:rgba(255,255,255,.6);border-radius:var(--r-sm);padding:9px 11px;margin-top:6px}
 .tax-box .tx-detail strong{color:var(--text)}
 .tax-amount{font-size:1.5rem;font-weight:900;color:var(--red);text-align:center;display:block;margin:6px 0}
 
+/* MODAL */
 .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:900;align-items:flex-end;justify-content:center;padding:0}
 .overlay.show{display:flex}
-.modal{background:#fff;border-radius:var(--r-lg) var(--r-lg) 0 0;padding:18px;width:100%;max-width:500px;box-shadow:var(--shadow-md);max-height:85vh;overflow-y:auto}
-.modal h3{font-size:.94rem;font-weight:800;color:var(--p700);margin-bottom:12px}
+.modal{background:#fff;border-radius:var(--r-lg) var(--r-lg) 0 0;padding:18px;width:100%;max-width:500px;box-shadow:var(--shadow-md);max-height:88vh;overflow-y:auto}
+.modal h3{font-size:.94rem;font-weight:800;color:var(--p700);margin-bottom:10px}
 .modal-btns{display:flex;gap:8px;margin-top:12px}
 .modal-btns button{flex:1;padding:11px;border-radius:var(--r-sm);font-weight:800;font-size:.84rem;cursor:pointer;border:none;transition:.18s;font-family:var(--font)}
 .modal-cancel{background:var(--surface);color:var(--muted);border:2px solid var(--border)!important}
-.modal-cancel:hover{background:var(--border)}
 .modal-confirm{background:var(--red);color:#fff}
 .modal-confirm:hover{background:#b03a2e}
 
+/* STOCK ALERT MODAL */
+.stock-alert-modal{border:3px solid var(--red);border-radius:var(--r-lg) var(--r-lg) 0 0}
+.stock-alert-modal h3{color:var(--red);font-size:1.1rem}
+.stock-alert-msg{font-size:1.05rem;font-weight:700;color:var(--red);line-height:1.6;padding:10px 0;text-align:center}
+
+/* QR */
 #qr-inc-container{width:100%;min-height:150px;border-radius:var(--r-sm);border:2px solid var(--border);background:var(--surface);display:flex;align-items:center;justify-content:center;margin-bottom:9px}
 .qr-fallback{text-align:center;padding:14px;color:var(--muted);font-size:.78rem}
 
+/* EMPTY */
 .empty{text-align:center;color:var(--muted);padding:22px 10px;font-size:.82rem}
 .empty .ei{font-size:2rem;margin-bottom:5px}
 
-#toast{position:fixed;bottom:74px;left:50%;transform:translateX(-50%) translateY(90px);background:var(--p700);color:#fff;padding:9px 18px;border-radius:30px;font-size:.82rem;font-weight:700;z-index:9999;transition:transform .28s cubic-bezier(.34,1.56,.64,1);pointer-events:none;white-space:nowrap;box-shadow:var(--shadow-md)}
-#toast.show{transform:translateX(-50%) translateY(0)}
+/* TOAST — fixed z-index, auto-dismiss */
+#toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--p700);color:#fff;padding:11px 22px;border-radius:30px;font-size:.88rem;font-weight:700;z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1),opacity .3s;pointer-events:none;white-space:nowrap;box-shadow:var(--shadow-md);opacity:0;max-width:90vw;text-align:center}
+#toast.show{transform:translateX(-50%) translateY(0);opacity:1}
 #toast.err{background:var(--red)}
+#toast.ok{background:#27AE60}
 </style>
 </head>
 <body>
 
 <header>
   <h1>🌿 Tiểu Thương 4.0 <span class="badge">AI</span></h1>
-  <p>Hệ thống quản lý kinh doanh theo tháng</p>
+  <p>Hệ thống quản lý kinh doanh thực tế</p>
 </header>
 
 <div id="apiSetup">
@@ -286,10 +328,10 @@ tr:nth-child(even) td{background:var(--p50)}
   <span class="month-badge" id="monthBadge">📍 Tháng hiện tại</span>
 </div>
 
-<!-- ══════════════ HOME ══════════════ -->
+<!-- ══ HOME ══ -->
 <div id="page-home" class="page active">
   <div class="sum-strip">
-    <div class="s-card s-thu"><div class="s-lbl">📈 Tổng Thu</div><div class="s-val" id="totalThu">0đ</div></div>
+    <div class="s-card s-thu"><div class="s-lbl">📈 Doanh thu</div><div class="s-val" id="totalThu">0đ</div></div>
     <div class="s-card s-chi"><div class="s-lbl">📉 Tổng Chi</div><div class="s-val" id="totalChi">0đ</div></div>
     <div class="s-card s-profit"><div class="s-lbl">💼 Lãi/Lỗ</div><div class="s-val" id="totalProfit">0đ</div></div>
   </div>
@@ -303,10 +345,10 @@ tr:nth-child(even) td{background:var(--p50)}
   </div>
 </div>
 
-<!-- ══════════════ THU / CHI ══════════════ -->
+<!-- ══ THU / CHI ══ -->
 <div id="page-money" class="page">
   <div class="sum-strip">
-    <div class="s-card s-thu"><div class="s-lbl">📈 Tổng Thu</div><div class="s-val" id="totalThu2">0đ</div></div>
+    <div class="s-card s-thu"><div class="s-lbl">📈 Doanh thu</div><div class="s-val" id="totalThu2">0đ</div></div>
     <div class="s-card s-chi"><div class="s-lbl">📉 Tổng Chi</div><div class="s-val" id="totalChi2">0đ</div></div>
     <div class="s-card s-profit"><div class="s-lbl">💼 Lãi/Lỗ</div><div class="s-val" id="totalProfit2">0đ</div></div>
   </div>
@@ -318,41 +360,43 @@ tr:nth-child(even) td{background:var(--p50)}
     <button class="sub-tab" onclick="switchSub('plan',this)">📋 Kế hoạch</button>
   </div>
 
-  <!-- THU -->
+  <!-- THU / BÁN HÀNG — chỉ nhận bill/hóa đơn thanh toán -->
   <div id="msub-inc">
     <div class="card">
-      <div class="card-title">📷 Quét hóa đơn / QR — Thu &amp; Bán hàng</div>
+      <div class="card-title">📷 Quét Bill / Hóa đơn thanh toán</div>
+      <div class="card-sub">⚠️ Chỉ dùng cho <strong>bill chuyển khoản hoặc hóa đơn đã thanh toán</strong> — không phải ảnh sản phẩm quảng bá.</div>
       <div class="modal-sub-tabs">
-        <div class="modal-sub-tab active" onclick="incScanMode('img',this)">📸 Ảnh hóa đơn</div>
+        <div class="modal-sub-tab active" onclick="incScanMode('img',this)">📸 Ảnh Bill/HĐ</div>
         <div class="modal-sub-tab" onclick="incScanMode('qr',this)">📷 Quét QR</div>
       </div>
       <div id="incScanImg">
         <div class="upload-area" id="incUploadArea" onclick="document.getElementById('incInvoiceFile').click()">
-          <div class="u-icon">🧾</div><strong>Bấm để chọn ảnh hóa đơn</strong><small>AI trích xuất và tự điền form</small>
+          <div class="u-icon">🧾</div><strong>Chụp bill / hóa đơn đã thanh toán</strong><small>AI đọc và ghi nhận giao dịch bán hàng thật</small>
         </div>
         <input type="file" id="incInvoiceFile" accept="image/*" style="display:none" onchange="handleIncInvoice(event)">
         <div class="img-preview-box" id="incImgPreviewBox">
           <img id="incInvoicePreview"/>
           <button class="img-change-btn" onclick="changeIncImg()">✏️ Đổi ảnh</button>
         </div>
-        <button class="btn btn-primary" onclick="scanIncInvoice()" id="scanIncBtn" disabled style="margin-top:8px">🤖 Trích xuất &amp; tự điền</button>
-        <div class="loader" id="scanIncLoader"><div class="spinner"></div><p>AI đang đọc hóa đơn...</p></div>
+        <button class="btn btn-primary" onclick="scanIncInvoice()" id="scanIncBtn" disabled style="margin-top:8px">🤖 AI đọc bill → Ghi nhận bán hàng</button>
+        <div class="loader" id="scanIncLoader"><div class="spinner"></div><p>AI đang đọc bill thanh toán...</p></div>
         <div class="invoice-table-wrap" id="incInvoiceTableWrap"></div>
-        <div class="autofill-notice" id="incAutofillNotice">✅ AI đã tự điền vào form bên dưới</div>
+        <div class="autofill-notice" id="incAutofillNotice">✅ AI đã điền vào form bên dưới — kiểm tra rồi bấm "Xác nhận bán hàng"</div>
       </div>
       <div id="incScanQR" style="display:none">
-        <div id="qr-inc-container"><div class="qr-fallback"><div style="font-size:1.7rem;margin-bottom:5px">📷</div><p>Bấm nút bên dưới để mở camera QR</p></div></div>
+        <div id="qr-inc-container"><div class="qr-fallback"><div style="font-size:1.7rem;margin-bottom:5px">📷</div><p>Bấm nút bên dưới để mở camera</p></div></div>
         <button class="btn btn-secondary" onclick="startIncQR()" id="startIncQRBtn">📷 Mở camera quét QR</button>
         <button class="btn btn-secondary" onclick="stopIncQR()" id="stopIncQRBtn" style="display:none">⏹ Dừng camera</button>
       </div>
     </div>
+
     <div class="card">
-      <div class="card-title">➕ Thêm khoản thu</div>
+      <div class="card-title">✏️ Nhập tay — Ghi nhận bán hàng</div>
       <div class="row2">
         <div class="field">
           <label>🏷️ Loại hàng</label>
           <div class="cat-wrap">
-            <input class="inp" id="incCatInput" placeholder="Chọn loại hàng..." autocomplete="off"
+            <input class="inp" id="incCatInput" placeholder="Nhập hoặc chọn..." autocomplete="off"
               oninput="onCatInput('inc')" onfocus="openDrop('incCatDrop','inc')" onblur="setTimeout(()=>closeDrop('incCatDrop'),200)"/>
             <div class="cat-dropdown" id="incCatDrop"></div>
           </div>
@@ -360,23 +404,24 @@ tr:nth-child(even) td{background:var(--p50)}
         <div class="field">
           <label>🛒 Tên hàng bán</label>
           <div class="sug-wrap">
-            <input class="inp" id="incSellName" placeholder="VD: Mì tôm Hảo Hảo..." autocomplete="off"
+            <input class="inp" id="incSellName" placeholder="VD: Mì tôm Hảo Hảo" autocomplete="off"
               oninput="onSellInput()" onfocus="onSellInput()" onblur="setTimeout(closeSellSug,200)"/>
             <div class="sug-dropdown" id="sellSugDrop"></div>
           </div>
         </div>
       </div>
       <div class="chip-group" id="incChips"></div>
-      <div class="field"><label>📝 Mô tả</label><input class="inp" type="text" id="incDesc" placeholder="VD: Bán mì tôm lẻ 20 gói"/></div>
+      <div class="field"><label>📝 Mô tả thêm</label><input class="inp" type="text" id="incDesc" placeholder="VD: Bán cho khách quen, combo 3 gói..."/></div>
       <div class="row2">
         <div class="field"><label>📦 Số lượng bán</label><input class="inp" type="text" id="incQty" placeholder="0" oninput="handleMoney(this)" onkeydown="blockNonDigit(event)"/></div>
-        <div class="field"><label>💵 Tổng tiền thu</label><input class="inp" type="text" id="incAmount" placeholder="0 đ" oninput="handleMoney(this)" onkeydown="blockNonDigit(event)"/></div>
+        <div class="field"><label>💵 Tổng tiền nhận</label><input class="inp" type="text" id="incAmount" placeholder="0 đ" oninput="handleMoney(this)" onkeydown="blockNonDigit(event)"/></div>
       </div>
-      <div class="field"><label>📅 Ngày</label><input class="inp" type="date" id="incDate"/></div>
-      <button class="btn btn-primary" onclick="addIncome()">➕ Thêm khoản thu</button>
+      <div class="field"><label>📅 Ngày giao dịch</label><input class="inp" type="date" id="incDate"/></div>
+      <button class="btn btn-primary" onclick="addIncome()">✅ Xác nhận bán hàng (trừ kho)</button>
     </div>
+
     <div class="card">
-      <div class="card-title">📋 Lịch sử thu</div>
+      <div class="card-title">📋 Lịch sử bán hàng</div>
       <div class="period-tabs">
         <button class="period-tab active" onclick="setPeriod('inc','all',this)">Tất cả</button>
         <button class="period-tab" onclick="setPeriod('inc','today',this)">Hôm nay</button>
@@ -398,7 +443,7 @@ tr:nth-child(even) td{background:var(--p50)}
     <div class="card">
       <div class="card-title">🧾 Quét hóa đơn nhập hàng</div>
       <div class="upload-area" id="expUploadArea" onclick="document.getElementById('invoiceImg').click()">
-        <div class="u-icon">🧾</div><strong>Bấm để chụp / chọn ảnh hóa đơn</strong><small>AI trích xuất thành bảng</small>
+        <div class="u-icon">🧾</div><strong>Chụp hóa đơn nhà cung cấp</strong><small>AI trích xuất → tự nhập vào kho</small>
       </div>
       <input type="file" id="invoiceImg" accept="image/*" onchange="handleInvoiceImg(event)">
       <div class="img-preview-box" id="expImgPreviewBox">
@@ -408,12 +453,12 @@ tr:nth-child(even) td{background:var(--p50)}
       <button class="btn btn-primary" onclick="scanInvoice()" id="scanBtn" disabled style="margin-top:8px">🤖 Trích xuất hóa đơn</button>
       <div class="loader" id="scanLoader"><div class="spinner"></div><p>AI đang đọc hóa đơn...</p></div>
       <div class="invoice-table-wrap" id="invoiceTableWrap"></div>
-      <div id="invActions" style="display:none;gap:6px;margin-top:8px;flex-wrap:wrap">
-        <button class="btn btn-secondary btn-sm" onclick="copyInvoiceCSV()">📥 CSV</button>
-        <button class="btn btn-secondary btn-sm" onclick="copyInvoiceText()">📋 Text</button>
-        <button class="btn btn-primary btn-sm" onclick="autoFillImport()">⚡ Tự nhập</button>
+      <div id="invActions" style="display:none;gap:6px;margin-top:8px;flex-wrap:wrap;align-items:center">
+        <button class="btn btn-secondary btn-sm" onclick="copyInvoiceTable()">📋 Sao chép bảng</button>
+        <button class="btn btn-secondary btn-sm" onclick="copyInvoiceCSV()">📥 Xuất CSV</button>
+        <button class="btn btn-primary btn-sm" onclick="autoFillImport()">⚡ Tự nhập vào kho</button>
       </div>
-      <div class="autofill-notice" id="expAutofillNotice">✅ AI đã tự điền vào form nhập hàng bên dưới</div>
+      <div class="autofill-notice" id="expAutofillNotice">✅ Đã điền vào form bên dưới — kiểm tra rồi bấm "Nhập + cập nhật kho"</div>
     </div>
     <div class="card">
       <div class="card-title">✏️ Nhập hàng thủ công</div>
@@ -421,7 +466,7 @@ tr:nth-child(even) td{background:var(--p50)}
         <div class="field">
           <label>🏷️ Loại hàng</label>
           <div class="cat-wrap">
-            <input class="inp" id="impCatInput" placeholder="Chọn loại hàng..." autocomplete="off"
+            <input class="inp" id="impCatInput" placeholder="Nhập hoặc chọn..." autocomplete="off"
               oninput="onCatInput('imp')" onfocus="openDrop('impCatDrop','imp')" onblur="setTimeout(()=>closeDrop('impCatDrop'),200)"/>
             <div class="cat-dropdown" id="impCatDrop"></div>
           </div>
@@ -492,9 +537,8 @@ tr:nth-child(even) td{background:var(--p50)}
   <div id="msub-inv" style="display:none">
     <div class="card">
       <div class="card-title">🗄️ Tồn kho thực tế</div>
-      <div class="card-sub">Tính từ toàn bộ lịch sử: Nhập hàng − Bán hàng</div>
-      <!-- Cảnh báo hàng sắp hết — chữ to -->
-      <div class="stock-warn" id="stockWarnBox">⚠️ Hàng sắp hết!</div>
+      <div class="card-sub">Nhập − Bán = Tồn. 🔴 Hết · 🟡 &lt;5 cái · 🟢 Đủ</div>
+      <div class="stock-warn" id="stockWarnBox"></div>
       <div id="inventoryList"></div>
     </div>
   </div>
@@ -505,14 +549,12 @@ tr:nth-child(even) td{background:var(--p50)}
       <div class="card-title">📋 Kế hoạch chi / nhập hàng</div>
       <div class="field"><label>🏷️ Tên kế hoạch</label><input class="inp" type="text" id="planName" placeholder="VD: Nhập 50 thùng bia..."/></div>
       <div class="row2">
-        <div class="field">
-          <label>📂 Loại</label>
+        <div class="field"><label>📂 Loại</label>
           <select class="inp" id="planType">
             <option value="import">📦 Nhập hàng</option>
             <option value="utility">🔌 Điện/Nước</option>
             <option value="transport">🚚 Vận chuyển</option>
             <option value="rental">🏪 Mặt bằng</option>
-            <option value="labor">👷 Nhân công</option>
             <option value="other">📌 Khác</option>
           </select>
         </div>
@@ -526,43 +568,41 @@ tr:nth-child(even) td{background:var(--p50)}
   </div>
 </div>
 
-<!-- ══════════════ QUẢNG BÁ ══════════════ -->
+<!-- ══ QUẢNG BÁ (chỉ marketing, không lưu kho) ══ -->
 <div id="page-promo" class="page">
+  <div class="card" style="background:#FFF8E1;border:2px solid var(--a400)">
+    <div class="card-title">📣 Tab này chỉ dùng để viết bài Marketing</div>
+    <div class="card-sub">Ảnh sản phẩm ở đây <strong>KHÔNG</strong> lưu vào kho. Khi có đơn hàng thật → vào Tab <strong>Thu/Chi</strong> để ghi nhận.</div>
+  </div>
   <div class="sub-tabs">
-    <button class="sub-tab active" onclick="switchPromoSub('fb',this)">📣 Bài đăng</button>
+    <button class="sub-tab active" onclick="switchPromoSub('fb',this)">📣 Bài đăng FB</button>
     <button class="sub-tab" onclick="switchPromoSub('tt',this)">🎬 TikTok</button>
   </div>
   <div id="psub-fb">
     <div class="card">
-      <div class="card-title">📣 Viết bài Facebook từ ảnh</div>
+      <div class="card-title">📣 Viết bài Facebook từ ảnh sản phẩm</div>
       <div class="upload-area" id="fbUploadArea" onclick="document.getElementById('fbImgInput').click()">
-        <div class="u-icon">🖼️</div><strong>Bấm để chọn ảnh sản phẩm</strong><small>AI phân tích và viết bài ngay</small>
+        <div class="u-icon">🖼️</div><strong>Chọn ảnh sản phẩm để viết bài</strong><small>AI phân tích và viết bài quảng cáo</small>
       </div>
       <input type="file" id="fbImgInput" accept="image/*" onchange="handleFbImg(event)">
       <div class="img-preview-box" id="fbImgPreviewBox">
-        <img id="fbPreview"/>
-        <button class="img-change-btn" onclick="changeFbImg()">✏️ Đổi ảnh</button>
+        <img id="fbPreview"/><button class="img-change-btn" onclick="changeFbImg()">✏️ Đổi ảnh</button>
       </div>
       <div id="fbDetected" style="display:none;margin-top:8px;padding:8px 11px;background:var(--p50);border:1.5px solid var(--p100);border-radius:var(--r-sm);font-size:.79rem;color:var(--p700);font-weight:700"></div>
     </div>
-    <button class="btn btn-primary" onclick="generateFbPost()" id="fbPostBtn" disabled>🤖 AI viết bài + đồng bộ</button>
+    <button class="btn btn-primary" onclick="generateFbPost()" id="fbPostBtn" disabled>🤖 AI viết bài Facebook</button>
     <div class="card" id="fbResultCard" style="display:none">
-      <div class="card-title">✍️ Bài đăng</div>
+      <div class="card-title">✍️ Bài đăng đã viết</div>
       <div class="loader" id="fbLoader"><div class="spinner"></div><p>AI đang viết bài...</p></div>
       <div class="result-box" id="fbPost"></div>
-      <div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:8px">
-        <button class="copy-btn" id="copyFb" onclick="doCopy('fbPost','copyFb')">📋 Sao chép</button>
-        <!-- ✅ Nút xác nhận nhập kho từ bài đăng -->
-        <button class="btn btn-warning btn-sm" id="fbConfirmStockBtn" style="display:none" onclick="confirmImportFromFb()">📦 Xác nhận nhập kho</button>
-      </div>
+      <button class="copy-btn" id="copyFb" onclick="doCopy('fbPost','copyFb')">📋 Sao chép bài</button>
     </div>
   </div>
   <div id="psub-tt" style="display:none">
     <div class="card">
       <div class="card-title">🎬 Hướng dẫn quay TikTok</div>
       <div class="field"><label>🏷️ Tên sản phẩm</label><input class="inp" type="text" id="ttProduct" placeholder="VD: Hạt bí rang muối..."/></div>
-      <div class="field">
-        <label>👤 Người quay</label>
+      <div class="field"><label>👤 Người quay</label>
         <select class="inp" id="ttRole">
           <option value="ba">👵 Bà / Cô lớn tuổi</option>
           <option value="chu">👨 Chú / Ông chủ</option>
@@ -581,15 +621,13 @@ tr:nth-child(even) td{background:var(--p50)}
   </div>
 </div>
 
-<!-- ══════════════ BÁO CÁO ══════════════ -->
+<!-- ══ BÁO CÁO ══ -->
 <div id="page-reports" class="page">
   <div class="sub-tabs">
     <button class="sub-tab active" onclick="switchReportSub('chart',this)">📊 Báo cáo</button>
     <button class="sub-tab" onclick="switchReportSub('compare',this)">📈 So sánh</button>
     <button class="sub-tab" onclick="switchReportSub('tax',this)">🧾 Thuế</button>
   </div>
-
-  <!-- BÁO CÁO -->
   <div id="rsub-chart">
     <div class="period-tabs">
       <button class="period-tab active" onclick="setChartPeriod('week',this)">7 ngày</button>
@@ -609,8 +647,6 @@ tr:nth-child(even) td{background:var(--p50)}
     </div>
     <button class="btn btn-secondary" onclick="refreshCharts()">🔄 Làm mới</button>
   </div>
-
-  <!-- SO SÁNH -->
   <div id="rsub-compare" style="display:none">
     <div class="card">
       <div class="card-title">📈 So sánh các tháng</div>
@@ -627,60 +663,73 @@ tr:nth-child(even) td{background:var(--p50)}
       <button class="btn btn-secondary" style="margin-top:8px" onclick="buildAllTimeCompare()">🔄 Cập nhật</button>
     </div>
   </div>
-
-  <!-- THUẾ 2026 -->
   <div id="rsub-tax" style="display:none">
     <div id="taxAssistantBox"></div>
     <div class="card">
-      <div class="card-sub" style="font-size:.76rem;color:var(--muted);line-height:1.7;margin:0">
+      <div class="card-sub" style="font-size:.76rem;color:var(--muted);line-height:1.8;margin:0">
         <strong>📌 Quy định thuế hộ kinh doanh 2026:</strong><br>
         • Doanh thu ≤ 500 triệu/năm → <strong>Miễn thuế</strong><br>
-        • Doanh thu > 500 triệu/năm → Nộp thuế khoán 1.5% trên tổng doanh thu<br>
+        • Doanh thu > 500 triệu/năm → Nộp thuế khoán <strong>1.5%</strong><br>
         • Ngưỡng trung bình/tháng: <strong>41.666.667đ</strong>
       </div>
     </div>
-    <button class="btn btn-secondary" onclick="renderTaxAssistant()">🔄 Cập nhật trạng thái thuế</button>
+    <button class="btn btn-secondary" onclick="renderTaxAssistant()">🔄 Cập nhật</button>
   </div>
 </div>
 
-<!-- ══════════════ AI CHAT ══════════════ -->
+<!-- ══ AI CHAT — Trợ lý nhập liệu nhanh ══ -->
 <div id="page-ai" class="page">
+  <div class="card" style="background:var(--p50);border:2px solid var(--p100)">
+    <div class="card-title">🤖 Trợ lý nhập liệu bằng tin nhắn</div>
+    <div class="card-sub">Nói hoặc nhắn để ghi nhận giao dịch. Ví dụ:<br>
+      • "Bà vừa <strong>bán</strong> được 5 gói hạt bí 25.000đ"<br>
+      • "<strong>Nhập thêm</strong> 20 túi hạt dưa giá 8.000đ/túi"<br>
+      • "Tháng này tôi bán được bao nhiêu?"
+    </div>
+  </div>
   <div class="chat-box">
     <div class="chat-head">
       <div class="chat-av">🌿</div>
-      <div><div class="chat-title">Trợ lý Tiểu Thương AI</div><div class="chat-status">● Đọc được dữ liệu kinh doanh của bạn</div></div>
+      <div><div class="chat-title">Trợ lý Tiểu Thương AI</div><div class="chat-status">● Nhắn để ghi giao dịch hoặc hỏi số liệu</div></div>
     </div>
     <div class="chat-msgs" id="chatMsgs">
-      <div class="msg bot">👋 Xin chào! Mình đọc được dữ liệu thực tế của bạn. Hỏi mình:<br>• 💰 "Tháng này tôi bán được bao nhiêu?"<br>• 📦 "Hàng nào sắp hết kho?"<br>• 🧾 "Tôi có phải nộp thuế không?"<br>• 📊 "So sánh tháng này và tháng trước"</div>
+      <div class="msg bot">👋 Chào bà/cô/chú! Mình có thể:<br>
+        • Ghi <strong>bán hàng</strong>: "Bán 5 gói mì 15.000đ"<br>
+        • Ghi <strong>nhập hàng</strong>: "Nhập 30 thùng bia 180.000đ"<br>
+        • Hỏi <strong>số liệu</strong>: "Tháng này lãi bao nhiêu?"<br>
+        • Hỏi <strong>kho</strong>: "Hàng nào sắp hết?"
+      </div>
       <div class="typing" id="chatTyping"><div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>
     </div>
     <div class="chat-foot">
-      <input class="chat-inp" id="chatInp" placeholder="Hỏi về doanh thu, kho, thuế..." onkeydown="if(event.key==='Enter')sendChat()"/>
+      <input class="chat-inp" id="chatInp" placeholder="Nhắn: Bán 5 gói mì... hoặc Nhập 20 chai..." onkeydown="if(event.key==='Enter')sendChat()"/>
       <button class="chat-send" onclick="sendChat()">➤</button>
     </div>
   </div>
 </div>
 
-<!-- ══════════════ LỊCH SỬ ══════════════ -->
+<!-- ══ LỊCH SỬ ══ -->
 <div id="page-history" class="page">
   <div class="sum-strip">
-    <div class="s-card s-thu"><div class="s-lbl">📈 Tổng Thu (all)</div><div class="s-val" id="histAllThu">0đ</div></div>
-    <div class="s-card s-chi"><div class="s-lbl">📉 Tổng Chi (all)</div><div class="s-val" id="histAllChi">0đ</div></div>
-    <div class="s-card s-profit"><div class="s-lbl">💼 Lãi/Lỗ (all)</div><div class="s-val" id="histAllProfit">0đ</div></div>
+    <div class="s-card s-thu"><div class="s-lbl">📈 Tổng Thu</div><div class="s-val" id="histAllThu">0đ</div></div>
+    <div class="s-card s-chi"><div class="s-lbl">📉 Tổng Chi</div><div class="s-val" id="histAllChi">0đ</div></div>
+    <div class="s-card s-profit"><div class="s-lbl">💼 Lãi/Lỗ</div><div class="s-val" id="histAllProfit">0đ</div></div>
   </div>
   <div class="card">
     <div class="card-title">🧾 Toàn bộ lịch sử giao dịch</div>
     <div class="history-filters">
-      <input type="text" id="histSearch" placeholder="🔍 Tìm mô tả..." oninput="renderHistory()"/>
+      <input type="text" id="histSearch" placeholder="🔍 Tìm tên hàng, mô tả..." oninput="renderHistory()"/>
       <select id="histTypeFilter" onchange="renderHistory()">
         <option value="">Tất cả loại</option>
-        <option value="thu">💰 Thu</option>
-        <option value="chi">💸 Chi</option>
+        <option value="Xuất">💰 Bán hàng</option>
+        <option value="Nhập">📦 Nhập hàng</option>
+        <option value="op">⚡ Chi phí</option>
       </select>
       <select id="histMonthFilter" onchange="renderHistory()">
         <option value="">Tất cả tháng</option>
       </select>
-      <button class="btn btn-secondary btn-sm" onclick="exportAllCSV()">📥 CSV</button>
+      <!-- Xuất CSV theo filter hiện tại -->
+      <button class="btn btn-secondary btn-sm" onclick="exportFilteredCSV()">📥 Xuất CSV</button>
     </div>
     <div id="histTableWrap"></div>
   </div>
@@ -697,7 +746,7 @@ tr:nth-child(even) td{background:var(--p50)}
 
 <!-- CONFIRM MODAL -->
 <div class="overlay" id="confirmOverlay">
-  <div class="modal">
+  <div class="modal" id="confirmModal">
     <h3 id="confirmTitle">Xác nhận</h3>
     <p id="confirmMsg" style="font-size:.84rem;color:var(--muted);margin-bottom:4px;line-height:1.6"></p>
     <div class="modal-btns">
@@ -707,75 +756,75 @@ tr:nth-child(even) td{background:var(--p50)}
   </div>
 </div>
 
+<!-- STOCK ALERT MODAL -->
+<div class="overlay" id="stockAlertOverlay">
+  <div class="modal stock-alert-modal">
+    <h3>⚠️ Cảnh báo tồn kho!</h3>
+    <div class="stock-alert-msg" id="stockAlertMsg"></div>
+    <div class="modal-btns">
+      <button class="modal-cancel" onclick="closeStockAlert()">Huỷ bỏ giao dịch</button>
+      <button style="flex:1;padding:11px;border-radius:var(--r-sm);font-weight:800;font-size:.84rem;cursor:pointer;background:var(--a400);color:#1A2E23;border:none" onclick="forceConfirmSale()">Vẫn ghi nhận</button>
+    </div>
+  </div>
+</div>
+
 <div id="toast"></div>
 
 <script>
-/* ════════════════════════════════════════════
-   BỘ NÃO STORAGE — CONSTANTS
-════════════════════════════════════════════ */
-const STORAGE_KEY = 'tt40_transactions';  // toàn bộ giao dịch Nhập/Xuất
-const TAX_RATE    = 0.015;                // 1.5%
-const TAX_THRESHOLD_YEAR  = 500_000_000; // 500 triệu/năm
-const TAX_THRESHOLD_MONTH = TAX_THRESHOLD_YEAR / 12; // ~41.67 tr/tháng
-const LOW_STOCK   = 5;                   // ngưỡng cảnh báo tồn kho thấp
+/* ════════════════════════════════════
+   CONSTANTS
+════════════════════════════════════ */
+const STORAGE_KEY='tt40_tx';
+const META_KEY_PFX='tt40_meta_';
+const TAX_RATE=0.015;
+const TAX_THRESHOLD=500_000_000;
+const LOW_STOCK=5;
+const GEMINI_URL='https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent';
 
-/* ════════════════════════════════════════════
-   CORE STORAGE FUNCTIONS
-════════════════════════════════════════════ */
+const TODAY=new Date().toISOString().slice(0,10);
+let API_KEY=localStorage.getItem('tt40_key')||'';
+
+/* ════════════════════════════════════
+   CORE STORAGE
+════════════════════════════════════ */
+function getAllTx(){return JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');}
+function setAllTx(arr){localStorage.setItem(STORAGE_KEY,JSON.stringify(arr));}
 
 /**
- * Lưu giao dịch vào localStorage global (toàn thời gian)
- * type: 'Nhập' hoặc 'Xuất'
+ * Lưu giao dịch vào localStorage
+ * type: 'Nhập' | 'Xuất'
  */
 function saveTx(data){
-  const{name,qty,price,type,date,monthKey,desc,cat,id}=data;
-  const all=JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');
+  const arr=getAllTx();
   const entry={
-    id:id||Date.now(),
-    name:(name||'').trim(),
-    qty:Number(qty)||0,
-    price:Number(price)||0,
-    type,// 'Nhập' | 'Xuất'
-    date:date||new Date().toISOString().slice(0,10),
-    monthKey:monthKey||getCurrentMonthKey(),
-    desc:desc||'',
-    cat:cat||''
+    id:data.id||Date.now(),
+    name:(data.name||'').trim(),
+    qty:Number(data.qty)||1,
+    price:Number(data.price)||0,
+    type:data.type,
+    date:data.date||TODAY,
+    monthKey:data.monthKey||currentMonth,
+    desc:data.desc||'',
+    cat:data.cat||''
   };
-  all.push(entry);
-  localStorage.setItem(STORAGE_KEY,JSON.stringify(all));
+  arr.push(entry);
+  setAllTx(arr);
   return entry;
 }
 
-function getAllTxRaw(){
-  return JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');
-}
+function removeTxById(id){setAllTx(getAllTx().filter(x=>x.id!==id));}
+function removeTxByIds(ids){const s=new Set(ids);setAllTx(getAllTx().filter(x=>!s.has(x.id)));}
+function clearTxByMonthType(monthKey,type){setAllTx(getAllTx().filter(x=>!(x.monthKey===monthKey&&x.type===type)));}
 
-function removeTxById(id){
-  const all=getAllTxRaw().filter(x=>x.id!==id);
-  localStorage.setItem(STORAGE_KEY,JSON.stringify(all));
-}
-
-function removeTxByIds(ids){
-  const set=new Set(ids);
-  const all=getAllTxRaw().filter(x=>!set.has(x.id));
-  localStorage.setItem(STORAGE_KEY,JSON.stringify(all));
-}
-
-function clearTxByMonthAndType(monthKey,type){
-  const all=getAllTxRaw().filter(x=>!(x.monthKey===monthKey&&x.type===type));
-  localStorage.setItem(STORAGE_KEY,JSON.stringify(all));
-}
-
-/**
- * Tính tồn kho từ toàn bộ lịch sử: Nhập − Xuất
- * Trả về [{name, totalIn, totalOut, stock, lastPrice, value}]
- */
+/* ════════════════════════════════════
+   INVENTORY — Nhập − Xuất
+════════════════════════════════════ */
 function computeInventory(){
   const map={};
-  getAllTxRaw().forEach(t=>{
+  getAllTx().forEach(t=>{
     if(!map[t.name])map[t.name]={name:t.name,totalIn:0,totalOut:0,lastPrice:0};
-    if(t.type==='Nhập'){map[t.name].totalIn+=t.qty;map[t.name].lastPrice=t.price>0?t.price:map[t.name].lastPrice;}
-    else if(t.type==='Xuất'){map[t.name].totalOut+=t.qty;}
+    if(t.type==='Nhập'){map[t.name].totalIn+=t.qty;if(t.price>0)map[t.name].lastPrice=t.price;}
+    else if(t.type==='Xuất')map[t.name].totalOut+=t.qty;
   });
   return Object.values(map).map(x=>({
     name:x.name,totalIn:x.totalIn,totalOut:x.totalOut,
@@ -786,202 +835,92 @@ function computeInventory(){
 }
 
 /**
- * Tổng doanh thu theo năm (chỉ loại Xuất)
+ * Kiểm tra tồn kho trước khi bán
+ * Trả về {ok:bool, stock:number}
  */
-function getYearRevenue(year){
-  return getAllTxRaw().filter(x=>{
-    const y=new Date(x.date).getFullYear();
-    return x.type==='Xuất'&&y===year;
-  }).reduce((s,x)=>s+x.qty*x.price,0);
-}
-
-/**
- * Báo cáo thuế tháng hiện tại
- */
-function getTaxReport(){
-  const now=new Date(),year=now.getFullYear(),month=now.getMonth();
-  const monthSales=getAllTxRaw().filter(t=>{
-    const d=new Date(t.date);
-    return t.type==='Xuất'&&d.getFullYear()===year&&d.getMonth()===month;
-  });
-  const revenue=monthSales.reduce((s,t)=>s+t.qty*t.price,0);
-  const yearRevenue=getYearRevenue(year);
-  const tax=revenue*TAX_RATE;
-  return{revenue,yearRevenue,tax,monthSales,month:month+1,year};
-}
-
-/**
- * Xây dựng context dữ liệu thực cho AI chat
- */
-function buildBusinessContext(){
-  const now=new Date();
-  const curKey=now.toISOString().slice(0,7);
-  const txRaw=getAllTxRaw();
-
-  // Tháng hiện tại
-  const curSales=txRaw.filter(x=>x.monthKey===curKey&&x.type==='Xuất');
-  const curImport=txRaw.filter(x=>x.monthKey===curKey&&x.type==='Nhập');
-  const curRevenue=curSales.reduce((s,x)=>s+x.qty*x.price,0);
-  const curCost=curImport.reduce((s,x)=>s+x.qty*x.price,0);
-  const curProfit=curRevenue-curCost;
-
-  // Tháng trước
-  const prev=new Date(now);prev.setMonth(prev.getMonth()-1);
-  const prevKey=prev.toISOString().slice(0,7);
-  const prevRevenue=txRaw.filter(x=>x.monthKey===prevKey&&x.type==='Xuất').reduce((s,x)=>s+x.qty*x.price,0);
-
-  // Tồn kho
+function checkStock(itemName,qtyNeeded){
   const inv=computeInventory();
-  const lowStock=inv.filter(x=>x.stock>0&&x.stock<LOW_STOCK);
-
-  // Thuế
-  const tax=getTaxReport();
-
-  return`=== DỮ LIỆU KINH DOANH THỰC TẾ ===
-Thời điểm: ${now.toLocaleDateString('vi-VN')}
-
-📈 THÁNG NÀY (${curKey}):
-- Tổng thu (doanh thu bán): ${fmt(curRevenue)}
-- Tổng chi (nhập hàng): ${fmt(curCost)}
-- Lãi/Lỗ: ${(curProfit>=0?'+':'')+fmt(curProfit)}
-- Số giao dịch bán: ${curSales.length}
-- Số lần nhập hàng: ${curImport.length}
-
-📉 THÁNG TRƯỚC (${prevKey}):
-- Doanh thu: ${fmt(prevRevenue)}
-
-📦 TỒN KHO:
-${inv.length?inv.map(x=>`- ${x.name}: ${x.stock} cái (nhập ${x.totalIn}, bán ${x.totalOut})`).join('\n'):'- Chưa có dữ liệu kho'}
-
-⚠️ HÀNG SẮP HẾT (< ${LOW_STOCK} cái):
-${lowStock.length?lowStock.map(x=>`- ${x.name}: còn ${x.stock} cái`).join('\n'):'- Không có hàng nào sắp hết'}
-
-🧾 THUẾ:
-- Doanh thu tháng này: ${fmt(tax.revenue)}
-- Doanh thu năm ${tax.year}: ${fmt(tax.yearRevenue)}
-- Ngưỡng miễn thuế: 500.000.000đ/năm
-- Trạng thái: ${tax.yearRevenue>=TAX_THRESHOLD_YEAR?'⚠️ VƯỢT NGƯỠNG — phải nộp thuế '+fmt(tax.revenue*TAX_RATE):'✅ Chưa phải nộp thuế'}`;
+  const item=inv.find(x=>x.name.toLowerCase()===itemName.toLowerCase());
+  const stock=item?item.stock:0;
+  return{ok:stock>=qtyNeeded,stock};
 }
 
-/* ════════════════════════════════════════════
-   APP STATE
-════════════════════════════════════════════ */
-const GEMINI_URL="https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent";
-let API_KEY=localStorage.getItem('tt40_key')||'';
-const TODAY=new Date().toISOString().slice(0,10);
-let fbBase64='',invoiceBase64='',incInvoiceBase64='';
-let invoiceData=[],incInvoiceData=[];
-let incQRScanner=null,toastTimer=null;
-const chartInst={pie:null,bar:null,line:null,homeLine:null};
-let incPeriod='all',expPeriod='all',chartPeriod='week';
-let pendingConfirmFn=null;
-let fbDetectedProduct=''; // tên sản phẩm phát hiện từ ảnh Facebook
-
-/* ════════════════════════════════════════════
-   MONTH DATA (per-month metadata + expense records)
-   Giao dịch Nhập/Xuất lưu vào STORAGE_KEY global
-   Metadata (categories, plans, operational) lưu per-month
-════════════════════════════════════════════ */
-const getCurKey=()=>new Date().toISOString().slice(0,7);
-const getCurrentMonthKey=getCurKey;
-const monthLabel=k=>{const[y,m]=k.split('-');return`Tháng ${parseInt(m)}/${y}`;};
-const lsMetaKey=k=>`meta-${k}`;
-
+/* ════════════════════════════════════
+   META (categories, products, plans, operational)
+════════════════════════════════════ */
+function loadMeta(key){
+  try{const r=localStorage.getItem(META_KEY_PFX+key);if(!r)return emptyMeta();const d=JSON.parse(r);['categories','products','plans','operational'].forEach(k=>{if(!d[k])d[k]=emptyMeta()[k];});return d;}
+  catch{return emptyMeta();}
+}
+function saveMeta(key,data){localStorage.setItem(META_KEY_PFX+key,JSON.stringify(data));}
 function emptyMeta(){return{categories:['Mì tôm','Trứng gà','Nước mắm','Gạo','Bia/Nước ngọt','Bánh kẹo','Thủ công','Rau củ'],products:[],plans:[],operational:[]};}
-function loadMeta(key){try{const r=localStorage.getItem(lsMetaKey(key));if(!r)return emptyMeta();const d=JSON.parse(r);['categories','products','plans','operational'].forEach(k=>{if(!d[k])d[k]=emptyMeta()[k];});return d;}catch{return emptyMeta();}}
-function saveMeta(key,data){localStorage.setItem(lsMetaKey(key),JSON.stringify(data));}
 
-// Income / import = giao dịch trong tháng hiện tại từ STORAGE_KEY
-function getMonthTx(monthKey,type){return getAllTxRaw().filter(x=>x.monthKey===monthKey&&x.type===type);}
-
+/* ════════════════════════════════════
+   MONTH
+════════════════════════════════════ */
+const getCurKey=()=>new Date().toISOString().slice(0,7);
+const monthLabel=k=>{const[y,m]=k.split('-');return`Tháng ${parseInt(m)}/${y}`;};
 function getMonthOpts(){
   const k=new Set();
   for(let i=0;i<4;i++){const d=new Date();d.setDate(1);d.setMonth(d.getMonth()-i);k.add(d.toISOString().slice(0,7));}
-  getAllTxRaw().forEach(x=>{if(x.monthKey)k.add(x.monthKey);});
-  for(const x of Object.keys(localStorage)){if(x.startsWith('meta-20'))k.add(x.replace('meta-',''));}
+  getAllTx().forEach(x=>{if(x.monthKey)k.add(x.monthKey);});
+  Object.keys(localStorage).forEach(x=>{if(x.startsWith(META_KEY_PFX+'20'))k.add(x.replace(META_KEY_PFX,''));});
   return[...k].sort().reverse();
 }
 
 let currentMonth=getCurKey();
 let META=loadMeta(currentMonth);
-
 function persist(){saveMeta(currentMonth,META);buildMonthSelect();}
 
-/* ════════════════════════════════════════════
-   SUMMARY HELPERS
-════════════════════════════════════════════ */
-function getMonthRevenue(key){return getMonthTx(key,'Xuất').reduce((s,x)=>s+x.qty*x.price,0);}
-function getMonthCost(key){
-  const imp=getMonthTx(key,'Nhập').reduce((s,x)=>s+x.qty*x.price,0);
-  const op=(loadMeta(key).operational||[]).reduce((s,x)=>s+x.amount,0);
-  return imp+op;
-}
-
-/* ════════════════════════════════════════════
-   CONFIRM DIALOG
-════════════════════════════════════════════ */
-function showConfirm(title,msg,fn){
-  document.getElementById('confirmTitle').textContent=title;
-  document.getElementById('confirmMsg').textContent=msg;
-  document.getElementById('confirmOverlay').classList.add('show');
-  document.getElementById('confirmOkBtn').onclick=()=>{closeConfirm();fn();};
-}
-function closeConfirm(){document.getElementById('confirmOverlay').classList.remove('show');}
-
-/* ════════════════════════════════════════════
-   API KEY
-════════════════════════════════════════════ */
-function saveApiKey(){const v=document.getElementById('apiKeyInput').value.trim();if(!v){showSt('⚠️ Nhập key!','#c62828');return;}API_KEY=v;localStorage.setItem('tt40_key',v);showSt('✅ Sẵn sàng!','#1B6B3A');document.getElementById('apiSetup').style.cssText+=';background:#F1F8E9;border-bottom-color:#6ABF8A';}
-function showSt(m,c){const e=document.getElementById('apiStatus');if(e){e.textContent=m;e.style.color=c;}}
-if(API_KEY){document.getElementById('apiKeyInput').value=API_KEY;showSt('✅ Sẵn sàng!','#1B6B3A');document.getElementById('apiSetup').style.cssText+=';background:#F1F8E9;border-bottom-color:#6ABF8A';}
-
-/* ════════════════════════════════════════════
-   MONTH SELECT
-════════════════════════════════════════════ */
 function buildMonthSelect(){
   const cur=getCurKey(),opts=getMonthOpts();
   const sel=document.getElementById('monthSelect');
   if(!sel)return;
   sel.innerHTML=opts.map(k=>`<option value="${k}"${k===currentMonth?' selected':''}>${monthLabel(k)}${k===cur?' ⭐':''}</option>`).join('');
-  const s=id=>document.getElementById(id);
-  const set=(id,v)=>{const e=s(id);if(e)e.textContent=v;};
-  set('monthBadge',currentMonth===cur?'📍 Tháng hiện tại':monthLabel(currentMonth));
-  set('chartMonthLabel',monthLabel(currentMonth));
-  const ca=s('cmpA'),cb=s('cmpB');
+  ['monthBadge','chartMonthLabel'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=id==='monthBadge'?(currentMonth===cur?'📍 Tháng hiện tại':monthLabel(currentMonth)):monthLabel(currentMonth);});
+  const ca=document.getElementById('cmpA'),cb=document.getElementById('cmpB');
   if(ca)ca.innerHTML=opts.map(k=>`<option value="${k}">${monthLabel(k)}</option>`).join('');
   if(cb){cb.innerHTML=opts.map(k=>`<option value="${k}">${monthLabel(k)}</option>`).join('');if(opts.length>1)cb.value=opts[1];}
-  const pm=s('planMonth');
-  if(pm){const future=[];for(let i=0;i<=3;i++){const d=new Date();d.setDate(1);d.setMonth(d.getMonth()+i);future.push(d.toISOString().slice(0,7));}pm.innerHTML=future.map(k=>`<option value="${k}">${monthLabel(k)}</option>`).join('');}
+  const pm=document.getElementById('planMonth');
+  if(pm){const f=[];for(let i=0;i<=3;i++){const d=new Date();d.setDate(1);d.setMonth(d.getMonth()+i);f.push(d.toISOString().slice(0,7));}pm.innerHTML=f.map(k=>`<option value="${k}">${monthLabel(k)}</option>`).join('');}
 }
 function switchMonth(key){currentMonth=key;META=loadMeta(key);buildMonthSelect();renderAll();
   if(document.getElementById('page-reports').classList.contains('active'))setTimeout(refreshCharts,80);
   if(document.getElementById('page-history').classList.contains('active'))renderHistory();}
 
-/* ════════════════════════════════════════════
+/* ════════════════════════════════════
+   API KEY
+════════════════════════════════════ */
+function saveApiKey(){const v=document.getElementById('apiKeyInput').value.trim();if(!v){showSt('⚠️ Nhập key!','#c62828');return;}API_KEY=v;localStorage.setItem('tt40_key',v);showSt('✅ Sẵn sàng!','#1B6B3A');document.getElementById('apiSetup').style.cssText+=';background:#F1F8E9;border-bottom-color:#6ABF8A';}
+function showSt(m,c){const e=document.getElementById('apiStatus');if(e){e.textContent=m;e.style.color=c;}}
+if(API_KEY){document.getElementById('apiKeyInput').value=API_KEY;showSt('✅ Sẵn sàng!','#1B6B3A');document.getElementById('apiSetup').style.cssText+=';background:#F1F8E9;border-bottom-color:#6ABF8A';}
+
+/* ════════════════════════════════════
    PAGE SWITCHING
-════════════════════════════════════════════ */
+════════════════════════════════════ */
 function switchPage(name,btn){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.bn-btn').forEach(b=>b.classList.remove('active'));
-  const pg=document.getElementById('page-'+name);if(pg)pg.classList.add('active');if(btn)btn.classList.add('active');
+  document.getElementById('page-'+name).classList.add('active');
+  if(btn)btn.classList.add('active');
   if(name==='reports')setTimeout(refreshCharts,80);
   if(name==='home'){renderSummary();renderHomeRecent();setTimeout(refreshHomeChart,80);}
   if(name==='history')renderHistory();
 }
 function switchSub(name,btn){
-  ['inc','imp','op','inv','plan'].forEach(n=>{const el=document.getElementById('msub-'+n);if(el)el.style.display=n===name?'block':'none';});
+  ['inc','imp','op','inv','plan'].forEach(n=>{const e=document.getElementById('msub-'+n);if(e)e.style.display=n===name?'block':'none';});
   document.querySelectorAll('#page-money .sub-tab').forEach(b=>b.classList.remove('active'));
   if(btn)btn.classList.add('active');
   if(name==='inv')renderInventory();
   if(name==='plan')renderPlans();
 }
 function switchPromoSub(name,btn){
-  ['fb','tt'].forEach(n=>{const el=document.getElementById('psub-'+n);if(el)el.style.display=n===name?'block':'none';});
+  ['fb','tt'].forEach(n=>{const e=document.getElementById('psub-'+n);if(e)e.style.display=n===name?'block':'none';});
   document.querySelectorAll('#page-promo .sub-tab').forEach(b=>b.classList.remove('active'));
   if(btn)btn.classList.add('active');
 }
 function switchReportSub(name,btn){
-  ['chart','compare','tax'].forEach(n=>{const el=document.getElementById('rsub-'+n);if(el)el.style.display=n===name?'block':'none';});
+  ['chart','compare','tax'].forEach(n=>{const e=document.getElementById('rsub-'+n);if(e)e.style.display=n===name?'block':'none';});
   document.querySelectorAll('#page-reports .sub-tab').forEach(b=>b.classList.remove('active'));
   if(btn)btn.classList.add('active');
   if(name==='chart')setTimeout(refreshCharts,80);
@@ -989,9 +928,10 @@ function switchReportSub(name,btn){
   if(name==='tax')renderTaxAssistant();
 }
 
-/* ════════════════════════════════════════════
+/* ════════════════════════════════════
    PERIOD FILTER
-════════════════════════════════════════════ */
+════════════════════════════════════ */
+let incPeriod='all',expPeriod='all',chartPeriod='week';
 function setPeriod(type,p,btn){
   if(type==='inc')incPeriod=p;else expPeriod=p;
   const sel=type==='inc'?'#msub-inc .period-tab':'#msub-imp .period-tab';
@@ -1011,110 +951,175 @@ function filterByPeriod(arr,period){
     return true;
   });
 }
-function setChartPeriod(p,btn){
-  chartPeriod=p;
-  document.querySelectorAll('#rsub-chart .period-tab').forEach(b=>b.classList.remove('active'));
-  if(btn)btn.classList.add('active');refreshCharts();
-}
+function setChartPeriod(p,btn){chartPeriod=p;document.querySelectorAll('#rsub-chart .period-tab').forEach(b=>b.classList.remove('active'));if(btn)btn.classList.add('active');refreshCharts();}
 
-/* ════════════════════════════════════════════
-   MONEY INPUT
-════════════════════════════════════════════ */
+/* ════════════════════════════════════
+   INPUT HELPERS
+════════════════════════════════════ */
 function handleMoney(el){const d=el.value.replace(/\D/g,'');el.dataset.raw=d;el.value=d?parseInt(d,10).toLocaleString('vi-VN'):'';}
 function blockNonDigit(e){const safe=['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Home','End'];if(!safe.includes(e.key)&&!/^\d$/.test(e.key))e.preventDefault();}
 function getRaw(id){const el=document.getElementById(id);return el?parseInt(el.dataset.raw||'0',10)||0:0;}
 function clearFields(...ids){ids.forEach(id=>{const el=document.getElementById(id);if(el){el.value='';el.dataset.raw='';}});}
 
-/* ════════════════════════════════════════════
+/* ════════════════════════════════════
    COPY
-════════════════════════════════════════════ */
+════════════════════════════════════ */
+async function writeClip(text){
+  try{if(window.isSecureContext&&navigator.clipboard?.writeText){await navigator.clipboard.writeText(text);return true;}const ta=document.createElement('textarea');ta.value=text;ta.style.cssText='position:fixed;top:-9999px';document.body.appendChild(ta);ta.focus();ta.select();const ok=document.execCommand('copy');document.body.removeChild(ta);return ok;}catch{return false;}
+}
 async function doCopy(boxId,btnId){
   const box=document.getElementById(boxId);if(!box)return;const text=box.textContent.trim();
   if(!text){showToast('⚠️ Không có nội dung!',true);return;}
-  let ok=false;
-  try{if(window.isSecureContext&&navigator.clipboard?.writeText){await navigator.clipboard.writeText(text);ok=true;}
-  else{const ta=document.createElement('textarea');ta.value=text;ta.style.cssText='position:fixed;top:-9999px';document.body.appendChild(ta);ta.focus();ta.select();ok=document.execCommand('copy');document.body.removeChild(ta);}}catch{}
+  const ok=await writeClip(text);
   if(ok){showToast('📋 Đã sao chép!');if(btnId){const b=document.getElementById(btnId);if(b){const o=b.innerHTML;b.innerHTML='✅ Đã sao chép!';b.classList.add('ok');b.disabled=true;setTimeout(()=>{b.innerHTML=o;b.classList.remove('ok');b.disabled=false;},2000);}}}
   else showToast('❌ Thử bôi đen + Ctrl+C',true);
 }
-async function copyRaw(text,msg){let ok=false;try{if(window.isSecureContext&&navigator.clipboard?.writeText){await navigator.clipboard.writeText(text);ok=true;}else{const ta=document.createElement('textarea');ta.value=text;ta.style.cssText='position:fixed;top:-9999px';document.body.appendChild(ta);ta.focus();ta.select();ok=document.execCommand('copy');document.body.removeChild(ta);}}catch{}showToast(ok?msg:'❌ Không sao chép được',!ok);}
+async function copyRaw(text,msg){const ok=await writeClip(text);showToast(ok?msg:'❌ Không sao chép được',!ok);}
 
-/* ════════════════════════════════════════════
-   CATEGORY / PRODUCT DROPDOWN
-════════════════════════════════════════════ */
+/* ════════════════════════════════════
+   CATEGORY DROPDOWN — tự tạo + gợi ý từ tên hàng
+════════════════════════════════════ */
 const getCats=()=>META.categories||[];
 function openDrop(dropId,prefix){const inp=document.getElementById(prefix+'CatInput');renderCatDD(dropId,prefix,inp?inp.value.toLowerCase():'');}
 function closeDrop(dropId){const el=document.getElementById(dropId);if(el)el.classList.remove('open');}
-function onCatInput(prefix){const inp=document.getElementById(prefix+'CatInput');if(!inp)return;renderCatDD(prefix+'CatDrop',prefix,inp.value.toLowerCase());const exact=getCats().find(c=>c.toLowerCase()===inp.value.toLowerCase());if(exact)renderChipsFor(prefix,exact);else{const chips=document.getElementById(prefix+'Chips');if(chips)chips.innerHTML='';}}
+function onCatInput(prefix){
+  const inp=document.getElementById(prefix+'CatInput');if(!inp)return;
+  renderCatDD(prefix+'CatDrop',prefix,inp.value.toLowerCase());
+  const exact=getCats().find(c=>c.toLowerCase()===inp.value.toLowerCase());
+  if(exact)renderChipsFor(prefix,exact);
+  else{const chips=document.getElementById(prefix+'Chips');if(chips)chips.innerHTML='';}
+}
 function renderCatDD(dropId,prefix,val){
   const drop=document.getElementById(dropId);if(!drop)return;drop.innerHTML='';
+  // Gợi ý danh mục hiện có
   const filtered=val?getCats().filter(c=>c.toLowerCase().includes(val)):getCats();
   filtered.forEach(c=>{const d=document.createElement('div');d.className='cat-opt';d.textContent=c;d.onmousedown=()=>{document.getElementById(prefix+'CatInput').value=c;closeDrop(dropId);renderChipsFor(prefix,c);};drop.appendChild(d);});
-  if(val&&!getCats().some(c=>c.toLowerCase()===val)){const d=document.createElement('div');d.className='cat-opt new-item';d.textContent='➕ Thêm "'+val+'"';d.onmousedown=()=>{const p=val.charAt(0).toUpperCase()+val.slice(1);if(!META.categories.includes(p)){META.categories.push(p);persist();}document.getElementById(prefix+'CatInput').value=p;closeDrop(dropId);renderChipsFor(prefix,p);showToast('✅ Đã thêm danh mục!');};drop.appendChild(d);}
+  // Gợi ý từ tên hàng đã có (nếu val khớp)
+  if(val){
+    const prodMatches=(META.products||[]).filter(p=>p.toLowerCase().includes(val)&&!getCats().some(c=>c.toLowerCase()===p.toLowerCase()));
+    prodMatches.slice(0,3).forEach(p=>{const d=document.createElement('div');d.className='cat-opt new-item';d.textContent='📦 Dùng tên: "'+p+'"';d.onmousedown=()=>{document.getElementById(prefix+'CatInput').value=p;closeDrop(dropId);};drop.appendChild(d);});
+  }
+  // Tạo mới
+  if(val&&!getCats().some(c=>c.toLowerCase()===val)){
+    const d=document.createElement('div');d.className='cat-opt new-item';d.textContent='➕ Tạo loại mới: "'+val+'"';
+    d.onmousedown=()=>{const p=val.charAt(0).toUpperCase()+val.slice(1);if(!META.categories.includes(p)){META.categories.push(p);persist();}document.getElementById(prefix+'CatInput').value=p;closeDrop(dropId);renderChipsFor(prefix,p);showToast('✅ Đã tạo loại "'+p+'"');};
+    drop.appendChild(d);
+  }
   drop.classList.toggle('open',drop.children.length>0);
 }
-function onProdInput(){const inp=document.getElementById('impName'),drop=document.getElementById('prodSugDrop');if(!inp||!drop)return;const val=inp.value.toLowerCase();const prods=META.products||[];const m=val?prods.filter(p=>p.toLowerCase().includes(val)):prods;drop.innerHTML='';if(!m.length){drop.classList.remove('open');return;}m.slice(0,8).forEach(p=>{const d=document.createElement('div');d.className='sug-opt';d.textContent=p;d.onmousedown=()=>{inp.value=p;drop.classList.remove('open');};drop.appendChild(d);});drop.classList.add('open');}
+function onProdInput(){
+  const inp=document.getElementById('impName'),drop=document.getElementById('prodSugDrop');if(!inp||!drop)return;
+  const val=inp.value.toLowerCase();const m=val?(META.products||[]).filter(p=>p.toLowerCase().includes(val)):META.products||[];
+  drop.innerHTML='';if(!m.length){drop.classList.remove('open');return;}
+  m.slice(0,8).forEach(p=>{const d=document.createElement('div');d.className='sug-opt';d.textContent=p;d.onmousedown=()=>{inp.value=p;drop.classList.remove('open');// auto-suggest category
+    const cat=document.getElementById('impCatInput');if(cat&&!cat.value){const match=getCats().find(c=>p.toLowerCase().includes(c.toLowerCase()));if(match)cat.value=match;}};drop.appendChild(d);});
+  drop.classList.add('open');
+}
 function closeProdSug(){const el=document.getElementById('prodSugDrop');if(el)el.classList.remove('open');}
-function saveProduct(name){if(!name)return;if(!META.products)META.products=[];if(!META.products.includes(name)){META.products.push(name);persist();}}
-function onSellInput(){const inp=document.getElementById('incSellName'),drop=document.getElementById('sellSugDrop');if(!inp||!drop)return;const val=inp.value.toLowerCase();const pool=[...new Set([...(META.products||[]),...getCats()])];const m=val?pool.filter(p=>p.toLowerCase().includes(val)):pool;drop.innerHTML='';if(!m.length){drop.classList.remove('open');return;}m.slice(0,8).forEach(p=>{const d=document.createElement('div');d.className='sug-opt';d.textContent=p;d.onmousedown=()=>{inp.value=p;drop.classList.remove('open');};drop.appendChild(d);});drop.classList.add('open');}
+function saveProduct(name){if(!name)return;if(!META.products.includes(name)){META.products.push(name);persist();}}
+function onSellInput(){
+  const inp=document.getElementById('incSellName'),drop=document.getElementById('sellSugDrop');if(!inp||!drop)return;
+  const val=inp.value.toLowerCase();
+  const pool=[...new Set([...(META.products||[]),...getCats()])];
+  const m=val?pool.filter(p=>p.toLowerCase().includes(val)):pool;
+  drop.innerHTML='';if(!m.length){drop.classList.remove('open');return;}
+  m.slice(0,8).forEach(p=>{const d=document.createElement('div');d.className='sug-opt';d.textContent=p;d.onmousedown=()=>{inp.value=p;drop.classList.remove('open');// auto-suggest cat
+    const cat=document.getElementById('incCatInput');if(cat&&!cat.value){const match=getCats().find(c=>p.toLowerCase().includes(c.toLowerCase()));if(match)cat.value=match;}};drop.appendChild(d);});
+  drop.classList.add('open');
+}
 function closeSellSug(){const el=document.getElementById('sellSugDrop');if(el)el.classList.remove('open');}
 
-/* ════════════════════════════════════════════
+/* ════════════════════════════════════
    CHIPS
-════════════════════════════════════════════ */
+════════════════════════════════════ */
 const SMAP={'Mì tôm':{thu:['Bán lẻ mì','Combo mì+trứng'],chi:['Nhập mì tôm','Phí vận chuyển']},'Trứng gà':{thu:['Bán trứng lẻ','Bán vỉ 10'],chi:['Mua cám','Hao hụt vỡ']},'Nước mắm':{thu:['Bán chai lẻ'],chi:['Nhập nước mắm']},'Gạo':{thu:['Bán gạo lẻ kg'],chi:['Nhập gạo']},'Bia/Nước ngọt':{thu:['Bán bia lẻ'],chi:['Nhập bia']},'Bánh kẹo':{thu:['Bán lẻ'],chi:['Nhập bánh']},'Thủ công':{thu:['Bán tại chợ'],chi:['Nguyên vật liệu']},'Rau củ':{thu:['Bán lẻ'],chi:['Nhập từ vườn']}};
 const OP_SMAP={utility:['Tiền điện','Tiền nước'],transport:['Vận chuyển nhập','Ship khách'],loss:['Hàng hỏng','Trả hàng'],rental:['Thuê mặt bằng'],labor:['Lương nhân viên'],other:['Chi phí phát sinh']};
 function renderChipsFor(prefix,cat){const isInc=prefix==='inc';const el=document.getElementById(prefix+'Chips');if(!el)return;el.innerHTML='';const map=SMAP[cat];if(!map)return;(isInc?map.thu:map.chi).forEach(t=>{const c=document.createElement('button');c.className='chip'+(isInc?'':' chi-c');c.textContent=(isInc?'💰 ':'💸 ')+t;c.onclick=()=>{const d=document.getElementById(isInc?'incDesc':'impName');if(d)d.value=t;};el.appendChild(c);});}
 function renderOpChips(){const t=document.getElementById('opType').value,el=document.getElementById('opChips');if(!el)return;el.innerHTML='';(OP_SMAP[t]||[]).forEach(item=>{const c=document.createElement('button');c.className='chip chi-c';c.textContent='💸 '+item;c.onclick=()=>{const d=document.getElementById('opDesc');if(d)d.value=item;};el.appendChild(c);});}
 
-/* ════════════════════════════════════════════
-   ADD INCOME — ghi vào STORAGE_KEY global
-════════════════════════════════════════════ */
-function addIncome(){
-  const desc=(document.getElementById('incDesc')||{value:''}).value.trim();
-  const amt=getRaw('incAmount'),qty=getRaw('incQty'),date=(document.getElementById('incDate')||{value:''}).value;
+/* ════════════════════════════════════
+   CONFIRM / STOCK ALERT MODALS
+════════════════════════════════════ */
+let pendingSaleFn=null;
+function showConfirm(title,msg,fn){
+  document.getElementById('confirmTitle').textContent=title;
+  document.getElementById('confirmMsg').textContent=msg;
+  document.getElementById('confirmOverlay').classList.add('show');
+  document.getElementById('confirmOkBtn').onclick=()=>{closeConfirm();fn();};
+}
+function closeConfirm(){document.getElementById('confirmOverlay').classList.remove('show');}
+
+function showStockAlert(msg,forceFn){
+  document.getElementById('stockAlertMsg').innerHTML=msg;
+  document.getElementById('stockAlertOverlay').classList.add('show');
+  pendingSaleFn=forceFn;
+}
+function closeStockAlert(){document.getElementById('stockAlertOverlay').classList.remove('show');pendingSaleFn=null;}
+function forceConfirmSale(){closeStockAlert();if(pendingSaleFn)pendingSaleFn();}
+
+/* ════════════════════════════════════
+   ADD INCOME — Ghi nhận bán hàng thật, kiểm tra kho
+════════════════════════════════════ */
+function addIncome(forceSkipCheck=false){
   const sellName=(document.getElementById('incSellName')||{value:''}).value.trim();
-  if(!desc&&!sellName){showToast('⚠️ Nhập mô tả hoặc tên hàng!',true);return;}
-  if(!amt){showToast('⚠️ Nhập số tiền!',true);return;}
-  if(!date){showToast('⚠️ Chọn ngày!',true);return;}
-  const cat=(document.getElementById('incCatInput')||{value:''}).value;
+  const desc=(document.getElementById('incDesc')||{value:''}).value.trim();
+  const amt=getRaw('incAmount'),qty=getRaw('incQty');
+  const date=(document.getElementById('incDate')||{value:''}).value;
+  const cat=(document.getElementById('incCatInput')||{value:''}).value.trim();
   const name=sellName||desc;
+  if(!name){showToast('⚠️ Nhập tên hàng bán!',true);return;}
+  if(!amt){showToast('⚠️ Nhập tổng tiền!',true);return;}
+  if(!date){showToast('⚠️ Chọn ngày!',true);return;}
+  const qtyReal=qty||1;
+
+  // Kiểm tra tồn kho trước khi bán
+  if(!forceSkipCheck&&name){
+    const{ok,stock}=checkStock(name,qtyReal);
+    if(!ok){
+      showStockAlert(`<strong>${name}</strong><br>Kho còn: <strong>${stock}</strong> cái<br>Định bán: <strong>${qtyReal}</strong> cái<br><br>Bà ơi, hàng trong kho không đủ để bán!`,
+        ()=>doSaveSale({name,qty:qtyReal,amt,date,cat,desc,sellName}));
+      return;
+    }
+  }
+  doSaveSale({name,qty:qtyReal,amt,date,cat,desc,sellName});
+}
+
+function doSaveSale({name,qty,amt,date,cat,desc,sellName}){
   const unitPrice=qty>0?Math.round(amt/qty):amt;
-  // Ghi giao dịch Xuất vào storage toàn cục
-  saveTx({name,qty:qty||1,price:unitPrice,type:'Xuất',date,monthKey:currentMonth,desc:desc||('Bán '+name),cat});
+  saveTx({name,qty,price:unitPrice,type:'Xuất',date,monthKey:currentMonth,desc:desc||('Bán '+name),cat});
   if(sellName)saveProduct(sellName);
   renderAll();
   clearFields('incDesc','incAmount','incQty','incSellName');
-  showToast('✅ Đã thêm khoản thu!');
+  showToast(`✅ Đã ghi nhận bán ${qty} ${name}!`,'',true);
 }
 
-function delIncome(id){
-  showConfirm('Xoá khoản thu','Xoá khoản thu này? Không thể hoàn tác.',()=>{removeTxById(id);renderAll();showToast('✅ Đã xoá!');});
-}
+function delIncome(id){showConfirm('Xoá giao dịch bán','Xoá giao dịch bán hàng này? Không thể hoàn tác.',()=>{removeTxById(id);renderAll();showToast('✅ Đã xoá!');});}
 
-/* ════════════════════════════════════════════
-   ADD IMPORT — ghi vào STORAGE_KEY global
-════════════════════════════════════════════ */
+/* ════════════════════════════════════
+   ADD IMPORT
+════════════════════════════════════ */
 function addImport(){
   const name=(document.getElementById('impName')||{value:''}).value.trim();
   const qty=getRaw('impQty'),amt=getRaw('impAmount'),date=(document.getElementById('impDate')||{value:''}).value;
-  if(!name){showToast('⚠️ Nhập tên hàng!',true);return;}if(!amt){showToast('⚠️ Nhập thành tiền!',true);return;}if(!date){showToast('⚠️ Chọn ngày!',true);return;}
-  const cat=(document.getElementById('impCatInput')||{value:''}).value;
-  const unitPrice=qty>0?Math.round(amt/qty):amt;
-  saveTx({name,qty:qty||1,price:unitPrice,type:'Nhập',date,monthKey:currentMonth,desc:'Nhập: '+name,cat});
-  saveProduct(name);renderAll();renderInventory();
+  const cat=(document.getElementById('impCatInput')||{value:''}).value.trim();
+  if(!name){showToast('⚠️ Nhập tên hàng!',true);return;}
+  if(!amt){showToast('⚠️ Nhập thành tiền!',true);return;}
+  if(!date){showToast('⚠️ Chọn ngày!',true);return;}
+  const qtyReal=qty||1;
+  saveTx({name,qty:qtyReal,price:Math.round(amt/qtyReal),type:'Nhập',date,monthKey:currentMonth,desc:'Nhập: '+name,cat});
+  saveProduct(name);
+  // Auto-suggest category
+  if(!cat){const match=getCats().find(c=>name.toLowerCase().includes(c.toLowerCase()));if(match){const el=document.getElementById('impCatInput');if(el)el.value=match;}}
+  renderAll();renderInventory();
   clearFields('impName','impQty','impAmount');
   const n=document.getElementById('expAutofillNotice');if(n)n.classList.remove('show');
-  showToast('✅ Nhập hàng + cập nhật kho!');
+  showToast(`✅ Đã nhập ${qtyReal} ${name} vào kho!`);
 }
+function delExpense(id){showConfirm('Xoá khoản nhập','Xoá khoản nhập hàng này? Không thể hoàn tác.',()=>{removeTxById(id);renderAll();renderInventory();showToast('✅ Đã xoá!');});}
 
-function delExpense(id){
-  showConfirm('Xoá khoản nhập','Xoá khoản nhập hàng này? Không thể hoàn tác.',()=>{removeTxById(id);renderAll();renderInventory();showToast('✅ Đã xoá!');});
-}
-
-/* ════════════════════════════════════════════
-   ADD OPERATIONAL — lưu vào META (không ảnh hưởng kho)
-════════════════════════════════════════════ */
+/* ════════════════════════════════════
+   OPERATIONAL
+════════════════════════════════════ */
 function addOperational(){
   const desc=(document.getElementById('opDesc')||{value:''}).value.trim();
   const amt=getRaw('opAmount'),date=(document.getElementById('opDate')||{value:''}).value;
@@ -1124,501 +1129,620 @@ function addOperational(){
   persist();renderAll();clearFields('opDesc','opAmount');showToast('✅ Đã thêm chi phí!');
 }
 
-/* ════════════════════════════════════════════
+/* ════════════════════════════════════
    BULK DELETE
-════════════════════════════════════════════ */
+════════════════════════════════════ */
 function bulkDelete(type){
   const ids=[];document.querySelectorAll(`.cb-${type}:checked`).forEach(cb=>ids.push(parseInt(cb.value)));
   if(!ids.length){showToast('⚠️ Chưa chọn giao dịch nào!',true);return;}
   showConfirm(`Xoá ${ids.length} giao dịch`,`Xoá ${ids.length} giao dịch đã chọn? Không thể hoàn tác.`,()=>{removeTxByIds(ids);renderAll();renderInventory();showToast('✅ Đã xoá!');});
 }
 function confirmDeleteAll(type){
-  const label=type==='inc'?'thu (Xuất)':'nhập hàng (Nhập)';
-  showConfirm(`Xoá tất cả khoản ${type==='inc'?'thu':'nhập'}`,`Xoá TOÀN BỘ khoản ${label} tháng ${monthLabel(currentMonth)}? Không thể hoàn tác!`,()=>{
-    clearTxByMonthAndType(currentMonth,type==='inc'?'Xuất':'Nhập');renderAll();renderInventory();showToast('✅ Đã xoá tất cả!');
-  });
+  showConfirm(`Xoá tất cả`,`Xoá TOÀN BỘ khoản ${type==='inc'?'bán hàng':'nhập hàng'} tháng ${monthLabel(currentMonth)}? Không thể hoàn tác!`,()=>{clearTxByMonthType(currentMonth,type==='inc'?'Xuất':'Nhập');renderAll();renderInventory();showToast('✅ Đã xoá tất cả!');});
 }
 function toggleSelectAll(type,checked){document.querySelectorAll(`.cb-${type}`).forEach(cb=>cb.checked=checked);updateBulkBtn(type);}
 function updateBulkBtn(type){const c=document.querySelectorAll(`.cb-${type}:checked`).length;const b=document.getElementById(type+'BulkDelBtn');if(b)b.style.display=c>0?'inline-flex':'none';}
 
-/* ════════════════════════════════════════════
+/* ════════════════════════════════════
    PLANS
-════════════════════════════════════════════ */
+════════════════════════════════════ */
 function addPlan(){
   const name=(document.getElementById('planName')||{value:''}).value.trim();
   const amt=getRaw('planAmount'),month=(document.getElementById('planMonth')||{value:''}).value;
   const note=(document.getElementById('planNote')||{value:''}).value.trim(),type=(document.getElementById('planType')||{value:'other'}).value;
   if(!name){showToast('⚠️ Nhập tên kế hoạch!',true);return;}if(!amt){showToast('⚠️ Nhập số tiền!',true);return;}
-  const targetMeta=loadMeta(month);if(!targetMeta.plans)targetMeta.plans=[];
-  targetMeta.plans.push({id:Date.now(),name,amount:amt,type,note,createdMonth:currentMonth});
-  saveMeta(month,targetMeta);if(month===currentMonth)META=targetMeta;
+  const tm=loadMeta(month);if(!tm.plans)tm.plans=[];
+  tm.plans.push({id:Date.now(),name,amount:amt,type,note,createdMonth:currentMonth});
+  saveMeta(month,tm);if(month===currentMonth)META=tm;
   renderPlans();clearFields('planName','planAmount','planNote');
   showToast(`✅ Đã thêm kế hoạch vào ${monthLabel(month)}!`);
 }
 function delPlan(id){showConfirm('Xoá kế hoạch','Xoá kế hoạch này?',()=>{META.plans=META.plans.filter(x=>x.id!==id);persist();renderPlans();showToast('✅ Đã xoá!');});}
 function renderPlans(){
   const el=document.getElementById('planList');if(!el)return;
-  const plans=META.plans||[];
-  if(!plans.length){el.innerHTML='<div class="empty"><div class="ei">📋</div>Chưa có kế hoạch nào</div>';return;}
-  const typeLabel={import:'📦 Nhập hàng',utility:'🔌 Điện/Nước',transport:'🚚 Vận chuyển',rental:'🏪 Mặt bằng',labor:'👷 Nhân công',other:'📌 Khác'};
-  el.innerHTML=plans.map(p=>`<div class="plan-item"><div class="plan-body"><div class="plan-name">${p.name}</div><div class="plan-meta">${typeLabel[p.type]||p.type}${p.note?' · '+p.note:''}</div></div><div class="plan-amount">-${fmt(p.amount)}</div><button class="plan-del" onclick="delPlan(${p.id})">🗑️</button></div>`).join('');
+  const plans=META.plans||[];if(!plans.length){el.innerHTML='<div class="empty"><div class="ei">📋</div>Chưa có kế hoạch nào</div>';return;}
+  const tl={import:'📦 Nhập hàng',utility:'🔌 Điện/Nước',transport:'🚚 Vận chuyển',rental:'🏪 Mặt bằng',other:'📌 Khác'};
+  el.innerHTML=plans.map(p=>`<div class="plan-item"><div class="plan-body"><div class="plan-name">${p.name}</div><div class="plan-meta">${tl[p.type]||p.type}${p.note?' · '+p.note:''}</div></div><div class="plan-amount">-${fmt(p.amount)}</div><button class="plan-del" onclick="delPlan(${p.id})">🗑️</button></div>`).join('');
 }
 
-/* ════════════════════════════════════════════
-   RENDER
-════════════════════════════════════════════ */
+/* ════════════════════════════════════
+   RENDER HELPERS
+════════════════════════════════════ */
 const fmt=n=>(n||0).toLocaleString('vi-VN')+'đ';
 const fmtD=d=>{try{const[y,m,day]=d.split('-');return`${day}/${m}`;}catch{return d||'';}};
-
+function getMonthRevenue(key){return getAllTx().filter(x=>x.monthKey===key&&x.type==='Xuất').reduce((s,x)=>s+x.qty*x.price,0);}
+function getMonthCost(key){const imp=getAllTx().filter(x=>x.monthKey===key&&x.type==='Nhập').reduce((s,x)=>s+x.qty*x.price,0);const op=(loadMeta(key).operational||[]).reduce((s,x)=>s+x.amount,0);return imp+op;}
 function renderAll(){renderSummary();renderIncTable();renderExpTable();}
 
 function renderSummary(){
-  const thu=getMonthRevenue(currentMonth);
-  const chi=getMonthCost(currentMonth);
-  const p=thu-chi;
-  const sets=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
-  sets('totalThu',fmt(thu));sets('totalChi',fmt(chi));
-  sets('totalThu2',fmt(thu));sets('totalChi2',fmt(chi));
+  const thu=getMonthRevenue(currentMonth),chi=getMonthCost(currentMonth),p=thu-chi;
+  ['totalThu','totalThu2'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=fmt(thu);});
+  ['totalChi','totalChi2'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=fmt(chi);});
   ['totalProfit','totalProfit2'].forEach(id=>{const el=document.getElementById(id);if(el){el.textContent=(p>=0?'+':'')+fmt(p);el.style.color=p>=0?'var(--p600)':'var(--red)';}});
 }
 
 function renderIncTable(){
   const w=document.getElementById('incTableWrap');if(!w)return;
-  const allInc=getMonthTx(currentMonth,'Xuất');
-  const filtered=filterByPeriod(allInc,incPeriod);
-  if(!filtered.length){w.innerHTML='<div class="empty"><div class="ei">💰</div>Chưa có khoản thu nào</div>';return;}
-  const rows=filtered.slice().sort((a,b)=>b.id-a.id).map(t=>
-    `<tr><td><input type="checkbox" class="cb-cell cb-inc" value="${t.id}" onchange="updateBulkBtn('inc')"></td>
-     <td>${fmtD(t.date)}</td>
-     <td>${t.name?`<span class="tag tag-thu">${t.name}</span> `:''}${t.desc||''}</td>
-     <td class="thu-v">+${fmt(t.qty*t.price)}</td>
-     <td><button class="del-btn" onclick="delIncome(${t.id})">🗑️</button></td></tr>`
-  ).join('');
-  w.innerHTML=`<div class="tbl-wrap"><table><thead><tr><th></th><th>Ngày</th><th>Mô tả</th><th>Số tiền</th><th></th></tr></thead><tbody>${rows}</tbody></table></div>`;
+  const all=getAllTx().filter(x=>x.monthKey===currentMonth&&x.type==='Xuất');
+  const filtered=filterByPeriod(all,incPeriod).sort((a,b)=>b.id-a.id);
+  if(!filtered.length){w.innerHTML='<div class="empty"><div class="ei">💰</div>Chưa có giao dịch bán hàng nào</div>';return;}
+  const rows=filtered.map(t=>`<tr>
+    <td><input type="checkbox" class="cb-cell cb-inc" value="${t.id}" onchange="updateBulkBtn('inc')"></td>
+    <td>${fmtD(t.date)}</td>
+    <td>${t.name?`<span class="tag tag-thu">${t.name}</span> `:''}${t.desc||''}</td>
+    <td style="text-align:center">${t.qty}</td>
+    <td class="thu-v">+${fmt(t.qty*t.price)}</td>
+    <td><button class="del-btn" onclick="delIncome(${t.id})">🗑️</button></td></tr>`).join('');
+  w.innerHTML=`<div class="tbl-wrap"><table><thead><tr><th></th><th>Ngày</th><th>Mô tả</th><th>SL</th><th>Tiền</th><th></th></tr></thead><tbody>${rows}</tbody></table></div>`;
 }
 
 function renderExpTable(){
   const w=document.getElementById('expTableWrap');if(!w)return;
-  const allImp=getMonthTx(currentMonth,'Nhập');
-  const filtered=filterByPeriod(allImp,expPeriod);
+  const all=getAllTx().filter(x=>x.monthKey===currentMonth&&x.type==='Nhập');
+  const filtered=filterByPeriod(all,expPeriod).sort((a,b)=>b.id-a.id);
   if(!filtered.length){w.innerHTML='<div class="empty"><div class="ei">💸</div>Chưa có khoản nhập hàng nào</div>';return;}
-  const rows=filtered.slice().sort((a,b)=>b.id-a.id).map(t=>
-    `<tr><td><input type="checkbox" class="cb-cell cb-exp" value="${t.id}" onchange="updateBulkBtn('exp')"></td>
-     <td>${fmtD(t.date)}</td><td>${t.desc||''}</td>
-     <td><span class="tag tag-imp">📦</span></td>
-     <td class="chi-v">-${fmt(t.qty*t.price)}</td>
-     <td><button class="del-btn" onclick="delExpense(${t.id})">🗑️</button></td></tr>`
-  ).join('');
-  w.innerHTML=`<div class="tbl-wrap"><table><thead><tr><th></th><th>Ngày</th><th>Mô tả</th><th></th><th>Số tiền</th><th></th></tr></thead><tbody>${rows}</tbody></table></div>`;
+  const rows=filtered.map(t=>`<tr>
+    <td><input type="checkbox" class="cb-cell cb-exp" value="${t.id}" onchange="updateBulkBtn('exp')"></td>
+    <td>${fmtD(t.date)}</td><td>${t.name||''}</td>
+    <td style="text-align:center">${t.qty}</td>
+    <td class="chi-v">-${fmt(t.qty*t.price)}</td>
+    <td><button class="del-btn" onclick="delExpense(${t.id})">🗑️</button></td></tr>`).join('');
+  w.innerHTML=`<div class="tbl-wrap"><table><thead><tr><th></th><th>Ngày</th><th>Tên hàng</th><th>SL</th><th>Tiền</th><th></th></tr></thead><tbody>${rows}</tbody></table></div>`;
 }
 
-/* ════════════════════════════════════════════
-   TỒN KHO — tính từ toàn bộ localStorage
-════════════════════════════════════════════ */
 function renderInventory(){
-  const el=document.getElementById('inventoryList'),warnBox=document.getElementById('stockWarnBox');
-  if(!el)return;
+  const el=document.getElementById('inventoryList'),wb=document.getElementById('stockWarnBox');if(!el)return;
   const inv=computeInventory();
-  if(!inv.length){el.innerHTML='<div class="empty"><div class="ei">📦</div>Kho trống — hãy nhập hàng trước</div>';if(warnBox)warnBox.classList.remove('show');return;}
-
-  const lowItems=inv.filter(x=>x.stock>0&&x.stock<LOW_STOCK);
-  if(warnBox){
-    if(lowItems.length){
-      warnBox.innerHTML=`⚠️ Sắp hết hàng! Cần nhập thêm:<br>${lowItems.map(x=>`🔴 <strong>${x.name}</strong> — còn <strong>${x.stock}</strong> cái`).join('<br>')}`;
-      warnBox.classList.add('show');
-    }else{warnBox.classList.remove('show');}
+  if(!inv.length){el.innerHTML='<div class="empty"><div class="ei">📦</div>Kho trống — hãy nhập hàng trước</div>';if(wb)wb.classList.remove('show');return;}
+  const lowItems=inv.filter(x=>x.stock>0&&x.stock<LOW_STOCK),outItems=inv.filter(x=>x.stock===0);
+  if(wb){
+    const warns=[...outItems.map(x=>`🔴 <strong>${x.name}</strong> — đã hết hàng`),...lowItems.map(x=>`🟡 <strong>${x.name}</strong> — còn <strong>${x.stock}</strong> cái`)];
+    if(warns.length){wb.innerHTML='⚠️ Cần nhập thêm hàng:<br>'+warns.join('<br>');wb.classList.add('show');}
+    else wb.classList.remove('show');
   }
-
   el.innerHTML=inv.map(x=>{
-    const isLow=x.stock>0&&x.stock<LOW_STOCK,isOut=x.stock===0;
-    const qtyClass=isLow||isOut?'inv-qty low':'inv-qty';
+    const isOut=x.stock===0,isLow=x.stock>0&&x.stock<LOW_STOCK;
     const icon=isOut?'🔴':isLow?'🟡':'🟢';
-    return`<div class="inv-kho-row">
-      <div class="inv-kho-name">${icon} ${x.name}</div>
-      <div class="${qtyClass}">${x.stock} cái</div>
-      <div class="inv-price">Nhập ${x.totalIn} · Bán ${x.totalOut} · ${fmt(x.lastPrice)}/cái</div>
-    </div>`;
+    const qClass=isOut?'inv-qty out':isLow?'inv-qty low':'inv-qty';
+    return`<div class="inv-kho-row"><div class="inv-kho-name">${icon} ${x.name}</div><div class="${qClass}">${x.stock} cái</div><div class="inv-price">Nhập ${x.totalIn} · Bán ${x.totalOut}${x.lastPrice?` · ${fmt(x.lastPrice)}/cái`:''}</div></div>`;
   }).join('');
 }
 
 function renderHomeRecent(){
   const w=document.getElementById('homeRecentWrap');if(!w)return;
-  const all=getAllTxRaw().filter(x=>x.monthKey===currentMonth).sort((a,b)=>b.id-a.id).slice(0,8);
+  const all=getAllTx().filter(x=>x.monthKey===currentMonth).sort((a,b)=>b.id-a.id).slice(0,8);
   if(!all.length){w.innerHTML='<div class="empty"><div class="ei">📋</div>Chưa có giao dịch nào</div>';return;}
-  const rows=all.map(x=>`<tr><td>${fmtD(x.date)}</td><td>${x.type==='Xuất'?'<span class="tag tag-thu">💰 Thu</span>':'<span class="tag tag-imp">📦 Nhập</span>'}</td><td>${x.desc||''}</td><td class="${x.type==='Xuất'?'thu-v':'chi-v'}">${x.type==='Xuất'?'+':'-'}${fmt(x.qty*x.price)}</td></tr>`).join('');
-  w.innerHTML=`<div class="tbl-wrap"><table><thead><tr><th>Ngày</th><th>Loại</th><th>Mô tả</th><th>Số tiền</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+  const rows=all.map(x=>`<tr><td>${fmtD(x.date)}</td><td>${x.type==='Xuất'?'<span class="tag tag-thu">💰 Bán</span>':'<span class="tag tag-imp">📦 Nhập</span>'}</td><td>${x.name||x.desc||''}</td><td class="${x.type==='Xuất'?'thu-v':'chi-v'}">${x.type==='Xuất'?'+':'-'}${fmt(x.qty*x.price)}</td></tr>`).join('');
+  w.innerHTML=`<div class="tbl-wrap"><table><thead><tr><th>Ngày</th><th>Loại</th><th>Tên hàng</th><th>Số tiền</th></tr></thead><tbody>${rows}</tbody></table></div>`;
 }
 
-/* ════════════════════════════════════════════
-   TRỢ LÝ THUẾ 2026 — chữ to, rõ ràng
-════════════════════════════════════════════ */
+/* ════════════════════════════════════
+   HISTORY — filter + xuất CSV theo filter
+════════════════════════════════════ */
+let _filteredForCSV=[];
+
+function renderHistory(){
+  const all=getAllTx().sort((a,b)=>b.id-a.id);
+  const ops=(()=>{
+    const r=[];getMonthOpts().forEach(mk=>{(loadMeta(mk).operational||[]).forEach(x=>r.push({...x,monthKey:mk,type:'op',qty:1,price:x.amount,name:x.desc}));});
+    return r.sort((a,b)=>b.id-a.id);
+  })();
+  const combined=[...all,...ops];
+
+  const search=(document.getElementById('histSearch')||{value:''}).value.toLowerCase();
+  const typeF=(document.getElementById('histTypeFilter')||{value:''}).value;
+  const monthF=(document.getElementById('histMonthFilter')||{value:''}).value;
+
+  // Build month filter options
+  const allMonths=[...new Set(combined.map(x=>x.monthKey||''))].filter(Boolean).sort().reverse();
+  const mSel=document.getElementById('histMonthFilter');
+  if(mSel){const cur=mSel.value;mSel.innerHTML='<option value="">Tất cả tháng</option>'+allMonths.map(m=>`<option value="${m}"${m===cur?' selected':''}>${monthLabel(m)}</option>`).join('');}
+
+  const filtered=combined.filter(x=>{
+    if(search&&!(x.name||'').toLowerCase().includes(search)&&!(x.desc||'').toLowerCase().includes(search))return false;
+    if(typeF&&x.type!==typeF)return false;
+    if(monthF&&x.monthKey!==monthF)return false;
+    return true;
+  });
+
+  _filteredForCSV=filtered; // lưu để xuất CSV theo filter
+
+  const allThu=filtered.filter(x=>x.type==='Xuất').reduce((s,x)=>s+x.qty*x.price,0);
+  const allChi=filtered.filter(x=>x.type==='Nhập'||x.type==='op').reduce((s,x)=>s+(x.qty||1)*(x.price||x.amount||0),0);
+  const allP=allThu-allChi;
+  const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
+  set('histAllThu',fmt(allThu));set('histAllChi',fmt(allChi));
+  const pe=document.getElementById('histAllProfit');if(pe){pe.textContent=(allP>=0?'+':'')+fmt(allP);pe.style.color=allP>=0?'var(--p600)':'var(--red)';}
+
+  const w=document.getElementById('histTableWrap');if(!w)return;
+  if(!filtered.length){w.innerHTML='<div class="empty"><div class="ei">🧾</div>Không có giao dịch nào</div>';return;}
+  const rows=filtered.map(x=>{
+    const isT=x.type==='Xuất';const isOp=x.type==='op';
+    const tag=isT?'<span class="tag tag-thu">💰 Bán</span>':isOp?'<span class="tag tag-op">⚡ CP</span>':'<span class="tag tag-imp">📦 Nhập</span>';
+    const amt=x.qty*(x.price||0);
+    return`<tr class="hist-row-clickable" onclick="jumpToMonth('${x.monthKey}')">
+      <td>${fmtD(x.date)}</td><td>${tag}</td>
+      <td>${x.name||x.desc||'—'}</td>
+      <td style="text-align:center">${isOp?'—':x.qty}</td>
+      <td class="${isT?'thu-v':'chi-v'}">${isT?'+':'-'}${fmt(amt)}</td>
+      <td><span class="jump-badge">${monthLabel(x.monthKey)}</span></td>
+    </tr>`;
+  }).join('');
+  w.innerHTML=`<div class="tbl-wrap"><table><thead><tr><th>Ngày</th><th>Loại</th><th>Tên hàng</th><th>SL</th><th>Số tiền</th><th>Tháng</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+}
+
+function jumpToMonth(key){currentMonth=key;META=loadMeta(key);buildMonthSelect();renderAll();switchPage('money',document.querySelectorAll('.bn-btn')[1]);showToast(`✅ Đã chuyển sang ${monthLabel(key)}`);}
+
+/** Xuất CSV theo filter hiện tại */
+function exportFilteredCSV(){
+  if(!_filteredForCSV.length){showToast('⚠️ Không có dữ liệu để xuất!',true);return;}
+  const csv=['Ngày,Loại,Tên hàng,Mô tả,Số lượng,Đơn giá,Thành tiền,Tháng',
+    ..._filteredForCSV.map(x=>{
+      const loai=x.type==='Xuất'?'Bán hàng':x.type==='Nhập'?'Nhập hàng':'Chi phí';
+      const thanhtien=x.qty*(x.price||0);
+      return `"${x.date}","${loai}","${x.name||''}","${(x.desc||'').replace(/"/g,'""')}","${x.qty||''}","${x.price||x.amount||''}","${thanhtien}","${x.monthKey}"`;
+    })
+  ].join('\n');
+  copyRaw(csv,'📥 Đã sao chép CSV!');
+}
+
+/* ════════════════════════════════════
+   GEMINI API
+════════════════════════════════════ */
+async function callGemini(parts){
+  if(!API_KEY)throw new Error('Chưa có API Key!');
+  const res=await fetch(`${GEMINI_URL}?key=${API_KEY}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:[{parts}]})});
+  if(!res.ok)throw new Error(`HTTP ${res.status}`);
+  const data=await res.json();
+  if(data.error)throw new Error(data.error.message||'Lỗi API');
+  const txt=data?.candidates?.[0]?.content?.parts?.[0]?.text;
+  if(!txt)throw new Error('AI không trả về nội dung');
+  return txt;
+}
+
+/* ════════════════════════════════════
+   processAIResponse — xử lý JSON từ AI → lưu kho
+════════════════════════════════════ */
+/**
+ * Nhận JSON từ AI và lưu vào localStorage
+ * item: tên hàng, quantity: số lượng, price: đơn giá, type: 'nhập'|'thu'|'bán'
+ */
+function processAIResponse(jsonResp){
+  let items=[];
+  if(Array.isArray(jsonResp))items=jsonResp;
+  else if(jsonResp.item||jsonResp.name)items=[jsonResp];
+  else if(jsonResp.rows)items=jsonResp.rows.map(r=>({item:r.ten,quantity:r.soluong,price:r.dongia,type:'nhập'}));
+  else return null;
+
+  const saved=[];
+  items.forEach(it=>{
+    const name=(it.item||it.name||'').trim();if(!name)return;
+    const qty=parseInt(String(it.quantity||it.qty||'1').replace(/\D/g,''))||1;
+    const price=parseInt(String(it.price||it.dongia||'0').replace(/\D/g,''))||0;
+    const isIncome=/(thu|bán|xuất|sell)/i.test(it.type||'');
+    const txType=isIncome?'Xuất':'Nhập';
+
+    // Kiểm tra kho nếu là bán
+    if(isIncome){
+      const{ok,stock}=checkStock(name,qty);
+      if(!ok){
+        showStockAlert(`<strong>${name}</strong><br>Kho còn: <strong>${stock}</strong> cái<br>Định bán: <strong>${qty}</strong> cái<br><br>Bà ơi, hàng trong kho không đủ để bán!`,
+          ()=>{saveTx({name,qty,price,type:'Xuất',date:TODAY,monthKey:currentMonth,desc:'AI ghi: bán '+name,cat:''});saveProduct(name);renderAll();showToast(`✅ Đã ghi bán ${qty} ${name}!`);});
+        return;
+      }
+    }
+    const entry=saveTx({name,qty,price,type:txType,date:TODAY,monthKey:currentMonth,desc:`AI ghi: ${txType==='Nhập'?'nhập':'bán'} ${name}`,cat:''});
+    saveProduct(name);
+    saved.push({...entry,txType});
+  });
+
+  if(saved.length>0){
+    renderAll();renderInventory();
+    const msg=saved.map(x=>`${x.type==='Nhập'?'📦 Nhập':'💰 Bán'} ${x.qty} ${x.name}`).join(', ');
+    showToast(`✅ Đã tự động thêm: ${msg}!`);
+  }
+  return saved;
+}
+
+/* ════════════════════════════════════
+   AI CHAT — nhập liệu nhanh bằng tin nhắn
+════════════════════════════════════ */
+async function sendChat(){
+  const inp=document.getElementById('chatInp'),msg=inp?inp.value.trim():'';
+  if(!msg)return;if(!API_KEY){showToast('⚠️ Nhập API Key!',true);return;}
+  if(inp)inp.value='';addMsg(msg,'user');
+  const typing=document.getElementById('chatTyping');if(typing)typing.classList.add('show');scrollChat();
+
+  // System prompt: nhận diện ý định NHẬP LIỆU hoặc HỎI
+  const context=buildBusinessContext();
+  const systemPrompt=`Bạn là Trợ lý Tiểu Thương AI tại Việt Nam. Ngôn ngữ thân thiện với cô chú bán hàng.
+
+${context}
+
+NHIỆM VỤ QUAN TRỌNG:
+1. Nếu người dùng nhắn về GIAO DỊCH (bán, thu, nhập hàng), hãy trích xuất và trả về JSON theo format:
+[{"item":"tên hàng","quantity":số,"price":đơn_giá_nếu_có,"type":"nhập hoặc bán"}]
+Ví dụ: "bán 5 gói hạt bí 25k" → [{"item":"Hạt bí","quantity":5,"price":25000,"type":"bán"}]
+Ví dụ: "nhập 20 túi hạt dưa" → [{"item":"Hạt dưa","quantity":20,"price":0,"type":"nhập"}]
+Kèm theo text xác nhận thân thiện.
+
+2. Nếu người dùng HỎI số liệu/tư vấn, trả lời bằng text thường (không JSON).
+
+Tin nhắn: ${msg}`;
+
+  try{
+    const raw=await callGemini([{text:systemPrompt}]);
+    if(typing)typing.classList.remove('show');
+
+    // Tìm JSON trong response
+    const jsonMatch=raw.match(/\[[\s\S]*?\]/);
+    if(jsonMatch){
+      try{
+        const parsed=JSON.parse(jsonMatch[0]);
+        if(parsed.length>0){
+          // Hiện xác nhận trước khi lưu
+          const preview=parsed.map(x=>`${x.type==='nhập'||x.type==='Nhập'?'📦 Nhập':'💰 Bán'} ${x.quantity} ${x.item}${x.price>0?' @ '+fmt(x.price)+'/cái':''}`).join('\n');
+          const textPart=raw.replace(jsonMatch[0],'').trim()||'Mình hiểu rồi!';
+          addMsgWithConfirm(textPart+'\n\n'+preview, parsed);
+          return;
+        }
+      }catch{}
+    }
+    addMsg(raw,'bot');
+  }catch(err){if(typing)typing.classList.remove('show');addMsg('❌ '+err.message,'bot');}
+}
+
+function addMsgWithConfirm(text, parsedData){
+  const msgs=document.getElementById('chatMsgs');if(!msgs)return;
+  const div=document.createElement('div');div.className='msg bot';
+  div.innerHTML=text.replace(/\n/g,'<br>')+
+    `<div class="confirm-pill">
+      <button class="pill-yes" onclick="confirmAITx(this,true)">✅ Đúng, lưu vào kho</button>
+      <button class="pill-no" onclick="confirmAITx(this,false)">❌ Sai, bỏ qua</button>
+    </div>`;
+  div._aiData=parsedData;
+  msgs.insertBefore(div,document.getElementById('chatTyping'));
+  scrollChat();
+}
+
+function confirmAITx(btn,yes){
+  const msgDiv=btn.closest('.msg');const data=msgDiv._aiData;
+  const pill=msgDiv.querySelector('.confirm-pill');if(pill)pill.remove();
+  if(yes&&data){processAIResponse(data);}
+  else addMsg('👍 OK, bỏ qua giao dịch đó nhé!','bot');
+  scrollChat();
+}
+
+function buildBusinessContext(){
+  const now=new Date(),curKey=now.toISOString().slice(0,7);
+  const allTx=getAllTx();
+  const curSales=allTx.filter(x=>x.monthKey===curKey&&x.type==='Xuất');
+  const curImp=allTx.filter(x=>x.monthKey===curKey&&x.type==='Nhập');
+  const curRevenue=curSales.reduce((s,x)=>s+x.qty*x.price,0);
+  const curCost=curImp.reduce((s,x)=>s+x.qty*x.price,0);
+  const prev=new Date(now);prev.setMonth(prev.getMonth()-1);
+  const prevRevenue=allTx.filter(x=>x.monthKey===prev.toISOString().slice(0,7)&&x.type==='Xuất').reduce((s,x)=>s+x.qty*x.price,0);
+  const inv=computeInventory();const lowStock=inv.filter(x=>x.stock>0&&x.stock<LOW_STOCK);
+  const yearRevenue=allTx.filter(x=>{const y=new Date(x.date).getFullYear();return x.type==='Xuất'&&y===now.getFullYear();}).reduce((s,x)=>s+x.qty*x.price,0);
+  return`=== DỮ LIỆU KINH DOANH THỰC TẾ ===
+Tháng ${curKey}: Thu=${fmt(curRevenue)}, Chi nhập=${fmt(curCost)}, Lãi=${fmt(curRevenue-curCost)}, Bán ${curSales.length} lần, Nhập ${curImp.length} lần
+Tháng trước: Thu=${fmt(prevRevenue)}
+Tồn kho: ${inv.map(x=>`${x.name}:${x.stock}`).join(',')||'trống'}
+Sắp hết: ${lowStock.map(x=>`${x.name}(${x.stock})`).join(',')||'không có'}
+Doanh thu năm ${now.getFullYear()}: ${fmt(yearRevenue)} / 500tr ngưỡng thuế`;
+}
+
+function addMsg(text,role){const msgs=document.getElementById('chatMsgs');if(!msgs)return;const div=document.createElement('div');div.className='msg '+role;div.innerHTML=text.replace(/\n/g,'<br>');msgs.insertBefore(div,document.getElementById('chatTyping'));scrollChat();}
+function scrollChat(){const m=document.getElementById('chatMsgs');if(m)m.scrollTop=m.scrollHeight;}
+
+/* ════════════════════════════════════
+   INVOICE SCAN (EXPENSE)
+════════════════════════════════════ */
+let invoiceBase64='',incInvoiceBase64='';
+let invoiceData=[];
+
+function handleInvoiceImg(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{invoiceBase64=ev.target.result.split(',')[1];show2('expUploadArea','expImgPreviewBox','invoicePreview',ev.target.result);document.getElementById('scanBtn').disabled=false;};r.readAsDataURL(f);}
+function changeExpImg(){hide2('expUploadArea','expImgPreviewBox');invoiceBase64='';document.getElementById('scanBtn').disabled=true;document.getElementById('invoiceImg').value='';}
+function show2(hideId,showId,imgId,src){const h=document.getElementById(hideId),s=document.getElementById(showId),i=document.getElementById(imgId);if(h)h.style.display='none';if(s)s.style.display='block';if(i)i.src=src;}
+function hide2(showId,hideId){const s=document.getElementById(showId),h=document.getElementById(hideId);if(s)s.style.display='block';if(h)h.style.display='none';}
+
+async function scanInvoice(){
+  if(!API_KEY){showToast('⚠️ Nhập API Key!',true);return;}
+  const loader=document.getElementById('scanLoader'),wrap=document.getElementById('invoiceTableWrap'),acts=document.getElementById('invActions'),btn=document.getElementById('scanBtn');
+  if(loader)loader.classList.add('show');if(wrap){wrap.classList.remove('show');wrap.innerHTML='';}if(acts)acts.style.display='none';if(btn)btn.disabled=true;
+  invoiceData=[];document.getElementById('expAutofillNotice').classList.remove('show');
+  const PROMPT=`Bạn là trợ lý quản lý kho. Đây là hóa đơn nhập hàng từ nhà cung cấp.
+Trích xuất TẤT CẢ mặt hàng. Trả về JSON hợp lệ KHÔNG có markdown:
+{"rows":[{"ten":"tên hàng","soluong":"số lượng","dongia":"đơn giá","thanhtien":"thành tiền"}]}
+Chỉ JSON, không text khác.`;
+  try{
+    const raw=await callGemini([{inline_data:{mime_type:'image/jpeg',data:invoiceBase64}},{text:PROMPT}]);
+    let parsed=null;try{parsed=JSON.parse(raw.replace(/```json|```/g,'').trim());}catch{}
+    if(loader)loader.classList.remove('show');
+    if(parsed?.rows?.length){invoiceData=parsed.rows;renderInvoiceTable('invoiceTableWrap',parsed.rows);if(wrap)wrap.classList.add('show');if(acts)acts.style.display='flex';}
+    else{if(wrap){wrap.innerHTML=`<pre style="padding:11px;font-size:.82rem;overflow:auto">${raw}</pre>`;wrap.classList.add('show');}}
+  }catch(err){if(loader)loader.classList.remove('show');showToast('❌ '+err.message,true);}
+  if(btn)btn.disabled=false;
+}
+
+function renderInvoiceTable(wrapId,rows){
+  const w=document.getElementById(wrapId);if(!w)return;
+  const rh=rows.map(r=>`<tr><td>${r.ten||''}</td><td style="text-align:center">${r.soluong||''}</td><td style="text-align:right">${r.dongia||''}</td><td style="text-align:right;font-weight:800;color:var(--p700)">${r.thanhtien||''}</td></tr>`).join('');
+  w.innerHTML=`<table class="inv-tbl"><thead><tr><th>Tên hàng</th><th>SL</th><th>Đơn giá</th><th>Thành tiền</th></tr></thead><tbody>${rh}</tbody></table>`;
+}
+
+function autoFillImport(){
+  if(!invoiceData.length){showToast('⚠️ Chưa có dữ liệu!',true);return;}
+  const first=invoiceData[0];
+  const name=document.getElementById('impName'),qty=document.getElementById('impQty'),amt=document.getElementById('impAmount');
+  if(name)name.value=first.ten||'';
+  if(qty){const q=(first.soluong||'').replace(/\D/g,'');qty.dataset.raw=q;qty.value=q?parseInt(q).toLocaleString('vi-VN'):'';}
+  const rawA=(first.thanhtien||'').replace(/\D/g,'');if(amt&&rawA){amt.dataset.raw=rawA;amt.value=parseInt(rawA).toLocaleString('vi-VN');}
+  // Auto-suggest cat from product name
+  const catEl=document.getElementById('impCatInput');if(catEl&&!catEl.value){const match=getCats().find(c=>(first.ten||'').toLowerCase().includes(c.toLowerCase()));if(match)catEl.value=match;}
+  document.getElementById('expAutofillNotice').classList.add('show');
+  showToast('✅ Đã điền dòng đầu vào form!');
+}
+
+/** Sao chép bảng dạng text có cột */
+async function copyInvoiceTable(){
+  if(!invoiceData.length){showToast('⚠️ Chưa có dữ liệu!',true);return;}
+  const cols=['Tên hàng','SL','Đơn giá','Thành tiền'];
+  const rows=invoiceData.map(r=>[r.ten||'',r.soluong||'',r.dongia||'',r.thanhtien||'']);
+  const widths=cols.map((c,i)=>Math.max(c.length,...rows.map(r=>String(r[i]).length)));
+  const pad=(s,w)=>String(s).padEnd(w,' ');
+  const sep='+'+(widths.map(w=>'-'.repeat(w+2)).join('+'))+'+';
+  const header='| '+cols.map((c,i)=>pad(c,widths[i])).join(' | ')+' |';
+  const dataRows=rows.map(r=>'| '+r.map((c,i)=>pad(c,widths[i])).join(' | ')+' |');
+  const text=[sep,header,sep,...dataRows,sep].join('\n');
+  await copyRaw(text,'📋 Đã sao chép bảng!');
+}
+
+async function copyInvoiceCSV(){
+  if(!invoiceData.length){showToast('⚠️ Chưa có dữ liệu!',true);return;}
+  const csv=['Tên hàng,Số lượng,Đơn giá,Thành tiền',...invoiceData.map(r=>`"${r.ten||''}","${r.soluong||''}","${r.dongia||''}","${r.thanhtien||''}"`)].join('\n');
+  await copyRaw(csv,'📥 Đã sao chép CSV!');
+}
+
+/* ════════════════════════════════════
+   INVOICE SCAN (THU — chỉ bill thanh toán)
+════════════════════════════════════ */
+let incQRScanner=null;
+function incScanMode(mode,btn){
+  document.querySelectorAll('.modal-sub-tab').forEach(b=>b.classList.remove('active'));if(btn)btn.classList.add('active');
+  document.getElementById('incScanImg').style.display=mode==='img'?'block':'none';
+  document.getElementById('incScanQR').style.display=mode==='qr'?'block':'none';
+  if(mode==='qr'&&incQRScanner)stopIncQR();
+}
+function handleIncInvoice(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{incInvoiceBase64=ev.target.result.split(',')[1];show2('incUploadArea','incImgPreviewBox','incInvoicePreview',ev.target.result);document.getElementById('scanIncBtn').disabled=false;};r.readAsDataURL(f);}
+function changeIncImg(){hide2('incUploadArea','incImgPreviewBox');incInvoiceBase64='';document.getElementById('scanIncBtn').disabled=true;document.getElementById('incInvoiceFile').value='';}
+
+async function scanIncInvoice(){
+  if(!API_KEY){showToast('⚠️ Nhập API Key!',true);return;}
+  const loader=document.getElementById('scanIncLoader'),wrap=document.getElementById('incInvoiceTableWrap'),btn=document.getElementById('scanIncBtn');
+  if(loader)loader.classList.add('show');if(wrap){wrap.classList.remove('show');wrap.innerHTML='';}if(btn)btn.disabled=true;
+  document.getElementById('incAutofillNotice').classList.remove('show');
+
+  // System instruction: đây là bill thanh toán, type = 'thu'
+  const PROMPT=`Bạn là trợ lý kế toán. Đây là hóa đơn hoặc bill THANH TOÁN (tiền đã về).
+Trích xuất thông tin BÁN HÀNG. Trả về JSON hợp lệ KHÔNG markdown:
+{"items":[{"item":"tên mặt hàng","quantity":"số lượng","price":"đơn giá","type":"thu"}],"tongtien":"tổng tiền","ngay":"YYYY-MM-DD hoặc rỗng"}
+Chỉ JSON.`;
+  try{
+    const raw=await callGemini([{inline_data:{mime_type:'image/jpeg',data:incInvoiceBase64}},{text:PROMPT}]);
+    let parsed=null;try{parsed=JSON.parse(raw.replace(/```json|```/g,'').trim());}catch{}
+    if(loader)loader.classList.remove('show');
+    if(parsed){
+      // Render preview
+      if(parsed.items?.length){
+        const rows=parsed.items.map(x=>({ten:x.item,soluong:x.quantity,dongia:x.price,thanhtien:x.price&&x.quantity?(parseInt(x.price)*parseInt(x.quantity)||''):x.price}));
+        renderInvoiceTable('incInvoiceTableWrap',rows);if(wrap)wrap.classList.add('show');
+      }
+      // Auto-fill form
+      const total=(parsed.tongtien||'').replace(/\D/g,'');
+      const nameVal=parsed.items?.length?parsed.items.map(x=>x.item).join(', '):'';
+      const descEl=document.getElementById('incDesc'),amtEl=document.getElementById('incAmount'),dateEl=document.getElementById('incDate'),nameEl=document.getElementById('incSellName');
+      if(nameEl&&nameVal)nameEl.value=nameVal;
+      if(descEl&&nameVal)descEl.value='Bán '+nameVal;
+      if(amtEl&&total){amtEl.dataset.raw=total;amtEl.value=parseInt(total).toLocaleString('vi-VN');}
+      if(dateEl&&parsed.ngay&&/^\d{4}-\d{2}-\d{2}$/.test(parsed.ngay))dateEl.value=parsed.ngay;
+      document.getElementById('incAutofillNotice').classList.add('show');
+      showToast('✅ AI đã đọc bill — kiểm tra rồi bấm Xác nhận bán hàng!');
+    }else{if(wrap){wrap.innerHTML=`<pre style="padding:11px;font-size:.82rem">${raw}</pre>`;wrap.classList.add('show');}}
+  }catch(err){if(loader)loader.classList.remove('show');showToast('❌ '+err.message,true);}
+  if(btn)btn.disabled=false;
+}
+
+function startIncQR(){
+  const container=document.getElementById('qr-inc-container'),startBtn=document.getElementById('startIncQRBtn'),stopBtn=document.getElementById('stopIncQRBtn');
+  if(typeof Html5Qrcode==='undefined'){if(container)container.innerHTML='<div class="qr-fallback">⚠️ Thư viện QR chưa load</div>';return;}
+  container.innerHTML='<div id="qr-inc-reader" style="width:100%"></div>';
+  startBtn.style.display='none';stopBtn.style.display='';
+  try{
+    incQRScanner=new Html5Qrcode('qr-inc-reader');
+    incQRScanner.start({facingMode:'environment'},{fps:10,qrbox:200},qrText=>{
+      let amount='',name='';try{const p=JSON.parse(qrText);amount=String(p.amount||p.sotien||'');name=p.name||p.ten||'';}catch{amount=qrText.replace(/\D/g,'');}
+      const amtEl=document.getElementById('incAmount'),nameEl=document.getElementById('incSellName');
+      if(amtEl&&amount){amtEl.dataset.raw=amount;amtEl.value=parseInt(amount).toLocaleString('vi-VN');}
+      if(nameEl&&name)nameEl.value=name;
+      stopIncQR();showToast('✅ Quét QR thành công!');
+    },()=>{}).catch(err=>{container.innerHTML=`<div class="qr-fallback">❌ ${err}</div>`;startBtn.style.display='';stopBtn.style.display='none';});
+  }catch(err){container.innerHTML=`<div class="qr-fallback">❌ ${err}</div>`;}
+}
+function stopIncQR(){if(incQRScanner){incQRScanner.stop().catch(()=>{});incQRScanner=null;}document.getElementById('startIncQRBtn').style.display='';document.getElementById('stopIncQRBtn').style.display='none';document.getElementById('qr-inc-container').innerHTML='<div class="qr-fallback"><div style="font-size:1.7rem;margin-bottom:5px">📷</div><p>Bấm nút bên dưới để mở camera</p></div>';}
+
+/* ════════════════════════════════════
+   FACEBOOK — chỉ marketing, KHÔNG lưu kho
+════════════════════════════════════ */
+let fbBase64='';
+function handleFbImg(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{fbBase64=ev.target.result.split(',')[1];show2('fbUploadArea','fbImgPreviewBox','fbPreview',ev.target.result);document.getElementById('fbPostBtn').disabled=false;};r.readAsDataURL(f);}
+function changeFbImg(){hide2('fbUploadArea','fbImgPreviewBox');fbBase64='';document.getElementById('fbPostBtn').disabled=true;document.getElementById('fbImgInput').value='';}
+
+async function generateFbPost(){
+  if(!API_KEY||!fbBase64){showToast('⚠️ Cần API Key và ảnh!',true);return;}
+  const card=document.getElementById('fbResultCard'),loader=document.getElementById('fbLoader'),box=document.getElementById('fbPost'),btn=document.getElementById('copyFb'),postBtn=document.getElementById('fbPostBtn');
+  card.style.display='block';if(loader)loader.classList.add('show');if(box)box.classList.remove('show');if(btn)btn.classList.remove('show');if(postBtn)postBtn.disabled=true;
+  // KHÔNG trả về JSON giao dịch — chỉ viết bài marketing
+  const PROMPT=`Phân tích ảnh sản phẩm này và viết bài đăng Facebook bán hàng hấp dẫn.
+Viết bằng tiếng Việt, có emoji, có call-to-action, có hashtag.
+Phong cách chân thực của tiểu thương Việt Nam.
+Chỉ trả về bài viết, không JSON, không giải thích.`;
+  try{
+    const raw=await callGemini([{inline_data:{mime_type:'image/jpeg',data:fbBase64}},{text:PROMPT}]);
+    if(loader)loader.classList.remove('show');
+    // Nhận diện sản phẩm để hiện
+    const detEl=document.getElementById('fbDetected');if(detEl){detEl.style.display='block';detEl.innerHTML='✅ AI đã viết bài — copy và đăng lên Facebook nhé!';}
+    if(box)box.textContent=raw;if(box)box.classList.add('show');if(btn)btn.classList.add('show');
+  }catch(err){if(loader)loader.classList.remove('show');if(box){box.textContent='❌ '+err.message;box.classList.add('show');}showToast('❌ '+err.message,true);}
+  if(postBtn)postBtn.disabled=false;
+}
+
+async function generateScript(){
+  if(!API_KEY){showToast('⚠️ Nhập API Key!',true);return;}
+  const product=document.getElementById('ttProduct').value.trim();if(!product){showToast('⚠️ Nhập tên sản phẩm!',true);return;}
+  const roleMap={ba:'bà',chu:'chú',me:'mẹ',ban:'bạn'},xung=roleMap[document.getElementById('ttRole').value]||'bạn';
+  const card=document.getElementById('videoResult'),loader=document.getElementById('videoLoader'),box=document.getElementById('scriptBox'),btn=document.getElementById('copyScript'),sbtn=document.getElementById('scriptBtn');
+  card.style.display='block';if(loader)loader.classList.add('show');if(box)box.classList.remove('show');if(btn)btn.classList.remove('show');if(sbtn)sbtn.disabled=true;
+  try{
+    const text=await callGemini([{text:`Hướng dẫn ${xung} quay TikTok bán "${product}". Ngôn ngữ đơn giản, 3 bước rõ ràng. Kết: "${xung.charAt(0).toUpperCase()+xung.slice(1)} cứ quay xong đăng luôn 💚"`}]);
+    if(loader)loader.classList.remove('show');if(box){box.textContent=text;box.classList.add('show');}if(btn)btn.classList.add('show');
+  }catch(err){if(loader)loader.classList.remove('show');if(box){box.textContent='❌ '+err.message;box.classList.add('show');}showToast('❌ '+err.message,true);}
+  if(sbtn)sbtn.disabled=false;
+}
+
+/* ════════════════════════════════════
+   TAX ASSISTANT
+════════════════════════════════════ */
+function getYearRevenue(year){return getAllTx().filter(x=>{const y=new Date(x.date).getFullYear();return x.type==='Xuất'&&y===year;}).reduce((s,x)=>s+x.qty*x.price,0);}
 function renderTaxAssistant(){
   const el=document.getElementById('taxAssistantBox');if(!el)return;
-  const tax=getTaxReport();
-  const{revenue,yearRevenue,tax:taxAmt,month,year}=tax;
-
-  // Số tháng đã qua trong năm
-  const monthsPassed=month; // month là 1-indexed số tháng hiện tại
-  const avgPerMonth=monthsPassed>0?yearRevenue/monthsPassed:0;
-  const projectedYear=avgPerMonth*12;
-
+  const now=new Date(),year=now.getFullYear(),month=now.getMonth()+1;
+  const yearRevenue=getYearRevenue(year);
+  const monthRevenue=getAllTx().filter(x=>{const d=new Date(x.date);return x.type==='Xuất'&&d.getFullYear()===year&&d.getMonth()+1===month;}).reduce((s,x)=>s+x.qty*x.price,0);
+  const monthsPassed=month;const avg=monthsPassed>0?yearRevenue/monthsPassed:0;const projected=avg*12;
+  const remaining=TAX_THRESHOLD-yearRevenue;
   let html='';
-
-  if(yearRevenue<TAX_THRESHOLD_YEAR&&projectedYear<TAX_THRESHOLD_YEAR){
-    // CHƯA PHẢI NỘP THUẾ
-    const remaining=TAX_THRESHOLD_YEAR-yearRevenue;
-    html=`<div class="tax-box tax-safe">
-      <span class="tx-icon">😊</span>
-      <div class="tx-msg">Bà ơi, hiện tại mình vẫn thuộc diện chưa phải nộp thuế. Bà cứ yên tâm bán hàng nhé!</div>
-      <div class="tx-detail">
-        <strong>📊 Doanh thu năm ${year} (đến nay):</strong> ${fmt(yearRevenue)}<br>
-        <strong>📏 Ngưỡng miễn thuế:</strong> 500.000.000đ/năm<br>
-        <strong>✅ Còn có thể bán thêm:</strong> ${fmt(remaining)}<br>
-        <strong>📈 Dự báo cả năm (theo tốc độ hiện tại):</strong> ${fmt(projectedYear)}
-      </div>
-    </div>`;
-  } else if(yearRevenue>=TAX_THRESHOLD_YEAR){
-    // ĐÃ VƯỢT NGƯỠNG
-    const taxYear=yearRevenue*TAX_RATE;
-    html=`<div class="tax-box tax-danger">
-      <span class="tx-icon">⚠️</span>
-      <div class="tx-msg">Bà ơi! Doanh thu đã vượt 500 triệu — cần nộp thuế rồi!</div>
-      <span class="tax-amount">${fmt(taxYear)}</span>
-      <div class="tx-detail">
-        <strong>📊 Doanh thu năm ${year}:</strong> ${fmt(yearRevenue)}<br>
-        <strong>🧾 Thuế phải nộp (1.5%):</strong> ${fmt(taxYear)}<br>
-        <strong>📋 Tháng ${month}/${year}:</strong> Thuế tháng này = ${fmt(revenue)} × 1.5% = <strong>${fmt(taxAmt)}</strong><br>
-        <br>👉 Hãy khai thuế theo mẫu 01/CNKD tại Chi cục Thuế địa phương.
-      </div>
-    </div>`;
-  } else {
-    // GẦN ĐẾN NGƯỠNG (projected >= 500tr)
-    const remaining=TAX_THRESHOLD_YEAR-yearRevenue;
-    html=`<div class="tax-box tax-warn">
-      <span class="tx-icon">🔔</span>
-      <div class="tx-msg">Lưu ý! Với tốc độ hiện tại, bà có thể chạm ngưỡng 500 triệu trong năm nay.</div>
-      <div class="tx-detail">
-        <strong>📊 Doanh thu năm ${year} (đến nay):</strong> ${fmt(yearRevenue)}<br>
-        <strong>📈 Dự báo cả năm:</strong> ${fmt(projectedYear)}<br>
-        <strong>📏 Còn cách ngưỡng:</strong> ${fmt(remaining)}<br>
-        <strong>💡 Nếu vượt, thuế sẽ là:</strong> ${fmt(projectedYear*TAX_RATE)}<br>
-        <br>👉 Nên chuẩn bị sổ sách từ bây giờ để khai thuế dễ hơn.
-      </div>
-    </div>`;
+  if(yearRevenue>=TAX_THRESHOLD){
+    html=`<div class="tax-box tax-danger"><span class="tx-icon">⚠️</span><div class="tx-msg">Bà ơi! Doanh thu đã vượt 500 triệu — cần nộp thuế rồi!</div><span class="tax-amount">${fmt(yearRevenue*TAX_RATE)}</span><div class="tx-detail"><strong>Doanh thu năm ${year}:</strong> ${fmt(yearRevenue)}<br><strong>Thuế 1.5%:</strong> ${fmt(yearRevenue*TAX_RATE)}<br><strong>Tháng ${month}:</strong> thuế = ${fmt(monthRevenue*TAX_RATE)}<br><br>👉 Khai thuế mẫu 01/CNKD tại Chi cục Thuế.</div></div>`;
+  }else if(projected>=TAX_THRESHOLD){
+    html=`<div class="tax-box tax-warn"><span class="tx-icon">🔔</span><div class="tx-msg">Lưu ý! Với tốc độ hiện tại có thể chạm 500 triệu trong năm nay.</div><div class="tx-detail"><strong>Đã thu năm ${year}:</strong> ${fmt(yearRevenue)}<br><strong>Dự báo cả năm:</strong> ${fmt(projected)}<br><strong>Còn cách ngưỡng:</strong> ${fmt(remaining)}<br><strong>Nếu vượt, thuế sẽ là:</strong> ${fmt(projected*TAX_RATE)}</div></div>`;
+  }else{
+    html=`<div class="tax-box tax-safe"><span class="tx-icon">😊</span><div class="tx-msg">Bà ơi, hiện tại mình vẫn thuộc diện chưa phải nộp thuế. Bà cứ yên tâm bán hàng nhé!</div><div class="tx-detail"><strong>Đã thu năm ${year}:</strong> ${fmt(yearRevenue)}<br><strong>Ngưỡng miễn thuế:</strong> ${fmt(TAX_THRESHOLD)}/năm<br><strong>Còn có thể bán thêm:</strong> ${fmt(remaining)}<br><strong>Dự báo cả năm:</strong> ${fmt(projected)}</div></div>`;
   }
-
-  // Thêm chi tiết tháng này
-  html+=`<div class="card" style="margin-top:0">
-    <div class="card-title">📋 Chi tiết tháng ${month}/${year}</div>
-    <div style="font-size:.85rem;line-height:1.8;color:var(--text)">
-      <div>💰 Doanh thu tháng này: <strong>${fmt(revenue)}</strong></div>
-      <div>🧮 Số giao dịch bán: <strong>${tax.monthSales.length}</strong></div>
-      <div>🧾 Thuế tháng này (1.5%): <strong style="color:var(--red)">${fmt(taxAmt)}</strong></div>
-    </div>
-  </div>`;
-
   el.innerHTML=html;
 }
 
-/* ════════════════════════════════════════════
+/* ════════════════════════════════════
    COMPARE
-════════════════════════════════════════════ */
+════════════════════════════════════ */
 function showCompare(){
   const a=document.getElementById('cmpA').value,b=document.getElementById('cmpB').value;
   if(!a||!b||a===b){showToast('⚠️ Chọn 2 tháng khác nhau!',true);return;}
   const aThu=getMonthRevenue(a),aChi=getMonthCost(a),aLai=aThu-aChi;
   const bThu=getMonthRevenue(b),bChi=getMonthCost(b),bLai=bThu-bChi;
   const delta=(cur,prv)=>{const d=cur-prv,pct=prv>0?Math.round(d/prv*100):0;return`<div class="cmp-delta ${d>=0?'delta-up':'delta-down'}">${d>=0?'▲':'▼'} ${fmt(Math.abs(d))} (${pct}%)</div>`;};
-  document.getElementById('compareBox').innerHTML=`<h3>📊 ${monthLabel(a)} vs ${monthLabel(b)}</h3><div class="cmp-grid">
-    <div class="cmp-item"><div class="cmp-lbl">📈 Thu</div><div class="cmp-cur">${fmt(aThu)}</div><div class="cmp-prev">${monthLabel(b)}: ${fmt(bThu)}</div>${delta(aThu,bThu)}</div>
-    <div class="cmp-item"><div class="cmp-lbl">📉 Chi</div><div class="cmp-cur">${fmt(aChi)}</div><div class="cmp-prev">${monthLabel(b)}: ${fmt(bChi)}</div>${delta(aChi,bChi)}</div>
-    <div class="cmp-item"><div class="cmp-lbl">💼 Lãi/Lỗ</div><div class="cmp-cur" style="color:${aLai>=0?'var(--p600)':'var(--red)'}">${(aLai>=0?'+':'')+fmt(aLai)}</div><div class="cmp-prev">${(bLai>=0?'+':'')+fmt(bLai)}</div>${delta(aLai,bLai)}</div>
-  </div>`;
+  document.getElementById('compareBox').innerHTML=`<h3>📊 ${monthLabel(a)} vs ${monthLabel(b)}</h3><div class="cmp-grid"><div class="cmp-item"><div class="cmp-lbl">📈 Thu</div><div class="cmp-cur">${fmt(aThu)}</div><div class="cmp-prev">${monthLabel(b)}: ${fmt(bThu)}</div>${delta(aThu,bThu)}</div><div class="cmp-item"><div class="cmp-lbl">📉 Chi</div><div class="cmp-cur">${fmt(aChi)}</div><div class="cmp-prev">${monthLabel(b)}: ${fmt(bChi)}</div>${delta(aChi,bChi)}</div><div class="cmp-item"><div class="cmp-lbl">💼 Lãi/Lỗ</div><div class="cmp-cur" style="color:${aLai>=0?'var(--p600)':'var(--red)'}">${(aLai>=0?'+':'')+fmt(aLai)}</div><div class="cmp-prev">${(bLai>=0?'+':'')+fmt(bLai)}</div>${delta(aLai,bLai)}</div></div>`;
   document.getElementById('compareBox').classList.add('show');
 }
-
 function buildAllTimeCompare(){
   const el=document.getElementById('allTimeCompare');if(!el)return;
   const opts=getMonthOpts();if(!opts.length){el.innerHTML='<div class="empty"><div class="ei">📊</div>Chưa có dữ liệu</div>';return;}
   const rows=opts.map(k=>{const thu=getMonthRevenue(k),chi=getMonthCost(k),lai=thu-chi;return`<tr><td>${monthLabel(k)}</td><td class="thu-v">+${fmt(thu)}</td><td class="chi-v">-${fmt(chi)}</td><td style="font-weight:800;color:${lai>=0?'var(--p600)':'var(--red)'}">${(lai>=0?'+':'')+fmt(lai)}</td></tr>`;}).join('');
-  const allThu=opts.reduce((s,k)=>s+getMonthRevenue(k),0),allChi=opts.reduce((s,k)=>s+getMonthCost(k),0),allLai=allThu-allChi;
-  el.innerHTML=`<div class="tbl-wrap"><table><thead><tr><th>Tháng</th><th>Thu</th><th>Chi</th><th>Lãi/Lỗ</th></tr></thead><tbody>${rows}</tbody><tfoot><tr style="background:var(--p700);color:#fff"><td style="padding:8px 9px;font-weight:800">Tổng</td><td style="padding:8px 9px;font-weight:900">+${fmt(allThu)}</td><td style="padding:8px 9px;font-weight:900">-${fmt(allChi)}</td><td style="padding:8px 9px;font-weight:900;color:${allLai>=0?'#A8E6C1':'#FFB3AA'}">${(allLai>=0?'+':'')+fmt(allLai)}</td></tr></tfoot></table></div>`;
+  const aT=opts.reduce((s,k)=>s+getMonthRevenue(k),0),aC=opts.reduce((s,k)=>s+getMonthCost(k),0),aL=aT-aC;
+  el.innerHTML=`<div class="tbl-wrap"><table><thead><tr><th>Tháng</th><th>Thu</th><th>Chi</th><th>Lãi/Lỗ</th></tr></thead><tbody>${rows}</tbody><tfoot><tr style="background:var(--p700);color:#fff"><td style="padding:8px 9px;font-weight:800">Tổng</td><td style="padding:8px 9px;font-weight:900">+${fmt(aT)}</td><td style="padding:8px 9px;font-weight:900">-${fmt(aC)}</td><td style="padding:8px 9px;font-weight:900;color:${aL>=0?'#A8E6C1':'#FFB3AA'}">${(aL>=0?'+':'')+fmt(aL)}</td></tr></tfoot></table></div>`;
 }
 
-/* ════════════════════════════════════════════
-   HISTORY
-════════════════════════════════════════════ */
-function renderHistory(){
-  const all=getAllTxRaw().sort((a,b)=>b.id-a.id);
-  const search=(document.getElementById('histSearch')||{value:''}).value.toLowerCase();
-  const typeF=(document.getElementById('histTypeFilter')||{value:''}).value;
-  const monthF=(document.getElementById('histMonthFilter')||{value:''}).value;
-  const allMonths=[...new Set(all.map(x=>x.monthKey||''))].filter(Boolean).sort().reverse();
-  const mSel=document.getElementById('histMonthFilter');
-  if(mSel){const cur=mSel.value;mSel.innerHTML='<option value="">Tất cả tháng</option>'+allMonths.map(m=>`<option value="${m}"${m===cur?' selected':''}>${monthLabel(m)}</option>`).join('');}
-  const typeMap={'Xuất':'thu','Nhập':'chi'};
-  const filtered=all.filter(x=>{
-    if(search&&!(x.desc||'').toLowerCase().includes(search)&&!(x.name||'').toLowerCase().includes(search))return false;
-    if(typeF&&typeMap[x.type]!==typeF)return false;
-    if(monthF&&x.monthKey!==monthF)return false;
-    return true;
-  });
-  const allThu=filtered.filter(x=>x.type==='Xuất').reduce((s,x)=>s+x.qty*x.price,0);
-  const allChi=filtered.filter(x=>x.type==='Nhập').reduce((s,x)=>s+x.qty*x.price,0);
-  const allP=allThu-allChi;
-  const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
-  set('histAllThu',fmt(allThu));set('histAllChi',fmt(allChi));
-  const pe=document.getElementById('histAllProfit');if(pe){pe.textContent=(allP>=0?'+':'')+fmt(allP);pe.style.color=allP>=0?'var(--p600)':'var(--red)';}
-  const w=document.getElementById('histTableWrap');if(!w)return;
-  if(!filtered.length){w.innerHTML='<div class="empty"><div class="ei">🧾</div>Không có giao dịch nào</div>';return;}
-  const rows=filtered.map(x=>{
-    const isT=x.type==='Xuất';
-    const tag=isT?'<span class="tag tag-thu">💰 Thu</span>':'<span class="tag tag-imp">📦 Nhập</span>';
-    return`<tr class="hist-row-clickable" onclick="jumpToMonth('${x.monthKey}')">
-      <td>${fmtD(x.date)}</td><td>${tag}</td><td>${x.cat||'—'}</td><td>${x.desc||''}</td>
-      <td class="${isT?'thu-v':'chi-v'}">${isT?'+':'-'}${fmt(x.qty*x.price)}</td>
-      <td><span class="jump-badge">${monthLabel(x.monthKey)}</span></td>
-    </tr>`;
-  }).join('');
-  w.innerHTML=`<div class="tbl-wrap"><table><thead><tr><th>Ngày</th><th>Loại</th><th>Nhóm</th><th>Mô tả</th><th>Số tiền</th><th>Tháng</th></tr></thead><tbody>${rows}</tbody></table></div>`;
-}
-function jumpToMonth(key){currentMonth=key;META=loadMeta(key);buildMonthSelect();renderAll();switchPage('money',document.querySelectorAll('.bn-btn')[1]);showToast(`✅ Đã chuyển sang ${monthLabel(key)}`);}
-function exportAllCSV(){
-  const all=getAllTxRaw();if(!all.length){showToast('⚠️ Chưa có dữ liệu!',true);return;}
-  const csv=['Ngày,Loại,Nhóm,Tên hàng,Mô tả,SL,Đơn giá,Thành tiền,Tháng',...all.map(x=>`"${x.date}","${x.type}","${x.cat||''}","${x.name||''}","${(x.desc||'').replace(/"/g,'""')}","${x.qty}","${x.price}","${x.qty*x.price}","${x.monthKey}"`)].join('\n');
-  copyRaw(csv,'📥 Đã sao chép CSV toàn bộ lịch sử!');
-}
-
-/* ════════════════════════════════════════════
-   GEMINI API
-════════════════════════════════════════════ */
-async function callGemini(parts){
-  if(!API_KEY)throw new Error('Chưa có API Key — vui lòng nhập key ở phần đầu.');
-  const res=await fetch(`${GEMINI_URL}?key=${API_KEY}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:[{parts}]})});
-  if(!res.ok)throw new Error(`HTTP ${res.status}: ${res.statusText}`);
-  const data=await res.json();
-  if(data.error)throw new Error(data.error.message||JSON.stringify(data.error));
-  const content=data?.candidates?.[0]?.content?.parts?.[0]?.text;
-  if(!content)throw new Error('Gemini không trả về nội dung. Thử lại sau.');
-  return content;
-}
-
-/* ════════════════════════════════════════════
-   INVOICE SCAN (EXPENSE)
-════════════════════════════════════════════ */
-function handleInvoiceImg(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{invoiceBase64=ev.target.result.split(',')[1];const ua=document.getElementById('expUploadArea'),pb=document.getElementById('expImgPreviewBox'),img=document.getElementById('invoicePreview');if(ua)ua.style.display='none';if(pb)pb.style.display='block';if(img)img.src=ev.target.result;const btn=document.getElementById('scanBtn');if(btn)btn.disabled=false;};r.readAsDataURL(f);}
-function changeExpImg(){const ua=document.getElementById('expUploadArea'),pb=document.getElementById('expImgPreviewBox');if(ua)ua.style.display='block';if(pb)pb.style.display='none';invoiceBase64='';const btn=document.getElementById('scanBtn');if(btn)btn.disabled=true;document.getElementById('invoiceImg').value='';}
-
-async function scanInvoice(){
-  if(!API_KEY){showToast('⚠️ Nhập API Key!',true);return;}
-  const loader=document.getElementById('scanLoader'),wrap=document.getElementById('invoiceTableWrap'),acts=document.getElementById('invActions'),btn=document.getElementById('scanBtn');
-  if(loader)loader.classList.add('show');if(wrap){wrap.classList.remove('show');wrap.innerHTML='';}if(acts)acts.style.display='none';if(btn)btn.disabled=true;
-  invoiceData=[];const n=document.getElementById('expAutofillNotice');if(n)n.classList.remove('show');
-  try{
-    const raw=await callGemini([{inline_data:{mime_type:'image/jpeg',data:invoiceBase64}},{text:`Trích xuất hóa đơn. JSON hợp lệ không markdown: {"rows":[{"ten":"tên hàng","soluong":"số lượng","dongia":"đơn giá","thanhtien":"thành tiền"}]}`}]);
-    let parsed=null;try{parsed=JSON.parse(raw.replace(/```json|```/g,'').trim());}catch{}
-    if(loader)loader.classList.remove('show');
-    if(parsed&&parsed.rows&&parsed.rows.length){invoiceData=parsed.rows;renderInvoiceTable('invoiceTableWrap',parsed.rows);if(wrap)wrap.classList.add('show');if(acts)acts.style.display='flex';}
-    else{if(wrap){wrap.innerHTML=`<div style="padding:11px;font-size:.82rem;white-space:pre-wrap">${raw}</div>`;wrap.classList.add('show');}}
-  }catch(err){if(loader)loader.classList.remove('show');showToast('❌ '+err.message,true);}
-  if(btn)btn.disabled=false;
-}
-function renderInvoiceTable(wrapId,rows){const w=document.getElementById(wrapId);if(!w)return;const rh=rows.map(r=>`<tr><td>${r.ten||''}</td><td style="text-align:center">${r.soluong||''}</td><td style="text-align:right">${r.dongia||''}</td><td style="text-align:right;font-weight:800;color:var(--p700)">${r.thanhtien||''}</td></tr>`).join('');w.innerHTML=`<table class="inv-tbl"><thead><tr><th>Tên hàng</th><th>SL</th><th>Đơn giá</th><th>Thành tiền</th></tr></thead><tbody>${rh}</tbody></table>`;}
-function autoFillImport(){
-  if(!invoiceData.length){showToast('⚠️ Chưa có dữ liệu!',true);return;}
-  const first=invoiceData[0];const name=document.getElementById('impName'),qty=document.getElementById('impQty'),amt=document.getElementById('impAmount');
-  if(name)name.value=first.ten||'';
-  if(qty){const q=(first.soluong||'').replace(/\D/g,'');qty.dataset.raw=q;qty.value=q?parseInt(q).toLocaleString('vi-VN'):'';}
-  const rawA=(first.thanhtien||'').replace(/\D/g,'');if(amt&&rawA){amt.dataset.raw=rawA;amt.value=parseInt(rawA).toLocaleString('vi-VN');}
-  const n=document.getElementById('expAutofillNotice');if(n)n.classList.add('show');showToast('✅ Đã điền dòng đầu vào form!');
-}
-function copyInvoiceCSV(){if(!invoiceData.length){showToast('⚠️ Chưa có dữ liệu!',true);return;}const csv=['Tên hàng,Số lượng,Đơn giá,Thành tiền',...invoiceData.map(r=>`"${r.ten||''}","${r.soluong||''}","${r.dongia||''}","${r.thanhtien||''}"`)].join('\n');copyRaw(csv,'📥 Đã sao chép CSV!');}
-function copyInvoiceText(){const text=invoiceData.map(r=>`• ${r.ten} | SL: ${r.soluong} | ${r.thanhtien}`).join('\n');copyRaw(text,'📋 Đã sao chép text!');}
-
-/* ════════════════════════════════════════════
-   INVOICE SCAN (INCOME)
-════════════════════════════════════════════ */
-function incScanMode(mode,btn){
-  document.querySelectorAll('.modal-sub-tab').forEach(b=>b.classList.remove('active'));if(btn)btn.classList.add('active');
-  const imgEl=document.getElementById('incScanImg'),qrEl=document.getElementById('incScanQR');
-  if(imgEl)imgEl.style.display=mode==='img'?'block':'none';if(qrEl)qrEl.style.display=mode==='qr'?'block':'none';
-  if(mode==='qr'&&incQRScanner)stopIncQR();
-}
-function handleIncInvoice(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{incInvoiceBase64=ev.target.result.split(',')[1];const ua=document.getElementById('incUploadArea'),pb=document.getElementById('incImgPreviewBox'),img=document.getElementById('incInvoicePreview');if(ua)ua.style.display='none';if(pb)pb.style.display='block';if(img)img.src=ev.target.result;const btn=document.getElementById('scanIncBtn');if(btn)btn.disabled=false;};r.readAsDataURL(f);}
-function changeIncImg(){const ua=document.getElementById('incUploadArea'),pb=document.getElementById('incImgPreviewBox');if(ua)ua.style.display='block';if(pb)pb.style.display='none';incInvoiceBase64='';const btn=document.getElementById('scanIncBtn');if(btn)btn.disabled=true;document.getElementById('incInvoiceFile').value='';}
-
-async function scanIncInvoice(){
-  if(!API_KEY){showToast('⚠️ Nhập API Key!',true);return;}
-  const loader=document.getElementById('scanIncLoader'),wrap=document.getElementById('incInvoiceTableWrap'),btn=document.getElementById('scanIncBtn');
-  if(loader)loader.classList.add('show');if(wrap){wrap.classList.remove('show');wrap.innerHTML='';}if(btn)btn.disabled=true;
-  incInvoiceData=[];const notice=document.getElementById('incAutofillNotice');if(notice)notice.classList.remove('show');
-  try{
-    const raw=await callGemini([{inline_data:{mime_type:'image/jpeg',data:incInvoiceBase64}},{text:`Trích xuất hóa đơn bán hàng. JSON hợp lệ không markdown: {"items":[{"ten":"tên mặt hàng","soluong":"số lượng","thanhtien":"thành tiền"}],"tongtien":"tổng tiền","ngay":"YYYY-MM-DD hoặc rỗng"}`}]);
-    let parsed=null;try{parsed=JSON.parse(raw.replace(/```json|```/g,'').trim());}catch{}
-    if(loader)loader.classList.remove('show');
-    if(parsed){
-      incInvoiceData=parsed.items||[];
-      if(incInvoiceData.length)renderInvoiceTable('incInvoiceTableWrap',incInvoiceData.map(x=>({ten:x.ten,soluong:x.soluong,dongia:'',thanhtien:x.thanhtien})));
-      if(wrap)wrap.classList.add('show');
-      const totalRaw=(parsed.tongtien||'').replace(/\D/g,'');
-      const descVal=incInvoiceData.length?incInvoiceData.map(x=>x.ten).join(', '):'';
-      const descEl=document.getElementById('incDesc'),amtEl=document.getElementById('incAmount'),dateEl=document.getElementById('incDate');
-      if(descEl&&descVal)descEl.value='Bán '+descVal;
-      if(amtEl&&totalRaw){amtEl.dataset.raw=totalRaw;amtEl.value=parseInt(totalRaw).toLocaleString('vi-VN');}
-      if(dateEl&&parsed.ngay&&/^\d{4}-\d{2}-\d{2}$/.test(parsed.ngay))dateEl.value=parsed.ngay;
-      if(notice)notice.classList.add('show');showToast('✅ AI đã điền vào form Thu!');
-    }else{if(wrap){wrap.innerHTML=`<div style="padding:11px;font-size:.82rem;white-space:pre-wrap">${raw}</div>`;wrap.classList.add('show');}}
-  }catch(err){if(loader)loader.classList.remove('show');showToast('❌ '+err.message,true);}
-  if(btn)btn.disabled=false;
-}
-
-/* ════════════════════════════════════════════
-   QR
-════════════════════════════════════════════ */
-function startIncQR(){const container=document.getElementById('qr-inc-container'),startBtn=document.getElementById('startIncQRBtn'),stopBtn=document.getElementById('stopIncQRBtn');if(typeof Html5Qrcode==='undefined'){if(container)container.innerHTML=`<div class="qr-fallback">⚠️ Thư viện QR chưa load</div>`;return;}if(container)container.innerHTML='<div id="qr-inc-reader" style="width:100%"></div>';if(startBtn)startBtn.style.display='none';if(stopBtn)stopBtn.style.display='';try{incQRScanner=new Html5Qrcode('qr-inc-reader');incQRScanner.start({facingMode:'environment'},{fps:10,qrbox:200},qrText=>{let amount='',name='';try{const p=JSON.parse(qrText);amount=String(p.amount||p.sotien||'');name=p.name||p.ten||'';}catch{amount=qrText.replace(/\D/g,'');}const amtEl=document.getElementById('incAmount'),descEl=document.getElementById('incDesc');if(amtEl&&amount){amtEl.dataset.raw=amount;amtEl.value=parseInt(amount).toLocaleString('vi-VN');}if(descEl&&name)descEl.value=name;stopIncQR();showToast('✅ Quét QR thành công!');},()=>{}).catch(err=>{if(container)container.innerHTML=`<div class="qr-fallback">❌ Không mở camera: ${err}</div>`;if(startBtn)startBtn.style.display='';if(stopBtn)stopBtn.style.display='none';});}catch(err){if(container)container.innerHTML=`<div class="qr-fallback">❌ ${err}</div>`;}}
-function stopIncQR(){if(incQRScanner){incQRScanner.stop().catch(()=>{});incQRScanner=null;}const s=document.getElementById('startIncQRBtn'),st=document.getElementById('stopIncQRBtn');if(s)s.style.display='';if(st)st.style.display='none';const c=document.getElementById('qr-inc-container');if(c)c.innerHTML='<div class="qr-fallback"><div style="font-size:1.7rem;margin-bottom:5px">📷</div><p>Bấm nút bên dưới để mở camera QR</p></div>';}
-
-/* ════════════════════════════════════════════
-   FACEBOOK POST + XÁC NHẬN NHẬP KHO
-════════════════════════════════════════════ */
-function handleFbImg(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{fbBase64=ev.target.result.split(',')[1];const ua=document.getElementById('fbUploadArea'),pb=document.getElementById('fbImgPreviewBox'),img=document.getElementById('fbPreview');if(ua)ua.style.display='none';if(pb)pb.style.display='block';if(img)img.src=ev.target.result;const btn=document.getElementById('fbPostBtn');if(btn)btn.disabled=false;};r.readAsDataURL(f);}
-function changeFbImg(){const ua=document.getElementById('fbUploadArea'),pb=document.getElementById('fbImgPreviewBox');if(ua)ua.style.display='block';if(pb)pb.style.display='none';fbBase64='';fbDetectedProduct='';const btn=document.getElementById('fbPostBtn');if(btn)btn.disabled=true;document.getElementById('fbImgInput').value='';const sb=document.getElementById('fbConfirmStockBtn');if(sb)sb.style.display='none';}
-
-async function generateFbPost(){
-  if(!API_KEY||!fbBase64){showToast('⚠️ Cần API Key và ảnh!',true);return;}
-  const card=document.getElementById('fbResultCard'),loader=document.getElementById('fbLoader'),box=document.getElementById('fbPost'),btn=document.getElementById('copyFb'),postBtn=document.getElementById('fbPostBtn'),stockBtn=document.getElementById('fbConfirmStockBtn');
-  if(card)card.style.display='block';if(loader)loader.classList.add('show');if(box)box.classList.remove('show');if(btn)btn.classList.remove('show');if(stockBtn)stockBtn.style.display='none';if(postBtn)postBtn.disabled=true;
-  try{
-    const raw=await callGemini([{inline_data:{mime_type:'image/jpeg',data:fbBase64}},{text:`Phân tích ảnh sản phẩm. JSON hợp lệ không markdown: {"productName":"tên ngắn gọn","category":"Mì tôm|Trứng gà|Nước mắm|Gạo|Bia/Nước ngọt|Bánh kẹo|Thủ công|Rau củ|Khác","fbPost":"Bài đăng Facebook hoàn chỉnh với emoji và hashtag"}`}]);
-    let parsed=null;try{parsed=JSON.parse(raw.replace(/```json|```/g,'').trim());}catch{}
-    if(loader)loader.classList.remove('show');
-    if(parsed){
-      fbDetectedProduct=parsed.productName||'';
-      const ttEl=document.getElementById('ttProduct');if(ttEl)ttEl.value=fbDetectedProduct;
-      const det=document.getElementById('fbDetected');if(det){det.style.display='block';det.innerHTML=`✅ Phát hiện: <strong>${fbDetectedProduct}</strong> · ${parsed.category}`;}
-      if(box)box.textContent=parsed.fbPost||raw;
-      if(stockBtn&&fbDetectedProduct){stockBtn.style.display='inline-flex';}
-    }else{if(box)box.textContent=raw;}
-    if(box)box.classList.add('show');if(btn)btn.classList.add('show');
-  }catch(err){if(loader)loader.classList.remove('show');if(box){box.textContent='❌ '+err.message;box.classList.add('show');}showToast('❌ '+err.message,true);}
-  if(postBtn)postBtn.disabled=false;
-}
-
-/** Khi bấm "Xác nhận nhập kho" từ tab Quảng bá */
-function confirmImportFromFb(){
-  if(!fbDetectedProduct){showToast('⚠️ Chưa có tên sản phẩm!',true);return;}
-  showConfirm(
-    '📦 Xác nhận nhập kho',
-    `Lưu "${fbDetectedProduct}" vào kho với số lượng 1? Bạn có thể vào Tab Thu/Chi → Nhập hàng để điền đầy đủ số lượng và giá.`,
-    ()=>{
-      saveTx({name:fbDetectedProduct,qty:1,price:0,type:'Nhập',date:TODAY,monthKey:currentMonth,desc:'Nhập từ quảng bá: '+fbDetectedProduct,cat:''});
-      saveProduct(fbDetectedProduct);
-      showToast(`✅ Đã lưu "${fbDetectedProduct}" vào kho!`);
-    }
-  );
-}
-
-/* ════════════════════════════════════════════
-   TIKTOK SCRIPT
-════════════════════════════════════════════ */
-async function generateScript(){
-  if(!API_KEY){showToast('⚠️ Nhập API Key!',true);return;}
-  const ttEl=document.getElementById('ttProduct'),product=ttEl?ttEl.value.trim():'';
-  if(!product){showToast('⚠️ Nhập tên sản phẩm!',true);return;}
-  const roleMap={ba:'bà',chu:'chú',me:'mẹ',ban:'bạn'},roleEl=document.getElementById('ttRole'),xung=roleMap[roleEl?roleEl.value:'ban']||'bạn',xungCap=xung.charAt(0).toUpperCase()+xung.slice(1);
-  const card=document.getElementById('videoResult'),loader=document.getElementById('videoLoader'),box=document.getElementById('scriptBox'),btn=document.getElementById('copyScript'),sbtn=document.getElementById('scriptBtn');
-  if(card)card.style.display='block';if(loader)loader.classList.add('show');if(box)box.classList.remove('show');if(btn)btn.classList.remove('show');if(sbtn)sbtn.disabled=true;
-  try{
-    const text=await callGemini([{text:`Hướng dẫn ${xung} quay TikTok bán "${product}". Ngôn ngữ đơn giản, 3 bước rõ ràng. Kết: "${xungCap} cứ quay xong đăng luôn 💚"`}]);
-    if(loader)loader.classList.remove('show');if(box){box.textContent=text;box.classList.add('show');}if(btn)btn.classList.add('show');
-  }catch(err){if(loader)loader.classList.remove('show');if(box){box.textContent='❌ '+err.message;box.classList.add('show');}showToast('❌ '+err.message,true);}
-  if(sbtn)sbtn.disabled=false;
-}
-
-/* ════════════════════════════════════════════
+/* ════════════════════════════════════
    CHARTS
-════════════════════════════════════════════ */
+════════════════════════════════════ */
+const chartInst={pie:null,bar:null,line:null,homeLine:null};
 function destroyCharts(){Object.keys(chartInst).forEach(k=>{if(chartInst[k]){try{chartInst[k].destroy();}catch{}chartInst[k]=null;}});}
 
 function getChartData(){
-  const allTx=getAllTxRaw();
+  const allTx=getAllTx();
+  const makeDay=(i)=>{const d=new Date();d.setDate(d.getDate()-i);return d.toISOString().slice(0,10);};
   if(chartPeriod==='week'){
     const days=[],thu=[],chi=[];
-    for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const iso=d.toISOString().slice(0,10);days.push(['CN','T2','T3','T4','T5','T6','T7'][d.getDay()]);thu.push(allTx.filter(x=>x.date===iso&&x.type==='Xuất').reduce((s,x)=>s+x.qty*x.price,0));chi.push(allTx.filter(x=>x.date===iso&&x.type==='Nhập').reduce((s,x)=>s+x.qty*x.price,0));}
+    for(let i=6;i>=0;i--){const iso=makeDay(i);const d=new Date(iso+'T00:00:00');days.push(['CN','T2','T3','T4','T5','T6','T7'][d.getDay()]);thu.push(allTx.filter(x=>x.date===iso&&x.type==='Xuất').reduce((s,x)=>s+x.qty*x.price,0));chi.push(allTx.filter(x=>x.date===iso&&x.type==='Nhập').reduce((s,x)=>s+x.qty*x.price,0));}
     return{days,thu,chi};
   }else if(chartPeriod==='month'){
-    const dIM=new Date(currentMonth.split('-')[0],currentMonth.split('-')[1],0).getDate();
+    const[y,m]=currentMonth.split('-');const dIM=new Date(y,m,0).getDate();
     const days=[],thu=[],chi=[];
     for(let i=1;i<=dIM;i++){const iso=`${currentMonth}-${String(i).padStart(2,'0')}`;days.push(String(i));thu.push(allTx.filter(x=>x.date===iso&&x.type==='Xuất').reduce((s,x)=>s+x.qty*x.price,0));chi.push(allTx.filter(x=>x.date===iso&&x.type==='Nhập').reduce((s,x)=>s+x.qty*x.price,0));}
     return{days,thu,chi};
   }else{
     const opts=getMonthOpts().slice().reverse();
-    return{days:opts.map(k=>monthLabel(k).replace('Tháng ','')),thu:opts.map(k=>getMonthRevenue(k)),chi:opts.map(k=>getMonthCost(k))};
+    return{days:opts.map(k=>{const[y,m]=k.split('-');return`T${parseInt(m)}/${y.slice(2)}`;}),thu:opts.map(k=>getMonthRevenue(k)),chi:opts.map(k=>getMonthCost(k))};
   }
 }
 
 function refreshCharts(){
   destroyCharts();
   const thu=getMonthRevenue(currentMonth);
-  const imp=getMonthTx(currentMonth,'Nhập').reduce((s,x)=>s+x.qty*x.price,0);
+  const imp=getAllTx().filter(x=>x.monthKey===currentMonth&&x.type==='Nhập').reduce((s,x)=>s+x.qty*x.price,0);
   const op=(META.operational||[]).reduce((s,x)=>s+x.amount,0);
   const hasData=thu>0||imp>0||op>0;
-  const noData=document.getElementById('noChartData'),content=document.getElementById('chartContent');
-  if(noData)noData.style.display=hasData?'none':'block';if(content)content.style.display=hasData?'block':'none';
+  document.getElementById('noChartData').style.display=hasData?'none':'block';
+  document.getElementById('chartContent').style.display=hasData?'block':'none';
   if(!hasData)return;
   const pie=document.getElementById('pieChart');
   if(pie)chartInst.pie=new Chart(pie,{type:'doughnut',data:{labels:['Thu','Nhập hàng','Chi phí thêm'],datasets:[{data:[thu,imp,op],backgroundColor:['#1B6B3A','#0C5460','#856404'],borderWidth:0,hoverOffset:7}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:9},padding:6}}}}});
-  const allImp=getMonthTx(currentMonth,'Nhập'),expItems=[...new Set(allImp.map(x=>x.name||x.desc))].slice(0,5),expVals=expItems.map(d=>allImp.filter(x=>(x.name||x.desc)===d).reduce((s,x)=>s+x.qty*x.price,0));
+  const allImp=getAllTx().filter(x=>x.monthKey===currentMonth&&x.type==='Nhập');
+  const expItems=[...new Set(allImp.map(x=>x.name||x.desc))].slice(0,5);
+  const expVals=expItems.map(d=>allImp.filter(x=>(x.name||x.desc)===d).reduce((s,x)=>s+x.qty*x.price,0));
   const bar=document.getElementById('barChart');
   if(bar)chartInst.bar=new Chart(bar,{type:'bar',data:{labels:expItems.length?expItems:['Chưa có'],datasets:[{label:'đ',data:expItems.length?expVals:[0],backgroundColor:'rgba(27,107,58,.72)',borderRadius:6,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,grid:{color:'#eee'}},x:{grid:{display:false},ticks:{font:{size:8}}}}}});
   const{days,thu:thuLine,chi:chiLine}=getChartData();
   const line=document.getElementById('lineChart');
-  if(line)chartInst.line=new Chart(line,{type:'line',data:{labels:days,datasets:[{label:'Thu',data:thuLine,borderColor:'#1B6B3A',backgroundColor:'rgba(27,107,58,.08)',tension:.4,fill:true,pointRadius:3,pointBackgroundColor:'#1B6B3A'},{label:'Chi',data:chiLine,borderColor:'#D94F3D',backgroundColor:'rgba(217,79,61,.06)',tension:.4,fill:true,pointRadius:3,pointBackgroundColor:'#D94F3D'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:10}}}},scales:{y:{beginAtZero:true,grid:{color:'#eee'},ticks:{callback:v=>v>=1e6?(v/1e6).toFixed(1)+'M':(v/1e3)+'K'}},x:{grid:{display:false},ticks:{font:{size:9}}}}}});
+  if(line)chartInst.line=new Chart(line,{type:'line',data:{labels:days,datasets:[{label:'Thu',data:thuLine,borderColor:'#1B6B3A',backgroundColor:'rgba(27,107,58,.08)',tension:.4,fill:true,pointRadius:3,pointBackgroundColor:'#1B6B3A'},{label:'Chi',data:chiLine,borderColor:'#D94F3D',backgroundColor:'rgba(217,79,61,.06)',tension:.4,fill:true,pointRadius:3,pointBackgroundColor:'#D94F3D'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:10}}}},scales:{y:{beginAtZero:true,ticks:{callback:v=>v>=1e6?(v/1e6).toFixed(1)+'M':(v/1e3)+'K'},grid:{color:'#eee'}},x:{grid:{display:false},ticks:{font:{size:9}}}}}});
 }
 
 function refreshHomeChart(){
   if(chartInst.homeLine){try{chartInst.homeLine.destroy();}catch{}chartInst.homeLine=null;}
-  const allTx=getAllTxRaw();
-  const days=[],thu=[],chi=[];
+  const allTx=getAllTx();const days=[],thu=[],chi=[];
   for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const iso=d.toISOString().slice(0,10);days.push(['CN','T2','T3','T4','T5','T6','T7'][d.getDay()]);thu.push(allTx.filter(x=>x.date===iso&&x.type==='Xuất').reduce((s,x)=>s+x.qty*x.price,0));chi.push(allTx.filter(x=>x.date===iso&&x.type==='Nhập').reduce((s,x)=>s+x.qty*x.price,0));}
   const c=document.getElementById('homeLineChart');if(!c)return;
-  chartInst.homeLine=new Chart(c,{type:'line',data:{labels:days,datasets:[{label:'Thu',data:thu,borderColor:'#1B6B3A',backgroundColor:'rgba(27,107,58,.10)',tension:.4,fill:true,pointRadius:4,pointBackgroundColor:'#1B6B3A'},{label:'Chi',data:chi,borderColor:'#D94F3D',backgroundColor:'rgba(217,79,61,.07)',tension:.4,fill:true,pointRadius:4,pointBackgroundColor:'#D94F3D'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:10}}}},scales:{y:{beginAtZero:true,grid:{color:'#eee'},ticks:{callback:v=>v>=1e6?(v/1e6).toFixed(1)+'M':(v/1e3)+'K'}},x:{grid:{display:false}}}}});
+  chartInst.homeLine=new Chart(c,{type:'line',data:{labels:days,datasets:[{label:'Thu',data:thu,borderColor:'#1B6B3A',backgroundColor:'rgba(27,107,58,.10)',tension:.4,fill:true,pointRadius:4,pointBackgroundColor:'#1B6B3A'},{label:'Chi',data:chi,borderColor:'#D94F3D',backgroundColor:'rgba(217,79,61,.07)',tension:.4,fill:true,pointRadius:4,pointBackgroundColor:'#D94F3D'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:10}}}},scales:{y:{beginAtZero:true,ticks:{callback:v=>v>=1e6?(v/1e6).toFixed(1)+'M':(v/1e3)+'K'},grid:{color:'#eee'}},x:{grid:{display:false}}}}});
 }
 
-/* ════════════════════════════════════════════
-   AI CHAT — đọc dữ liệu thực từ localStorage
-════════════════════════════════════════════ */
-async function sendChat(){
-  const inp=document.getElementById('chatInp'),msg=inp?inp.value.trim():'';
-  if(!msg)return;if(!API_KEY){showToast('⚠️ Nhập API Key!',true);return;}
-  if(inp)inp.value='';addMsg(msg,'user');
-  const typing=document.getElementById('chatTyping');if(typing)typing.classList.add('show');scrollChat();
-  try{
-    // Đính kèm dữ liệu thực vào prompt
-    const context=buildBusinessContext();
-    const systemPrompt=`Bạn là Trợ lý Tiểu Thương AI, tư vấn hộ kinh doanh nhỏ tại Việt Nam.
-Bạn CÓ THỂ đọc dữ liệu kinh doanh THỰC TẾ bên dưới để trả lời câu hỏi.
-Trả lời ngắn gọn, dùng emoji, ngôn ngữ thân thiện như nói chuyện với cô chú bán hàng.
-Khi được hỏi về số liệu (doanh thu, tồn kho, thuế...), hãy dùng dữ liệu thực bên dưới.
-
-${context}
-
-Câu hỏi: ${msg}`;
-    const text=await callGemini([{text:systemPrompt}]);
-    if(typing)typing.classList.remove('show');addMsg(text,'bot');
-  }catch(err){if(typing)typing.classList.remove('show');addMsg('❌ '+err.message,'bot');}
+/* ════════════════════════════════════
+   TOAST — tự biến mất sau 3.5s
+════════════════════════════════════ */
+let toastTimer=null;
+function showToast(msg,isErr=false,isOk=false){
+  const t=document.getElementById('toast');if(!t)return;
+  t.textContent=msg;
+  t.className='';
+  if(isErr)t.classList.add('err');
+  if(isOk)t.classList.add('ok');
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>{t.classList.remove('show');},3500);
 }
-function addMsg(text,role){const msgs=document.getElementById('chatMsgs');if(!msgs)return;const div=document.createElement('div');div.className='msg '+role;div.textContent=text;msgs.insertBefore(div,document.getElementById('chatTyping'));scrollChat();}
-function scrollChat(){const m=document.getElementById('chatMsgs');if(m)m.scrollTop=m.scrollHeight;}
 
-/* ════════════════════════════════════════════
-   TOAST
-════════════════════════════════════════════ */
-function showToast(msg,isErr=false){const t=document.getElementById('toast');if(!t)return;t.textContent=msg;t.className=isErr?'err':'';t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2800);}
-
-/* ════════════════════════════════════════════
+/* ════════════════════════════════════
    INIT
-════════════════════════════════════════════ */
+════════════════════════════════════ */
 ['incDate','impDate','opDate'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=TODAY;});
 buildMonthSelect();
 renderAll();
