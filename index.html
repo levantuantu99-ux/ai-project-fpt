@@ -328,7 +328,17 @@ tr:nth-child(even) td{background:var(--p50)}
       <div class="img-preview-box" id="incImgBox"><img id="incInvoicePreview"/><button class="img-change-btn" onclick="resetIncImg()">✏️ Đổi ảnh</button></div>
       <button class="btn btn-primary" onclick="scanIncInvoice()" id="scanIncBtn" disabled style="margin-top:7px">🤖 AI đọc bill</button>
       <div class="loader" id="scanIncLoader"><div class="spinner"></div><p>AI đang đọc bill...</p></div>
-      <div class="autofill-notice" id="incAutofillNotice">✅ Đã điền — kiểm tra rồi bấm "Xác nhận bán"</div>
+      <div class="autofill-notice" id="incAutofillNotice">✅ AI đã đọc — kiểm tra danh sách bên dưới rồi bấm "Xác nhận lưu tất cả"</div>
+      <!-- PREVIEW DANH SÁCH MÓN -->
+      <div class="inv-preview-wrap" id="incPreviewWrap">
+        <div class="inv-preview-title">👁️ Xem trước — Nhấn 🗑️ để bỏ món không muốn lưu</div>
+        <div class="inv-preview-list" id="incPreviewList"></div>
+        <div class="inv-preview-footer">
+          <span class="inv-preview-count" id="incPreviewCount"></span>
+          <span class="inv-preview-total" id="incPreviewTotal"></span>
+        </div>
+        <button class="btn btn-primary" style="margin-top:9px" onclick="confirmIncItems()">✅ Xác nhận lưu tất cả</button>
+      </div>
     </div>
     <div class="card">
       <div class="card-title">✏️ Ghi nhận bán hàng</div>
@@ -986,14 +996,106 @@ async function scanInvoice(){
 }
 function autoFillImport(){if(!_invoiceRows.length){showToast('⚠️ Chưa có dữ liệu!',true);return}const first=_invoiceRows[0];setVal('impName',first.ten||'');const q=(first.soluong||'').replace(/\D/g,'');const qEl=document.getElementById('impQty');if(qEl){qEl.dataset.raw=q;qEl.value=q?parseInt(q).toLocaleString('vi-VN'):''}const rawA=(first.thanhtien||'').replace(/\D/g,'');const aEl=document.getElementById('impAmt');if(aEl&&rawA){aEl.dataset.raw=rawA;aEl.value=parseInt(rawA).toLocaleString('vi-VN')}document.getElementById('expAutofillNotice').classList.add('show');showToast('✅ Đã điền form!')}
 async function copyInvoiceCSV(){if(!_invoiceRows.length){showToast('⚠️ Chưa có!',true);return}const csv=['Tên,SL,Đơn giá,Thành tiền',..._invoiceRows.map(r=>`"${r.ten||''}","${r.soluong||''}","${r.dongia||''}","${r.thanhtien||''}"`)].join('\n');await writeClip(csv,'📥 Đã sao chép CSV!')}
+let _incItems=[]; // preview items array
+
 function handleIncInvoice(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{_incInvB64=ev.target.result.split(',')[1];const box=document.getElementById('incImgBox'),img=document.getElementById('incInvoicePreview');if(box)box.style.display='block';if(img)img.src=ev.target.result;document.getElementById('scanIncBtn').disabled=false};r.readAsDataURL(f)}
-function resetIncImg(){_incInvB64='';document.getElementById('incInvoiceFile').value='';const box=document.getElementById('incImgBox');if(box)box.style.display='none';document.getElementById('scanIncBtn').disabled=true}
+function resetIncImg(){_incInvB64='';_incItems=[];document.getElementById('incInvoiceFile').value='';const box=document.getElementById('incImgBox');if(box)box.style.display='none';document.getElementById('scanIncBtn').disabled=true;document.getElementById('incPreviewWrap').classList.remove('show');document.getElementById('incAutofillNotice').classList.remove('show')}
+
 async function scanIncInvoice(){
   if(!apiKey){showToast('⚠️ Nhập API Key!',true);return}
   const loader=document.getElementById('scanIncLoader'),btn=document.getElementById('scanIncBtn');
-  if(loader)loader.classList.add('show');if(btn)btn.disabled=true;document.getElementById('incAutofillNotice').classList.remove('show');
-  const PROMPT=`Đây là bill thanh toán. Trích xuất thông tin. Trả về JSON không markdown:\n{"items":[{"item":"tên","quantity":"số","price":"đơn giá"}],"tongtien":"tổng","ngay":"YYYY-MM-DD"}`;
-  try{const raw=await callGemini([{inline_data:{mime_type:'image/jpeg',data:_incInvB64}},{text:PROMPT}]);let parsed=null;try{parsed=JSON.parse(raw.replace(/```json|```/g,'').trim())}catch{}if(loader)loader.classList.remove('show');if(parsed){const nameVal=parsed.items?.length?parsed.items.map(x=>x.item).join(', '):'',total=(parsed.tongtien||'').replace(/\D/g,'');setVal('sellName',nameVal);_curSellType='hangban';setVal('sellDesc','Bán '+nameVal);if(total)setMoneyVal('sellPrice',parseInt(total));if(parsed.ngay&&/^\d{4}-\d{2}-\d{2}$/.test(parsed.ngay))setVal('sellDate',parsed.ngay+'T00:00');setVal('sellQty','1');document.getElementById('sellQty').dataset.raw='1';document.getElementById('incAutofillNotice').classList.add('show');showToast('✅ AI đã đọc bill!')}}catch(err){if(loader)loader.classList.remove('show');showToast('❌ '+err.message,true)}if(btn)btn.disabled=false;
+  if(loader)loader.classList.add('show');if(btn)btn.disabled=true;
+  document.getElementById('incAutofillNotice').classList.remove('show');
+  document.getElementById('incPreviewWrap').classList.remove('show');
+  _incItems=[];
+
+  const PROMPT=`Bạn là hệ thống OCR chuyên nghiệp. Hãy đọc ảnh bill/hóa đơn này và trích xuất TỪNG MÓN HÀNG RIÊNG BIỆT.
+YÊU CẦU BẮT BUỘC:
+- Trả về một MẢNG JSON (Array), KHÔNG phải object đơn lẻ.
+- Mỗi phần tử trong mảng là MỘT MÓN HÀNG DUY NHẤT.
+- KHÔNG được gộp nhiều món thành một.
+- Nếu có 5 món thì mảng phải có đúng 5 phần tử.
+- Trả về JSON thuần túy, KHÔNG có markdown, KHÔNG có backtick.
+Cấu trúc bắt buộc:
+[
+  { "name": "tên món hàng", "quantity": số_lượng_nguyên, "price": đơn_giá_nguyên, "total": thành_tiền_nguyên },
+  { "name": "món tiếp theo", "quantity": 1, "price": 50000, "total": 50000 }
+]
+Ngày trên bill (nếu có, định dạng YYYY-MM-DD): đặt vào field "date" ở phần tử đầu tiên.`;
+
+  try{
+    const raw=await callGemini([{inline_data:{mime_type:'image/jpeg',data:_incInvB64}},{text:PROMPT}]);
+    if(loader)loader.classList.remove('show');
+    // parse: strip markdown fences, find array
+    let clean=raw.replace(/```json|```/g,'').trim();
+    const arrMatch=clean.match(/\[[\s\S]*\]/);
+    let parsed=null;
+    if(arrMatch){try{parsed=JSON.parse(arrMatch[0])}catch{}}
+    if(!parsed||!Array.isArray(parsed)||!parsed.length){
+      showToast('⚠️ AI không tách được món — thử lại!',true);
+      if(btn)btn.disabled=false;return;
+    }
+    // normalize
+    _incItems=parsed.map((it,i)=>({
+      _id:i,
+      removed:false,
+      name:(it.name||it.item||it.ten||'Món '+(i+1)).trim(),
+      quantity:Math.max(1,parseInt(it.quantity||it.qty||it.soluong||1)||1),
+      price:parseInt(String(it.price||it.dongia||it.unitPrice||0).replace(/\D/g,'')||0),
+      total:parseInt(String(it.total||it.thanhtien||it.totalAmt||0).replace(/\D/g,'')||0),
+      date:it.date||''
+    }));
+    // if total missing, calc from price*qty
+    _incItems.forEach(it=>{if(!it.total&&it.price&&it.quantity)it.total=it.price*it.quantity});
+    renderIncPreview();
+    document.getElementById('incAutofillNotice').classList.add('show');
+    showToast(`✅ Tách được ${_incItems.length} món!`,false,true);
+  }catch(err){
+    if(loader)loader.classList.remove('show');
+    showToast('❌ '+err.message,true);
+  }
+  if(btn)btn.disabled=false;
+}
+
+function renderIncPreview(){
+  const wrap=document.getElementById('incPreviewWrap'),list=document.getElementById('incPreviewList');
+  if(!wrap||!list)return;
+  const active=_incItems.filter(x=>!x.removed);
+  list.innerHTML=_incItems.map(it=>`
+    <div class="inv-preview-item${it.removed?' remove':''}" id="incpi-${it._id}">
+      <span class="inv-preview-idx">${it._id+1}</span>
+      <span class="inv-preview-name">${it.name}</span>
+      <span class="inv-preview-meta">×${it.quantity} · ${it.price?fmt(it.price)+'/cái':''} · <strong>${fmt(it.total||it.price*it.quantity)}</strong></span>
+      <button class="inv-preview-del" onclick="toggleIncItem(${it._id})">${it.removed?'↩️':'🗑️'}</button>
+    </div>`).join('');
+  const grandTotal=active.reduce((s,x)=>s+(x.total||x.price*x.quantity),0);
+  document.getElementById('incPreviewCount').textContent=`${active.length}/${_incItems.length} món được chọn`;
+  document.getElementById('incPreviewTotal').textContent=grandTotal?`Tổng: ${fmt(grandTotal)}`:'';
+  wrap.classList.add('show');
+}
+
+function toggleIncItem(id){
+  const it=_incItems.find(x=>x._id===id);if(it)it.removed=!it.removed;
+  renderIncPreview();
+}
+
+function confirmIncItems(){
+  const active=_incItems.filter(x=>!x.removed);
+  if(!active.length){showToast('⚠️ Không có món nào được chọn!',true);return}
+  const today=nowDatetimeLocal();
+  let saved=0;
+  active.forEach(it=>{
+    const name=it.name,qty=it.quantity,price=it.price||Math.round((it.total||0)/qty)||0,date=it.date?it.date+'T00:00':today;
+    if(!name||!qty)return;
+    const{unitOut}=getStock(name);
+    FIN.sales.push({id:Date.now()+Math.random(),name,type:'hangban',qty,unitPrice:price,totalAmt:it.total||(qty*price),date,desc:'Bill: '+name,unitOut});
+    saved++;
+  });
+  persist();renderAll();
+  document.getElementById('incPreviewWrap').classList.remove('show');
+  document.getElementById('incAutofillNotice').classList.remove('show');
+  _incItems=[];
+  showToast(`✅ Đã lưu ${saved} món từ bill!`,false,true);
 }
 
 let _fbB64='';
