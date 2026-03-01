@@ -139,7 +139,6 @@ tr:nth-child(even) td{background:var(--g4)}
 .cmpc{font-size:.76rem;font-weight:900;color:var(--g2)}.cmpp{font-size:.63rem;color:var(--muted);margin-top:2px}
 .cmpd{font-size:.63rem;font-weight:800;margin-top:2px}
 .dup{color:var(--g)}.ddn{color:var(--r)}
-/* AI chat */
 .aitop{flex-shrink:0;background:#111F17;border-bottom:1px solid #1E3829;padding:8px 14px;display:flex;align-items:center;gap:8px}
 .aiav{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--g),#27AE60);display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0}
 .aitxt{flex:1;min-width:0;font-size:.71rem;color:#8FB89A;line-height:1.4}
@@ -160,7 +159,6 @@ tr:nth-child(even) td{background:var(--g4)}
 .cpill{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
 .cpill button{padding:6px 14px;border-radius:20px;font-size:.74rem;font-weight:800;cursor:pointer;border:1.5px solid;font-family:inherit}
 .py{background:var(--g);color:#fff;border-color:var(--g)}.pn{background:transparent;color:#E87A6A;border-color:#E87A6A}
-/* Tax card in chat */
 .taxcard{background:linear-gradient(135deg,#FFF8E1,#FFFDE7);border:2px solid #F5A623;border-radius:14px;padding:14px;margin-top:8px;text-align:center}
 .taxcard-title{font-size:.85rem;font-weight:900;color:#7A5200;margin-bottom:4px}
 .taxcard-sub{font-size:.7rem;color:#7A5200;margin-bottom:8px}
@@ -169,7 +167,6 @@ tr:nth-child(even) td{background:var(--g4)}
 .taxcard-btns button,.taxcard-btns a{padding:9px 16px;border-radius:20px;font-weight:800;cursor:pointer;font-size:.78rem;font-family:inherit;text-decoration:none;display:inline-flex;align-items:center;gap:4px;border:none}
 .tcopy{background:#F5A623;color:#1A2E23}
 .topen{background:#1B6B3A;color:#fff}
-/* Offline badge */
 .offbadge{display:inline-block;background:rgba(245,166,35,.2);color:#F5A623;border:1px solid rgba(245,166,35,.4);border-radius:8px;padding:2px 6px;font-size:.6rem;font-weight:800;margin-bottom:4px}
 .chips{flex-shrink:0;padding:5px 12px;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;border-top:1px solid #1E3829;background:#111F17}
 .chips::-webkit-scrollbar{display:none}
@@ -204,6 +201,7 @@ tr:nth-child(even) td{background:var(--g4)}
 .convbox.on{display:block}
 .hrow{cursor:pointer}.hrow:hover td{background:var(--g5)!important}
 .jbadge{display:inline-block;background:var(--g4);color:var(--g);border:1px solid var(--g5);border-radius:5px;font-size:.57rem;padding:1px 4px;font-weight:800}
+@keyframes sp{to{transform:rotate(360deg)}}
 @media(max-width:370px){.g2,.g3{grid-template-columns:1fr}.ch2g{grid-template-columns:1fr}}
 </style>
 </head>
@@ -536,7 +534,7 @@ tr:nth-child(even) td{background:var(--g4)}
     </div>
   </div>
   <div class="msgs" id="msgs">
-    <div class="msg bot">👋 Chào bà/cô/chú! Con là Trợ lý <strong>Hộ Mệnh</strong> 💚<br>• Ghi <strong>bán / nhập</strong> hàng ngay qua chat<br>• Tra <strong>tồn kho</strong> và số liệu<br>• Tư vấn <strong>thuế 2026</strong> chuẩn xác<br>• Hướng dẫn <strong>nộp thuế điện tử</strong> từng bước</div>
+    <div class="msg bot">👋 Xin chào! Mình là Trợ lý <strong>Hộ Mệnh</strong> 💚<br>• Ghi <strong>bán / nhập</strong> hàng ngay qua chat<br>• Tra <strong>tồn kho</strong> và số liệu kinh doanh<br>• Tư vấn <strong>thuế 2026</strong> chuẩn xác<br>• Hướng dẫn <strong>nộp thuế điện tử</strong> từng bước</div>
     <div class="typing" id="typing"><div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>
   </div>
   <div class="chips">
@@ -549,7 +547,7 @@ tr:nth-child(even) td{background:var(--g4)}
     <button class="chip" onclick="useChip(this)">📋 Hướng dẫn nộp thuế điện tử</button>
   </div>
   <div class="chatfoot">
-    <textarea class="chatinp" id="chatInp" placeholder="Nhắn: Bán 5 gói mì... hoặc hỏi về thuế..." rows="1"
+    <textarea class="chatinp" id="chatInp" placeholder="Nhắn: Bán 5 gói mì... hoặc hỏi về kinh doanh/thuế..." rows="1"
       oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,100)+'px'"
       onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChat()}"></textarea>
     <button class="sndbtn" onclick="sendChat()">➤</button>
@@ -640,79 +638,51 @@ tr:nth-child(even) td{background:var(--g4)}
 
 <script>
 'use strict';
-// ═══════════════════════════════════════════
-//  CONSTANTS
-// ═══════════════════════════════════════════
-const TAX_TH = 500_000_000, LOW = 5;
-const AI_URL = 'https://api.anthropic.com/v1/messages';
+const TAX_TH=500_000_000,LOW=5;
+const AI_URL='https://api.anthropic.com/v1/messages';
 
-// ═══════════════════════════════════════════
-//  LOCALSTORAGE
-// ═══════════════════════════════════════════
+// ── Storage ──────────────────────────────────────────────────────────────────
 function mGet(k){try{const v=localStorage.getItem(k);return v?JSON.parse(v):null}catch{return null}}
-function mSet(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){console.warn('Storage:',e)}}
+function mSet(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){console.warn(e)}}
 function mKeys(){try{return Object.keys(localStorage)}catch{return[]}}
 
-let CUR = new Date().toISOString().slice(0,7);
+let CUR=new Date().toISOString().slice(0,7);
 function emptyFin(){return{sales:[],imports:[],costs:[],adjs:[]}}
 function loadFin(mk){const d=mGet('fin-'+mk);return d?{sales:d.sales||[],imports:d.imports||[],costs:d.costs||[],adjs:d.adjs||[]}:emptyFin()}
 function saveFin(mk,d){mSet('fin-'+mk,d)}
 let FIN=loadFin(CUR);
 function persist(){saveFin(CUR,FIN)}
-
 function loadProds(){return mGet('prods')||[]}
 function saveProds(a){mSet('prods',a)}
 function upsertProd(p){const a=loadProds(),i=a.findIndex(x=>x.name===p.name&&(x.unitOut||'')===(p.unitOut||''));if(i>=0)Object.assign(a[i],p);else a.push(p);saveProds(a)}
 function loadCooks(){return mGet('cooks')||[]}
 function saveCooks(a){mSet('cooks',a)}
+function allMKs(){const s=new Set([CUR]);mKeys().filter(k=>/^fin-\d{4}-\d{2}$/.test(k)).forEach(k=>s.add(k.replace('fin-','')));return[...s].sort()}
 
-function allMKs(){
-  const s=new Set([CUR]);
-  mKeys().filter(k=>/^fin-\d{4}-\d{2}$/.test(k)).forEach(k=>s.add(k.replace('fin-','')));
-  return[...s].sort();
-}
-
-// ═══════════════════════════════════════════
-//  INVENTORY — compound key name:::unitOut
-// ═══════════════════════════════════════════
-function invKey(name,unitOut){return name+':::'+(unitOut||'')}
+// ── Inventory ────────────────────────────────────────────────────────────────
+function invKey(n,u){return n+':::'+(u||'')}
 function computeInv(){
   const map={};
   allMKs().forEach(mk=>{
     const f=loadFin(mk);
     f.imports.forEach(imp=>{
       if(imp.kind!=='hangban')return;
-      const uOut=imp.unitOut||imp.unitIn||'',k=invKey(imp.name,uOut);
-      if(!map[k])map[k]={name:imp.name,unitIn:imp.unitIn||'',unitOut:uOut,factor:imp.factor||1,stock:0,totalIn:0,totalSold:0,lastP:0,lastD:'',key:k};
+      const uO=imp.unitOut||imp.unitIn||'',k=invKey(imp.name,uO);
+      if(!map[k])map[k]={name:imp.name,unitIn:imp.unitIn||'',unitOut:uO,factor:imp.factor||1,stock:0,totalIn:0,totalSold:0,lastP:0,lastD:'',key:k};
       const add=imp.stockAdded||(imp.qtyIn*(imp.factor||1));
       map[k].stock+=add;map[k].totalIn+=add;
       if(imp.totalAmt>0&&add>0)map[k].lastP=Math.round(imp.totalAmt/add);
       if(!map[k].lastD||imp.date>map[k].lastD)map[k].lastD=imp.date;
-      map[k].unitIn=imp.unitIn||map[k].unitIn;
-      map[k].factor=imp.factor||map[k].factor;
+      map[k].unitIn=imp.unitIn||map[k].unitIn;map[k].factor=imp.factor||map[k].factor;
     });
-    f.sales.forEach(s=>{
-      if(s.type!=='hangban')return;
-      const k=invKey(s.name,s.unitOut||'');
-      if(map[k]){map[k].stock=Math.max(0,map[k].stock-s.qty);map[k].totalSold+=s.qty}
-    });
-    (f.adjs||[]).forEach(a=>{
-      const k=invKey(a.name,a.unitOut||'');
-      if(map[k])map[k].stock=Math.max(0,map[k].stock-a.qty);
-    });
+    f.sales.forEach(s=>{if(s.type!=='hangban')return;const k=invKey(s.name,s.unitOut||'');if(map[k]){map[k].stock=Math.max(0,map[k].stock-s.qty);map[k].totalSold+=s.qty}});
+    (f.adjs||[]).forEach(a=>{const k=invKey(a.name,a.unitOut||'');if(map[k])map[k].stock=Math.max(0,map[k].stock-a.qty)});
   });
   return Object.values(map);
 }
-function getStock(name,unitOut){
-  const inv=computeInv(),k=invKey(name,unitOut||'');
-  const it=inv.find(x=>x.key===k);
-  if(!it){const any=inv.find(x=>x.name===name);return any?{stock:any.stock,unitOut:any.unitOut}:{stock:0,unitOut:unitOut||''}}
-  return{stock:it.stock,unitOut:it.unitOut};
-}
+function getStock(name,unitOut){const inv=computeInv(),k=invKey(name,unitOut||'');const it=inv.find(x=>x.key===k);if(!it){const any=inv.find(x=>x.name===name);return any?{stock:any.stock,unitOut:any.unitOut}:{stock:0,unitOut:unitOut||''}}return{stock:it.stock,unitOut:it.unitOut}}
 
-// ═══════════════════════════════════════════
-//  AGGREGATES
-// ═══════════════════════════════════════════
+// ── Aggregates ────────────────────────────────────────────────────────────────
 function getRev(mk){return loadFin(mk).sales.reduce((s,x)=>s+x.totalAmt,0)}
 function getCost(mk){const f=loadFin(mk);return f.imports.reduce((s,x)=>s+x.totalAmt,0)+f.costs.reduce((s,x)=>s+x.amount,0)}
 function todayISO(){return new Date().toISOString().slice(0,10)}
@@ -720,27 +690,18 @@ function getThu(){const t=todayISO();return FIN.sales.filter(x=>x.date&&x.date.s
 function getChi(){const t=todayISO();return FIN.imports.filter(x=>x.date&&x.date.slice(0,10)===t).reduce((s,x)=>s+x.totalAmt,0)+FIN.costs.filter(x=>x.date&&x.date.slice(0,10)===t).reduce((s,x)=>s+x.amount,0)}
 function yearRevenue(){const yr=new Date().getFullYear();return allMKs().filter(k=>k.startsWith(yr+'')).reduce((s,k)=>s+getRev(k),0)}
 
-// ═══════════════════════════════════════════
-//  FORMATTING
-// ═══════════════════════════════════════════
+// ── Formatting ────────────────────────────────────────────────────────────────
 const fmt=n=>!n?'0đ':n.toLocaleString('vi-VN')+'đ';
 function axFmt(v){if(!v)return'0';const a=Math.abs(v);if(a>=1e9)return(v/1e9).toFixed(1).replace('.0','')+'tỷ';if(a>=1e6)return(v/1e6).toFixed(1).replace('.0','')+'M';if(a>=1e3)return Math.round(v/1e3)+'K';return String(Math.round(v))}
 const fmtDt=d=>{if(!d)return'';const s=d.includes('T')?d:d+'T00:00';const dt=new Date(s);if(isNaN(dt))return d.slice(0,10);const dd=String(dt.getDate()).padStart(2,'0'),mm=String(dt.getMonth()+1).padStart(2,'0'),hh=String(dt.getHours()).padStart(2,'0'),mn=String(dt.getMinutes()).padStart(2,'0');return dt.getHours()===0&&dt.getMinutes()===0?`${dd}/${mm}`:`${dd}/${mm} ${hh}:${mn}`};
 function nowDT(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')+'T'+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')}
 function mLabel(k){const[y,m]=k.split('-');return`Tháng ${parseInt(m)}/${y}`}
 
-// ═══════════════════════════════════════════
-//  DATE FIELDS — auto-update
-// ═══════════════════════════════════════════
-function refreshDates(){
-  const now=nowDT();
-  ['sDate','iDate','cpDate','adjDate'].forEach(id=>{const el=document.getElementById(id);if(el&&!el._locked)el.value=now});
-}
+// ── Date fields ───────────────────────────────────────────────────────────────
+function refreshDates(){const now=nowDT();['sDate','iDate','cpDate','adjDate'].forEach(id=>{const el=document.getElementById(id);if(el&&!el._locked)el.value=now})}
 setInterval(refreshDates,60000);
 
-// ═══════════════════════════════════════════
-//  FORM HELPERS
-// ═══════════════════════════════════════════
+// ── Form helpers ──────────────────────────────────────────────────────────────
 function handleM(el){const r=(el.value||'').replace(/\D/g,'');el.dataset.raw=r;el.value=r?parseInt(r).toLocaleString('vi-VN'):''}
 function noKey(e){if(!['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Home','End'].includes(e.key)&&!/^\d$/.test(e.key))e.preventDefault()}
 function getRaw(id){const el=document.getElementById(id);return el?parseInt((el.dataset.raw||'0').replace(/\D/g,'')||'0')||0:0}
@@ -749,28 +710,17 @@ function sv(id,v){const el=document.getElementById(id);if(el)el.value=v}
 function setM(id,n){const el=document.getElementById(id);if(!el)return;el.dataset.raw=String(n);el.value=n?n.toLocaleString('vi-VN'):''}
 function clrM(id){const el=document.getElementById(id);if(el){el.value='';el.dataset.raw=''}}
 
-// ═══════════════════════════════════════════
-//  MONTH
-// ═══════════════════════════════════════════
-function getMonthOpts(){
-  const s=new Set();
-  for(let i=0;i<6;i++){const d=new Date();d.setDate(1);d.setMonth(d.getMonth()-i);s.add(d.toISOString().slice(0,7))}
-  allMKs().forEach(k=>s.add(k));
-  return[...s].sort().reverse();
-}
+// ── Month ─────────────────────────────────────────────────────────────────────
+function getMonthOpts(){const s=new Set();for(let i=0;i<6;i++){const d=new Date();d.setDate(1);d.setMonth(d.getMonth()-i);s.add(d.toISOString().slice(0,7))}allMKs().forEach(k=>s.add(k));return[...s].sort().reverse()}
 function buildMonthSel(){
   const now=new Date().toISOString().slice(0,7),opts=getMonthOpts();
-  const sel=document.getElementById('monthSel');
-  if(sel)sel.innerHTML=opts.map(k=>`<option value="${k}"${k===CUR?' selected':''}>${mLabel(k)}${k===now?' ⭐':''}</option>`).join('');
-  const mb=document.getElementById('monthBadge');
-  if(mb)mb.textContent=CUR===now?'📍 Tháng hiện tại':mLabel(CUR);
+  const sel=document.getElementById('monthSel');if(sel)sel.innerHTML=opts.map(k=>`<option value="${k}"${k===CUR?' selected':''}>${mLabel(k)}${k===now?' ⭐':''}</option>`).join('');
+  const mb=document.getElementById('monthBadge');if(mb)mb.textContent=CUR===now?'📍 Tháng hiện tại':mLabel(CUR);
   ['cmpA','cmpB'].forEach((id,i)=>{const el=document.getElementById(id);if(!el)return;el.innerHTML=opts.map(k=>`<option value="${k}">${mLabel(k)}</option>`).join('');if(i===1&&opts.length>1)el.value=opts[1]});
 }
 function switchMonth(k){CUR=k;FIN=loadFin(k);buildMonthSel();renderAll();if(document.getElementById('pg-history').classList.contains('on'))renderHist()}
 
-// ═══════════════════════════════════════════
-//  NAVIGATION
-// ═══════════════════════════════════════════
+// ── Navigation ────────────────────────────────────────────────────────────────
 function goPage(name,btn){
   document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
   document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on'));
@@ -786,29 +736,15 @@ const MSUBS=['ban','nhap','chiphi','kho','chebien'];
 function msub(name,btn){
   MSUBS.forEach(n=>{const el=document.getElementById('ms-'+n);if(el)el.style.display=n===name?'block':'none'});
   document.querySelectorAll('#pg-money .tab').forEach(b=>b.classList.remove('on'));
-  if(btn)btn.classList.add('on');
-  refreshDates();
+  if(btn)btn.classList.add('on');refreshDates();
   if(name==='kho'){renderInv();renderAdjHist()}
   if(name==='chebien')renderCooks();
   if(name==='chiphi')renderCpTable();
 }
-function psub(name,btn){
-  ['fb','tt'].forEach(n=>{const el=document.getElementById('ps-'+n);if(el)el.style.display=n===name?'block':'none'});
-  document.querySelectorAll('#pg-promo .tab').forEach(b=>b.classList.remove('on'));
-  if(btn)btn.classList.add('on');
-}
-function rsub(name,btn){
-  ['chart','compare','tax'].forEach(n=>{const el=document.getElementById('rs-'+n);if(el)el.style.display=n===name?'block':'none'});
-  document.querySelectorAll('#pg-reports .tab').forEach(b=>b.classList.remove('on'));
-  if(btn)btn.classList.add('on');
-  if(name==='chart')setTimeout(doCharts,80);
-  if(name==='compare')buildAllTime();
-  if(name==='tax')doTax();
-}
+function psub(name,btn){['fb','tt'].forEach(n=>{const el=document.getElementById('ps-'+n);if(el)el.style.display=n===name?'block':'none'});document.querySelectorAll('#pg-promo .tab').forEach(b=>b.classList.remove('on'));if(btn)btn.classList.add('on')}
+function rsub(name,btn){['chart','compare','tax'].forEach(n=>{const el=document.getElementById('rs-'+n);if(el)el.style.display=n===name?'block':'none'});document.querySelectorAll('#pg-reports .tab').forEach(b=>b.classList.remove('on'));if(btn)btn.classList.add('on');if(name==='chart')setTimeout(doCharts,80);if(name==='compare')buildAllTime();if(name==='tax')doTax()}
 
-// ═══════════════════════════════════════════
-//  TOAST & OVERLAYS
-// ═══════════════════════════════════════════
+// ── Toast & overlays ──────────────────────────────────────────────────────────
 let _tt=null;
 function toast(msg,err=false,ok=false){const t=document.getElementById('toast');if(!t)return;t.textContent=msg;t.className=err?'on err':ok?'on ok':'on';clearTimeout(_tt);_tt=setTimeout(()=>t.className='',3500)}
 let _pendSale=null;
@@ -817,9 +753,7 @@ function closeOv(id){document.getElementById(id).classList.remove('on')}
 function showStockAlert(msg,fn){document.getElementById('ovStockMsg').innerHTML=msg;document.getElementById('ovStock').classList.add('on');_pendSale=fn}
 function forceStock(){closeOv('ovStock');if(_pendSale)_pendSale();_pendSale=null}
 
-// ═══════════════════════════════════════════
-//  SELL SUGGESTIONS
-// ═══════════════════════════════════════════
+// ── Suggestions ───────────────────────────────────────────────────────────────
 let _curType='hangban',_sellName='',_sellUnitOut='';
 function onSellSug(val){
   const drop=document.getElementById('sDrop'),q=(val||'').toLowerCase();
@@ -828,25 +762,13 @@ function onSellSug(val){
   const cb=cooks.filter(x=>!q||x.name.toLowerCase().includes(q));
   drop.innerHTML='';
   if(!hb.length&&!cb.length){drop.classList.remove('on');return}
-  if(hb.length){
-    drop.appendChild(Object.assign(document.createElement('div'),{className:'suggrp',textContent:'🗄️ Hàng trong kho'}));
-    hb.slice(0,10).forEach(p=>{
-      const d=document.createElement('div');d.className='sugopt';
-      const dn=p.unitOut?`${p.name} (${p.unitOut})`:p.name;
-      d.innerHTML=`<div>${dn}</div><div class="sm">Tồn: <strong>${p.stock} ${p.unitOut||''}</strong>${p.lastP?' · Nhập: '+fmt(p.lastP):''}</div>`;
-      d.onmousedown=()=>{selSell(p.name,'hangban',p);drop.classList.remove('on')};drop.appendChild(d);
-    });
-  }
-  if(cb.length){
-    drop.appendChild(Object.assign(document.createElement('div'),{className:'suggrp',textContent:'👨‍🍳 Chế biến'}));
-    cb.slice(0,8).forEach(c=>{const d=document.createElement('div');d.className='sugopt';d.innerHTML=`<div>${c.name}</div><div class="sm">Chế biến · ${c.price?fmt(c.price):'Chưa đặt giá'}</div>`;d.onmousedown=()=>{selSell(c.name,'chebien',c);drop.classList.remove('on')};drop.appendChild(d)});
-  }
+  if(hb.length){drop.appendChild(Object.assign(document.createElement('div'),{className:'suggrp',textContent:'🗄️ Hàng trong kho'}));hb.slice(0,10).forEach(p=>{const d=document.createElement('div');d.className='sugopt';const dn=p.unitOut?`${p.name} (${p.unitOut})`:p.name;d.innerHTML=`<div>${dn}</div><div class="sm">Tồn: <strong>${p.stock} ${p.unitOut||''}</strong>${p.lastP?' · Nhập: '+fmt(p.lastP):''}</div>`;d.onmousedown=()=>{selSell(p.name,'hangban',p);drop.classList.remove('on')};drop.appendChild(d)})}
+  if(cb.length){drop.appendChild(Object.assign(document.createElement('div'),{className:'suggrp',textContent:'👨‍🍳 Chế biến'}));cb.slice(0,8).forEach(c=>{const d=document.createElement('div');d.className='sugopt';d.innerHTML=`<div>${c.name}</div><div class="sm">Chế biến · ${c.price?fmt(c.price):'Chưa đặt giá'}</div>`;d.onmousedown=()=>{selSell(c.name,'chebien',c);drop.classList.remove('on')};drop.appendChild(d)})}
   drop.classList.add('on');
 }
 function selSell(name,type,data){
   _sellName=name;_curType=type;_sellUnitOut=data.unitOut||'';
-  const disp=data.unitOut?`${name} (${data.unitOut})`:name;
-  sv('sName',disp);
+  const disp=data.unitOut?`${name} (${data.unitOut})`:name;sv('sName',disp);
   const b=document.getElementById('sInfo');if(!b)return;b.style.display='block';
   if(type==='hangban'){b.textContent=`📦 ${disp} — Tồn: ${data.stock} ${data.unitOut||''}${data.lastP?' · Nhập: '+fmt(data.lastP):''}`;if(data.lastP)setM('sPrice',data.lastP)}
   else{b.textContent=`👨‍🍳 ${name} — Chế biến · Không trừ kho`;if(data.price)setM('sPrice',data.price)}
@@ -855,54 +777,31 @@ function closeSellSug(){document.getElementById('sDrop').classList.remove('on')}
 function clrSInfo(){const b=document.getElementById('sInfo');if(b)b.style.display='none';_curType='hangban';_sellName='';_sellUnitOut=''}
 function calcTotal(){const b=document.getElementById('sTotal');if(!b)return;const q=getRaw('sQty'),p=getRaw('sPrice');if(q&&p){b.style.display='block';b.textContent=`💰 Thành tiền: ${fmt(q*p)}`}else b.style.display='none'}
 
-// Import suggestions
 function onImpSug(val){
   const drop=document.getElementById('iDrop'),q=(val||'').toLowerCase();
   const prods=loadProds().filter(x=>!q||x.name.toLowerCase().includes(q));
   drop.innerHTML='';if(!prods.length){drop.classList.remove('on');return}
   const seen=new Set();
-  prods.slice(0,10).forEach(p=>{
-    const lbl=p.unitOut?`${p.name} (${p.unitOut})`:p.name;
-    if(seen.has(lbl))return;seen.add(lbl);
-    const d=document.createElement('div');d.className='sugopt';
-    d.innerHTML=`<div>${lbl}</div><div class="sm">${p.kind==='hangban'?'🛒 Bán lại':'🧂 Nguyên liệu'}${p.unitIn?' · '+p.unitIn+(p.unitOut&&p.unitOut!==p.unitIn?'→'+p.unitOut:''):''}</div>`;
-    d.onmousedown=()=>{sv('iName',p.name);drop.classList.remove('on');sv('iType',p.kind||'hangban');sv('iUIn',p.unitIn||'');sv('iUOut',p.unitOut||'');const fe=document.getElementById('iFac');if(fe){fe.value=p.factor||1;fe.dataset.raw=String(p.factor||1)}togImpMode();showConv()};
-    drop.appendChild(d);
-  });
+  prods.slice(0,10).forEach(p=>{const lbl=p.unitOut?`${p.name} (${p.unitOut})`:p.name;if(seen.has(lbl))return;seen.add(lbl);const d=document.createElement('div');d.className='sugopt';d.innerHTML=`<div>${lbl}</div><div class="sm">${p.kind==='hangban'?'🛒 Bán lại':'🧂 Nguyên liệu'}${p.unitIn?' · '+p.unitIn+(p.unitOut&&p.unitOut!==p.unitIn?'→'+p.unitOut:''):''}</div>`;d.onmousedown=()=>{sv('iName',p.name);drop.classList.remove('on');sv('iType',p.kind||'hangban');sv('iUIn',p.unitIn||'');sv('iUOut',p.unitOut||'');const fe=document.getElementById('iFac');if(fe){fe.value=p.factor||1;fe.dataset.raw=String(p.factor||1)}togImpMode();showConv()};drop.appendChild(d)});
   drop.classList.add('on');
 }
 function closeImpSug(){document.getElementById('iDrop').classList.remove('on')}
 function togImpMode(){const t=gv('iType'),w=document.getElementById('iConvWrap');if(w)w.style.display=t==='nguyenlieu'?'none':'block'}
 function showConv(){const b=document.getElementById('convPreview');if(!b)return;const q=getRaw('iQty'),f=getRaw('iFac')||1,uI=gv('iUIn')||'đv nhập',uO=gv('iUOut')||'đv bán';if(q&&f){b.innerHTML=`📦 <strong>${q} ${uI}</strong> × <strong>${f}</strong> = <strong>${q*f} ${uO}</strong> vào kho`;b.classList.add('on')}else b.classList.remove('on')}
 
-// ═══════════════════════════════════════════
-//  PERIOD FILTER
-// ═══════════════════════════════════════════
+// ── Periods ───────────────────────────────────────────────────────────────────
 let perBan='all',perNhap='all',perChart='week';
-function setPer(tab,p,btn){
-  if(tab==='ban')perBan=p;else perNhap=p;
-  document.querySelectorAll(`#ms-${tab==='ban'?'ban':'nhap'} .ptab`).forEach(b=>b.classList.remove('on'));
-  if(btn)btn.classList.add('on');
-  if(tab==='ban')renderBanTable();else renderNhapTable();
-}
+function setPer(tab,p,btn){if(tab==='ban')perBan=p;else perNhap=p;document.querySelectorAll(`#ms-${tab==='ban'?'ban':'nhap'} .ptab`).forEach(b=>b.classList.remove('on'));if(btn)btn.classList.add('on');if(tab==='ban')renderBanTable();else renderNhapTable()}
 function setChPer(p,btn){perChart=p;document.querySelectorAll('#rs-chart .ptab').forEach(b=>b.classList.remove('on'));if(btn)btn.classList.add('on');doCharts()}
-function filterPer(arr,per){
-  if(per==='all')return arr;
-  const now=new Date(),tod=todayISO();
-  return arr.filter(x=>{const d=x.date?(x.date.includes('T')?x.date.slice(0,10):x.date):'';if(per==='today')return d===tod;if(per==='week'){const dt=new Date(d+'T00:00'),w=new Date(now);w.setDate(now.getDate()-6);return dt>=w}if(per==='month')return d.slice(0,7)===CUR;return true});
-}
+function filterPer(arr,per){if(per==='all')return arr;const now=new Date(),tod=todayISO();return arr.filter(x=>{const d=x.date?(x.date.includes('T')?x.date.slice(0,10):x.date):'';if(per==='today')return d===tod;if(per==='week'){const dt=new Date(d+'T00:00'),w=new Date(now);w.setDate(now.getDate()-6);return dt>=w}if(per==='month')return d.slice(0,7)===CUR;return true})}
 
-// ═══════════════════════════════════════════
-//  BULK SELECT
-// ═══════════════════════════════════════════
+// ── Bulk select ───────────────────────────────────────────────────────────────
 function selAll(tab,checked){document.querySelectorAll(`.cb-${tab}`).forEach(cb=>cb.checked=checked);updBulk(tab)}
 function updBulk(tab){const c=document.querySelectorAll(`.cb-${tab}:checked`).length,b=document.getElementById(tab+'Bulk');if(b)b.style.display=c?'inline-flex':'none'}
 function bulkDel(tab){const ids=[];document.querySelectorAll(`.cb-${tab}:checked`).forEach(cb=>ids.push(+cb.value));if(!ids.length){toast('⚠️ Chưa chọn!',true);return}showCfm(`Xoá ${ids.length} dòng`,'Không thể hoàn tác.',()=>{const s=new Set(ids);if(tab==='ban')FIN.sales=FIN.sales.filter(x=>!s.has(x.id));else FIN.imports=FIN.imports.filter(x=>!s.has(x.id));persist();renderAll();renderInv();toast('✅ Đã xoá!')})}
 function cfmDelAll(tab){showCfm('Xoá tất cả',`Xoá TOÀN BỘ ${tab==='ban'?'bán hàng':'nhập hàng'} tháng ${mLabel(CUR)}?`,()=>{if(tab==='ban')FIN.sales=[];else FIN.imports=[];persist();renderAll();renderInv();toast('✅ Đã xoá!')})}
 
-// ═══════════════════════════════════════════
-//  RENDER ALL
-// ═══════════════════════════════════════════
+// ── Render ────────────────────────────────────────────────────────────────────
 function renderAll(){renderSummary();renderBanTable();renderNhapTable()}
 function renderToday(){
   const thu=getThu(),chi=getChi(),lai=thu-chi;
@@ -940,14 +839,11 @@ function renderHomeRecent(){
   w.innerHTML=`<div class="tblwrap"><table><thead><tr><th>Ngày</th><th>Loại</th><th>Tên</th><th>Tiền</th></tr></thead><tbody>${all.map(x=>`<tr><td>${fmtDt(x.date)}</td><td>${x.tt==='ban'?'<span class="tag t-sell">💰 Bán</span>':'<span class="tag t-imp">📦 Nhập</span>'}</td><td>${(x.name||'')+(x.unitOut&&x.tt==='ban'?' ('+x.unitOut+')':'')}</td><td class="${x.tt==='ban'?'tv':'rv'}">${x.tt==='ban'?'+':'-'}${fmt(x.totalAmt)}</td></tr>`).join('')}</tbody></table></div>`;
 }
 
-// ═══════════════════════════════════════════
-//  INVENTORY RENDER
-// ═══════════════════════════════════════════
+// ── Inventory render ──────────────────────────────────────────────────────────
 function renderInv(){
   const el=document.getElementById('invView');if(!el)return;
   const q=(gv('invSearch')||'').toLowerCase(),stf=gv('invStatus')||'';
-  let inv=computeInv();
-  if(q)inv=inv.filter(x=>x.name.toLowerCase().includes(q));
+  let inv=computeInv();if(q)inv=inv.filter(x=>x.name.toLowerCase().includes(q));
   if(!inv.length){el.innerHTML='<div class="empty"><div class="ei">📦</div>Không tìm thấy</div>';return}
   const now=new Date();
   const outI=inv.filter(x=>x.stock===0),lowI=inv.filter(x=>x.stock>0&&x.stock<LOW),okI=inv.filter(x=>x.stock>=LOW);
@@ -971,27 +867,21 @@ function icrd(x,st,days){
   return`<div class="invcard ${cs[st]}"><div style="font-size:1.1rem;flex-shrink:0">${ico[st]}</div><div class="invbody"><div class="invname">${dn}</div><div class="invmeta">${meta}</div></div><span class="invqty ${qs[st]||'q-ok'}">${ql}</span></div>`;
 }
 
-// ═══════════════════════════════════════════
-//  ADJUSTMENT
-// ═══════════════════════════════════════════
+// ── Adjustment ────────────────────────────────────────────────────────────────
 function openAdj(){
-  const inv=computeInv().filter(x=>x.stock>0);
-  const sel=document.getElementById('adjProd');if(!sel)return;
+  const inv=computeInv().filter(x=>x.stock>0);const sel=document.getElementById('adjProd');if(!sel)return;
   if(!inv.length){toast('⚠️ Kho trống!',true);return}
   sel.innerHTML=inv.map(x=>`<option value="${x.key}">${x.name}${x.unitOut?' ('+x.unitOut+')':''} — Tồn: ${x.stock} ${x.unitOut}</option>`).join('');
-  sv('adjDate',nowDT());clrM('adjQty');sv('adjNote','');
-  document.getElementById('ovAdj').classList.add('on');
+  sv('adjDate',nowDT());clrM('adjQty');sv('adjNote','');document.getElementById('ovAdj').classList.add('on');
 }
 function confirmAdj(){
   const key=gv('adjProd'),qty=getRaw('adjQty'),reason=gv('adjReason'),note=gv('adjNote'),date=gv('adjDate');
   if(!key){toast('⚠️ Chọn sản phẩm!',true);return}if(!qty){toast('⚠️ Nhập số lượng!',true);return}
-  const[name,unitOut]=(key+':::').split(':::');
-  const{stock}=getStock(name,unitOut);
+  const[name,unitOut]=(key+':::').split(':::');const{stock}=getStock(name,unitOut);
   if(stock<qty){toast(`⚠️ Kho chỉ còn ${stock}!`,true);return}
   const rmap={huhong:'Hư hỏng',hethan:'Hết hạn',thathoat:'Thất thoát',kiemke:'Kiểm kê sai',khac:'Khác'};
   FIN.adjs.push({id:Date.now(),name,unitOut,qty,reason,reasonLabel:rmap[reason]||reason,note,date});
-  persist();renderInv();renderAdjHist();closeOv('ovAdj');
-  toast(`✅ Giảm ${qty} ${unitOut} ${name}`,false,true);
+  persist();renderInv();renderAdjHist();closeOv('ovAdj');toast(`✅ Giảm ${qty} ${unitOut} ${name}`,false,true);
 }
 function renderAdjHist(){
   const w=document.getElementById('adjHist');if(!w)return;
@@ -1001,16 +891,12 @@ function renderAdjHist(){
   w.innerHTML=`<div class="tblwrap"><table><thead><tr><th>Ngày</th><th>Sản phẩm</th><th>Giảm</th><th>Lý do</th></tr></thead><tbody>${all.map(a=>`<tr><td>${fmtDt(a.date)}</td><td>${a.name}${a.unitOut?' ('+a.unitOut+')':''}</td><td class="rv">-${a.qty}</td><td>${a.reasonLabel||a.reason}${a.note?' — '+a.note:''}</td></tr>`).join('')}</tbody></table></div>`;
 }
 
-// ═══════════════════════════════════════════
-//  COOK PRODUCTS
-// ═══════════════════════════════════════════
+// ── Cook products ─────────────────────────────────────────────────────────────
 function addCook(){const name=gv('cbName'),price=getRaw('cbPrice');if(!name){toast('⚠️ Nhập tên!',true);return}const a=loadCooks();if(a.find(x=>x.name===name)){toast('⚠️ Đã tồn tại!',true);return}a.push({id:Date.now(),name,price});saveCooks(a);renderCooks();sv('cbName','');clrM('cbPrice');toast('✅ Đã thêm!')}
 function delCook(id){showCfm('Xoá sản phẩm','Xoá sản phẩm này?',()=>{saveCooks(loadCooks().filter(x=>x.id!==id));renderCooks();toast('✅ Đã xoá!')})}
 function renderCooks(){const el=document.getElementById('cookList');if(!el)return;const a=loadCooks();if(!a.length){el.innerHTML='<div class="empty"><div class="ei">👨‍🍳</div>Chưa có sản phẩm chế biến</div>';return}el.innerHTML=a.map(c=>`<div class="cookitem"><div class="cookbody"><div class="cookname">${c.name}</div><div class="cookmeta">Chế biến · Không trừ kho</div></div><div class="cookprice">${c.price?fmt(c.price):'—'}</div><button class="cookdel" onclick="delCook(${c.id})">🗑️</button></div>`).join('')}
 
-// ═══════════════════════════════════════════
-//  SALES & IMPORTS
-// ═══════════════════════════════════════════
+// ── Sales & imports ───────────────────────────────────────────────────────────
 function addSale(){
   const inputVal=gv('sName'),name=_sellName||inputVal.replace(/\s*\([^)]*\)$/,'').trim();
   const qty=getRaw('sQty'),price=getRaw('sPrice'),date=gv('sDate'),desc=gv('sDesc');
@@ -1045,148 +931,148 @@ function delImp(id){showCfm('Xoá khoản nhập','Tồn kho sẽ thay đổi.',
 function addCost(){const desc=gv('cpDesc'),amount=getRaw('cpAmt'),date=gv('cpDate'),type=gv('cpType');if(!desc){toast('⚠️ Nhập mô tả!',true);return}if(!amount){toast('⚠️ Nhập tiền!',true);return}if(!date){toast('⚠️ Chọn ngày!',true);return}FIN.costs.push({id:Date.now(),desc,amount,type,date});persist();renderAll();renderCpTable();renderToday();clrM('cpAmt');sv('cpDesc','');toast('✅ Đã thêm!')}
 function delCp(id){showCfm('Xoá chi phí','Xoá khoản chi này?',()=>{FIN.costs=FIN.costs.filter(x=>x.id!==id);persist();renderAll();renderCpTable();toast('✅ Đã xoá!')})}
 
-// ═══════════════════════════════════════════
-//  AI API — Anthropic (no key needed)
-// ═══════════════════════════════════════════
-async function callAI(systemPrompt, userMsg, maxTokens=600){
-  const res = await fetch(AI_URL, {
+// ════════════════════════════════════════════════════════════════════════════
+//  AI LAYER — callAI with 1 retry + smart fallback
+// ════════════════════════════════════════════════════════════════════════════
+
+async function callAI(sysPr,userMsg,maxTok=700){
+  const res=await fetch(AI_URL,{
     method:'POST',
     headers:{'Content-Type':'application/json'},
     body:JSON.stringify({
       model:'claude-sonnet-4-20250514',
-      max_tokens:maxTokens,
-      system:systemPrompt,
+      max_tokens:maxTok,
+      system:sysPr,
       messages:[{role:'user',content:userMsg}]
     })
   });
-  if(!res.ok){
-    const err=await res.json().catch(()=>({}));
-    const code=res.status;
-    if(code===429)throw Object.assign(new Error('Quota'),{code:429});
-    if(code===529)throw Object.assign(new Error('Overloaded'),{code:529});
-    throw Object.assign(new Error(err?.error?.message||`HTTP ${code}`),{code});
-  }
+  if(!res.ok){const err=await res.json().catch(()=>({}));const c=res.status;throw Object.assign(new Error(err?.error?.message||`HTTP ${c}`),{code:c})}
   const data=await res.json();
-  const txt=data.content?.map(b=>b.text||'').join('');
-  if(!txt)throw new Error('Rỗng');
+  const txt=(data.content||[]).map(b=>b.text||'').join('');
+  if(!txt)throw new Error('empty');
   return txt;
 }
 
-// ═══════════════════════════════════════════
-//  TAX CARD (special UI for > 500M)
-// ═══════════════════════════════════════════
-function buildTaxCard(yRev){
-  const yRevFmt=fmt(yRev);
-  const yRevRaw=String(yRev);
-  const gT=Math.round(yRev*.01),tncn=Math.round((yRev-TAX_TH)*.005);
-  return `<div class="taxcard">
-    <div class="taxcard-title">🛡️ Hộ Mệnh Thuế — Ô [21] Tờ Khai</div>
-    <div class="taxcard-sub">Bà điền con số này vào <strong>Ô số [21]</strong> — Doanh thu phát sinh trong kỳ:</div>
-    <div class="taxcard-amt">${yRevFmt}</div>
-    <div style="font-size:.68rem;color:#856404;margin-top:4px;line-height:1.6">
-      💡 GTGT ≈ ${fmt(gT)} &nbsp;|&nbsp; TNCN ≈ ${fmt(tncn)}<br>
-      Tổng thuế ≈ <strong>${fmt(gT+tncn)}</strong>
-    </div>
-    <div class="taxcard-btns">
-      <button class="tcopy" onclick="clip('${yRevRaw}','📋 Đã sao chép ${yRevFmt}')">📋 Sao chép số tiền</button>
-      <a href="https://canhan.gdt.gov.vn" target="_blank" class="topen">🌐 Mở trang Thuế</a>
-    </div>
-  </div>`;
+// Retry once with 1.5s delay before falling back
+async function callAIWithRetry(sys,msg,maxTok=700){
+  try{return await callAI(sys,msg,maxTok)}
+  catch(e1){
+    if(e1.code===429||e1.code===529){throw e1}// quota/overload — skip retry
+    await new Promise(r=>setTimeout(r,1500));
+    return await callAI(sys,msg,maxTok);// 2nd attempt
+  }
 }
 
-function buildSafeTaxCard(yRev){
-  const rem=TAX_TH-yRev;
-  return `<div style="background:linear-gradient(135deg,#E8F5E9,#F1F8E9);border:2px solid #4CAF50;border-radius:14px;padding:12px;margin-top:8px;text-align:center">
-    <div style="font-size:.88rem;font-weight:900;color:#2E7D32;margin-bottom:4px">🛡️ Chưa phải nộp thuế ✅</div>
-    <div style="font-size:.72rem;color:#388E3C;margin-bottom:6px">Doanh thu năm của bà:</div>
-    <div style="font-size:1.3rem;font-weight:900;color:#1B6B3A">${fmt(yRev)}</div>
-    <div style="font-size:.7rem;color:#5A7A66;margin-top:4px">Còn được bán thêm <strong style="color:#1B6B3A">${fmt(rem)}</strong> trước khi lo thuế</div>
-    <button onclick="clip('${yRev}','📋 Đã sao chép!')" style="margin-top:8px;padding:7px 14px;background:#1B6B3A;color:#fff;border:none;border-radius:16px;font-weight:800;cursor:pointer;font-size:.74rem;font-family:inherit">📋 Sao chép doanh thu</button>
-  </div>`;
+// ── Smart fallback (no API needed) ───────────────────────────────────────────
+function invSummaryText(){
+  const inv=computeInv();if(!inv.length)return'Kho đang trống.';
+  const out=inv.filter(x=>x.stock===0),low=inv.filter(x=>x.stock>0&&x.stock<LOW),ok=inv.filter(x=>x.stock>=LOW);
+  let s='';
+  if(out.length)s+=`🔴 Hết hàng: ${out.map(x=>x.name+(x.unitOut?' ('+x.unitOut+')':'')).join(', ')}.\n`;
+  if(low.length)s+=`🟡 Sắp hết: ${low.map(x=>x.name+' còn '+x.stock+(x.unitOut?' '+x.unitOut:'')).join(', ')}.\n`;
+  if(ok.length)s+=`🟢 Đủ hàng: ${ok.slice(0,6).map(x=>x.name+' ('+x.stock+')').join(', ')}${ok.length>6?' +'+( ok.length-6)+' nữa':''}.`;
+  return s.trim()||'Kho ổn 👍';
 }
 
-// ═══════════════════════════════════════════
-//  FALLBACK AI (when API fails)
-// ═══════════════════════════════════════════
 function fallbackResponse(msg){
   const yRev=yearRevenue(),thu=getRev(CUR),chi=getCost(CUR),lai=thu-chi;
-  const msgL=msg.toLowerCase();
-  const isTaxQ=/(thuế|nộp|tờ khai|gtgt|tncn|500 triệu|canhan|o 21|ô 21)/i.test(msg);
-  const isInvQ=/(kho|tồn kho|còn gì|hết hàng|sắp hết)/i.test(msg);
-  const isRevQ=/(doanh thu|lãi|thu nhập|bán được|tháng)/i.test(msg);
+  const m=msg.toLowerCase();
 
-  if(isTaxQ){
-    if(yRev>TAX_TH){
-      return{
-        text:`Bà ơi, doanh thu năm nay của mình là ${fmt(yRev)}, đã vượt ngưỡng 500 triệu rồi ạ 😟\n\nBà đừng lo nhé, con đã chuẩn bị sẵn thẻ hướng dẫn bên dưới để bà điền vào tờ khai thuế!`,
-        taxCard:true,yRev
-      };
-    } else {
-      return{text:`Dạ bà ơi, doanh thu mình đang ở mức ${fmt(yRev)}, chưa đến ngưỡng 500 triệu nên chưa cần nộp thuế đâu ạ 😊\n\nBà yên tâm kinh doanh nhé!`,safeTaxCard:true,yRev};
-    }
+  // Thuế
+  if(/(thuế|nộp|tờ khai|gtgt|tncn|500|canhan|ô 21|o 21|khai thuế)/i.test(msg)){
+    if(yRev>TAX_TH)return{text:`Doanh thu năm nay của bạn là ${fmt(yRev)}, đã vượt ngưỡng 500 triệu rồi!\nBạn cần khai thuế tại canhan.gdt.gov.vn — điền vào Ô [21]: ${fmt(yRev)}`,taxCard:true,yRev};
+    const rem=TAX_TH-yRev;
+    return{text:`Doanh thu ${fmt(yRev)}, chưa đến 500 triệu nên chưa cần nộp thuế nhé!\nCòn được bán thêm ${fmt(rem)} trước khi lo.`,safeTaxCard:true,yRev};
   }
-  if(isInvQ){
+
+  // Kho / tồn kho
+  if(/(kho|tồn kho|còn gì|hết hàng|sắp hết|còn bao nhiêu|stock)/i.test(msg)){
     const inv=computeInv();
-    if(!inv.length)return{text:'Kho hiện đang trống bà ơi. Bà vào mục Thu/Chi → Nhập hàng để thêm hàng vào kho nhé!'};
-    const out=inv.filter(x=>x.stock===0),low=inv.filter(x=>x.stock>0&&x.stock<LOW);
-    let txt='📦 Tình hình kho:\n';
-    if(out.length)txt+=`🔴 Hết hàng: ${out.map(x=>x.name+(x.unitOut?' ('+x.unitOut+')':'')).join(', ')}\n`;
-    if(low.length)txt+=`🟡 Sắp hết: ${low.map(x=>x.name+' còn '+x.stock+(x.unitOut?' '+x.unitOut:'')).join(', ')}\n`;
-    const ok=inv.filter(x=>x.stock>=LOW);
-    if(ok.length)txt+=`🟢 Đủ hàng: ${ok.slice(0,5).map(x=>x.name+' ('+x.stock+')').join(', ')}${ok.length>5?' ...':''}`;
-    return{text:txt};
+    if(!inv.length)return{text:'Kho đang trống. Vào Thu/Chi → Nhập hàng để thêm sản phẩm nhé!'};
+    return{text:'📦 Tình hình kho:\n'+invSummaryText()};
   }
-  if(isRevQ)return{text:`📊 Tháng ${CUR}:\n💰 Thu: ${fmt(thu)}\n📉 Chi: ${fmt(chi)}\n💼 Lãi/Lỗ: ${(lai>=0?'+':'')+fmt(lai)}`};
-  return{text:`Hệ thống AI đang bận một chút ạ 🙏 Bà có thể thử lại sau hoặc hỏi về: kho hàng, doanh thu, hoặc thuế nhé!`};
+
+  // Doanh thu / lãi lỗ
+  if(/(doanh thu|lãi|lợi nhuận|thu nhập|bán được|tháng này|tháng|hôm nay thu|hôm nay lãi)/i.test(msg)){
+    return{text:`📊 Kết quả tháng ${CUR}:\n💰 Doanh thu: ${fmt(thu)}\n📉 Chi phí: ${fmt(chi)}\n💼 Lãi/Lỗ: ${(lai>=0?'+':'')+fmt(lai)}\n\n📅 Doanh thu cả năm: ${fmt(yRev)}`};
+  }
+
+  // Bán hàng / tăng doanh thu / kinh doanh
+  if(/(bán|kinh doanh|tăng doanh|cách nào|làm sao|thế nào|giá|khách|marketing|quảng cáo|mẹo|tip)/i.test(msg)){
+    const tips=[
+      '💡 Mẹo tăng doanh thu hiệu quả:\n• Đăng ảnh sản phẩm + giá lên Facebook/Zalo mỗi sáng\n• Tạo combo: mua 2 tặng 1, hoặc giảm giá số lượng lớn\n• Ghi nhớ khách quen → chủ động nhắc khi có hàng mới\n• Bạn có thể dùng mục "Quảng bá" để AI viết bài cho!',
+      '📈 Chiến lược bán chạy hơn:\n• Theo dõi sản phẩm bán chạy nhất → nhập thêm đúng lúc\n• Hàng sắp hết hạn → đẩy giá thấp để giải phóng kho nhanh\n• Bày hàng ở nơi dễ thấy, gắn giá rõ ràng\n• Giờ cao điểm: 7–9h sáng và 5–7h chiều',
+      '🛒 Cách giữ chân khách quen:\n• Thái độ niềm nở, nhớ tên và sở thích của khách\n• Luôn có hàng đủ tồn, không để khách đến mà hết hàng\n• Giao hàng tận nơi cho đơn lớn nếu được\n• Chương trình tích điểm đơn giản: mua 10 lần tặng 1 lần'
+    ];
+    return{text:tips[Math.floor(Math.random()*tips.length)]};
+  }
+
+  // Nhập hàng / đặt hàng
+  if(/(nhập|đặt hàng|nhà cung cấp|giá nhập|nguồn hàng)/i.test(msg)){
+    return{text:'📦 Để nhập hàng:\n• Vào Thu/Chi → tab Nhập hàng\n• Điền tên, đơn vị, số lượng và tổng tiền\n• Hệ thống tự cập nhật tồn kho ngay!\n\nMẹo: Nhập đủ thông tin để theo dõi lãi gộp chính xác nhé.'};
+  }
+
+  // Hướng dẫn sử dụng app
+  if(/(hướng dẫn|cách dùng|sử dụng|app|ứng dụng|tính năng|làm gì được)/i.test(msg)){
+    return{text:'📱 App này giúp bạn:\n• 💰 Thu/Chi: Ghi bán hàng, nhập kho, chi phí\n• 📊 Báo cáo: Biểu đồ doanh thu, so sánh tháng, kiểm tra thuế\n• 📣 Quảng bá: AI viết bài Facebook & hướng dẫn TikTok\n• 🤖 AI này: Hỏi gì cũng được, ghi giao dịch bằng chat!'};
+  }
+
+  // Default thông minh hơn — không trả về câu rỗng
+  return{text:`Mình hiểu bạn đang hỏi về "${msg.slice(0,40)}${msg.length>40?'...':''}".\n\nHiện kết nối AI tạm gián đoạn, nhưng mình có thể giúp ngay:\n• Gõ "kho còn gì?" → xem tồn kho\n• Gõ "tháng này lãi bao nhiêu?" → xem doanh thu\n• Gõ "bán 5 gói mì 15k" → ghi giao dịch\n• Gõ "tôi có phải nộp thuế không?" → kiểm tra thuế`};
 }
 
-// ═══════════════════════════════════════════
-//  PROMO
-// ═══════════════════════════════════════════
+// ── Tax card helpers ──────────────────────────────────────────────────────────
+function buildTaxCard(yRev){
+  const gT=Math.round(yRev*.01),tncn=Math.round((yRev-TAX_TH)*.005);
+  return`<div class="taxcard"><div class="taxcard-title">🛡️ Hộ Mệnh Thuế — Ô [21] Tờ Khai</div><div class="taxcard-sub">Bạn điền con số này vào <strong>Ô số [21]</strong>:</div><div class="taxcard-amt">${fmt(yRev)}</div><div style="font-size:.68rem;color:#856404;margin-top:4px;line-height:1.6">💡 GTGT ≈ ${fmt(gT)} &nbsp;|&nbsp; TNCN ≈ ${fmt(tncn)}<br>Tổng thuế ≈ <strong>${fmt(gT+tncn)}</strong></div><div class="taxcard-btns"><button class="tcopy" onclick="clip('${yRev}','📋 Đã sao chép!')">📋 Sao chép số tiền</button><a href="https://canhan.gdt.gov.vn" target="_blank" class="topen">🌐 Mở trang Thuế</a></div></div>`;
+}
+function buildSafeTaxCard(yRev){
+  const rem=TAX_TH-yRev;
+  return`<div style="background:linear-gradient(135deg,#E8F5E9,#F1F8E9);border:2px solid #4CAF50;border-radius:14px;padding:12px;margin-top:8px;text-align:center"><div style="font-size:.88rem;font-weight:900;color:#2E7D32;margin-bottom:4px">🛡️ Chưa phải nộp thuế ✅</div><div style="font-size:.72rem;color:#388E3C;margin-bottom:6px">Doanh thu năm của bạn:</div><div style="font-size:1.3rem;font-weight:900;color:#1B6B3A">${fmt(yRev)}</div><div style="font-size:.7rem;color:#5A7A66;margin-top:4px">Còn được bán thêm <strong style="color:#1B6B3A">${fmt(rem)}</strong> trước khi lo thuế</div><button onclick="clip('${yRev}','📋 Đã sao chép!')" style="margin-top:8px;padding:7px 14px;background:#1B6B3A;color:#fff;border:none;border-radius:16px;font-weight:800;cursor:pointer;font-size:.74rem;font-family:inherit">📋 Sao chép doanh thu</button></div>`;
+}
+
+// ── Promo AI ──────────────────────────────────────────────────────────────────
 async function genFb(){
   const prod=gv('fbProd'),hl=gv('fbHl'),price=getRaw('fbPrice');
   if(!prod){toast('⚠️ Nhập tên sản phẩm!',true);return}
   const card=document.getElementById('fbCard'),ld=document.getElementById('fbLoader'),box=document.getElementById('fbRes'),btn=document.getElementById('fbCopy');
   card.style.display='block';if(ld)ld.style.display='block';if(box)box.style.display='none';if(btn)btn.style.display='none';
-  const prompt=`Viết bài đăng Facebook bán hàng ngắn gọn cho tiểu thương Việt Nam.\nSản phẩm: ${prod}${hl?' · Điểm nổi bật: '+hl:''}${price?' · Giá: '+fmt(price):''}.\nYêu cầu: Có emoji, thân thiện, call-to-action, 2-3 hashtag. Không quá 150 từ. Chỉ trả về bài viết.`;
+  const sys='Bạn là chuyên gia marketing cho tiểu thương Việt Nam. Viết bài bán hàng Facebook ngắn gọn, chân thật, gần gũi, có emoji, có call-to-action. Không quá 150 từ. Chỉ trả về bài viết, không giải thích thêm.';
+  const prompt=`Viết bài đăng Facebook bán "${prod}"${hl?' — điểm nổi bật: '+hl:''}${price?' — giá: '+fmt(price):''}. Có 2-3 hashtag phù hợp.`;
   try{
-    const sys='Bạn là chuyên gia marketing cho tiểu thương Việt Nam. Viết bài bán hàng ngắn gọn, chân thật, gần gũi.';
-    const raw=await callAI(sys,prompt,400);
-    if(ld)ld.style.display='none';if(box){box.textContent=raw;box.style.display='block'}if(btn)btn.style.display='inline-block';
-  }catch(err){
+    const raw=await callAIWithRetry(sys,prompt,450);
+    if(ld)ld.style.display='none';if(box){box.textContent=raw.trim();box.style.display='block'}if(btn)btn.style.display='inline-block';
+  }catch{
     if(ld)ld.style.display='none';
-    // Fallback
-    const fb=`🌟 ${prod}${hl?' — '+hl:''}!\n\n✅ Hàng chính hãng, chất lượng đảm bảo${price?' 💰 Chỉ '+fmt(price):''}!\n\n📞 Liên hệ ngay để đặt hàng hoặc ghé cửa hàng nhé!\n\n#${prod.replace(/\s+/g,'')} #TiểuThương #HàngTốtGiáRẻ`;
+    const emoji=['🔥','⭐','✨','💫'][Math.floor(Math.random()*4)];
+    const fb=`${emoji} ${prod.toUpperCase()}${hl?' — '+hl:''}!\n\n✅ Hàng chính hãng, chất lượng đảm bảo${price?'\n💰 Chỉ '+fmt(price)+'/cái':''}\n\n📞 Liên hệ ngay hoặc ghé cửa hàng!\n⏰ Số lượng có hạn, đặt sớm kẻo hết!\n\n#${prod.replace(/\s+/g,'')} #HàngTốt #GiáRẻ`;
     if(box){box.textContent=fb;box.style.display='block'}if(btn)btn.style.display='inline-block';
-    toast('⚠️ AI bận, dùng mẫu có sẵn',false);
+    toast('ℹ️ Dùng mẫu nhanh (AI tạm bận)');
   }
 }
 async function genTT(){
-  if(!gv('ttProd')){toast('⚠️ Nhập tên sản phẩm!',true);return}const prod=gv('ttProd');
-  const rm={ba:'bà',chu:'chú',me:'mẹ',ban:'bạn'},x=rm[gv('ttRole')]||'bạn';
+  if(!gv('ttProd')){toast('⚠️ Nhập tên sản phẩm!',true);return}
+  const prod=gv('ttProd');const rm={ba:'bà',chu:'chú',me:'mẹ',ban:'bạn'},x=rm[gv('ttRole')]||'bạn';
   const card=document.getElementById('ttCard'),ld=document.getElementById('ttLoader'),box=document.getElementById('ttRes'),btn=document.getElementById('ttCopy');
   card.style.display='block';if(ld)ld.style.display='block';if(box)box.style.display='none';if(btn)btn.style.display='none';
+  const sys=`Hướng dẫn quay TikTok bán hàng siêu đơn giản cho người không rành công nghệ. Chia 3 bước rõ ràng, ngắn gọn, thân thiện. Kết thúc bằng câu động viên "${x.charAt(0).toUpperCase()+x.slice(1)} quay xong đăng luôn nhé 💚". Chỉ trả hướng dẫn, không giải thích thêm.`;
   try{
-    const sys='Hướng dẫn quay TikTok bán hàng ngắn gọn, dễ hiểu cho người không rành công nghệ.';
-    const raw=await callAI(sys,`Hướng dẫn ${x} quay TikTok bán "${prod}". 3 bước cực đơn giản. Cuối: "${x.charAt(0).toUpperCase()+x.slice(1)} cứ quay xong đăng luôn nhé 💚"`,400);
-    if(ld)ld.style.display='none';if(box){box.textContent=raw;box.style.display='block'}if(btn)btn.style.display='inline-block';
-  }catch(err){
+    const raw=await callAIWithRetry(sys,`Hướng dẫn ${x} quay TikTok bán "${prod}". 3 bước cực đơn giản.`,400);
+    if(ld)ld.style.display='none';if(box){box.textContent=raw.trim();box.style.display='block'}if(btn)btn.style.display='inline-block';
+  }catch{
     if(ld)ld.style.display='none';
-    const tt=`🎬 Hướng dẫn ${x} quay TikTok bán ${prod}:\n\nBước 1: Mở camera, quay thẳng vào sản phẩm 📱\nBước 2: Nói ngắn gọn: "${prod} — hàng tốt, giá hợp lý, mua ngay nào!"\nBước 3: Quay xong → Đăng luôn, đừng lo hoàn hảo!\n\n${x.charAt(0).toUpperCase()+x.slice(1)} cứ quay xong đăng luôn nhé 💚`;
+    const tt=`🎬 Hướng dẫn quay TikTok bán ${prod}:\n\nBước 1 📱 Mở camera, để chế độ quay dọc\nQuay thẳng vào sản phẩm — ánh sáng tự nhiên là đẹp nhất!\n\nBước 2 🗣️ Nói ngắn gọn:\n"${prod} hôm nay ${x} có hàng rồi nha! Chất lượng tốt, giá hợp lý — vào lấy nhanh!"\n\nBước 3 ✅ Đăng lên TikTok\nThêm hashtag #${prod.replace(/\s+/g,'')} #tiệmtạphóa — Đăng giờ cao điểm 8h tối!\n\n${x.charAt(0).toUpperCase()+x.slice(1)} quay xong đăng luôn nhé 💚`;
     if(box){box.textContent=tt;box.style.display='block'}if(btn)btn.style.display='inline-block';
   }
 }
 
-// ═══════════════════════════════════════════
-//  CHARTS
-// ═══════════════════════════════════════════
+// ── Charts ────────────────────────────────────────────────────────────────────
 const CHS={};
 function destC(id){if(CHS[id]){try{CHS[id].destroy()}catch{}delete CHS[id]}}
 function getChData(){
-  const opts=allMKs();
   if(perChart==='week'){const days=[],thu=[],chi=[];for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const iso=d.toISOString().slice(0,10),mk=iso.slice(0,7),f=loadFin(mk);days.push(['CN','T2','T3','T4','T5','T6','T7'][d.getDay()]);thu.push(f.sales.filter(x=>x.date&&x.date.slice(0,10)===iso).reduce((s,x)=>s+x.totalAmt,0));chi.push(f.imports.filter(x=>x.date&&x.date.slice(0,10)===iso).reduce((s,x)=>s+x.totalAmt,0))}return{days,thu,chi}}
   if(perChart==='month'){const[y,m]=CUR.split('-'),dIM=new Date(y,m,0).getDate(),days=[],thu=[],chi=[];for(let i=1;i<=dIM;i++){const iso=`${CUR}-${String(i).padStart(2,'0')}`;days.push(String(i));thu.push(FIN.sales.filter(x=>x.date&&x.date.slice(0,10)===iso).reduce((s,x)=>s+x.totalAmt,0));chi.push(FIN.imports.filter(x=>x.date&&x.date.slice(0,10)===iso).reduce((s,x)=>s+x.totalAmt,0))}return{days,thu,chi}}
-  const so=[...opts].reverse();return{days:so.map(k=>{const[y,mo]=k.split('-');return`T${parseInt(mo)}/${y.slice(2)}`}),thu:so.map(k=>getRev(k)),chi:so.map(k=>getCost(k))};
+  const so=[...allMKs()].reverse();return{days:so.map(k=>{const[y,mo]=k.split('-');return`T${parseInt(mo)}/${y.slice(2)}`}),thu:so.map(k=>getRev(k)),chi:so.map(k=>getCost(k))};
 }
 function trunc(s,n=12){return s.length>n?s.slice(0,n)+'…':s}
 function doCharts(){
@@ -1196,30 +1082,12 @@ function doCharts(){
   document.getElementById('chartEmpty').style.display=has?'none':'block';
   document.getElementById('chartContent').style.display=has?'block':'none';
   if(!has)return;
-  // Pie
   const pie=document.getElementById('pieC');
   if(pie)CHS['pieC']=new Chart(pie,{type:'doughnut',data:{labels:['Thu','Nhập','Chi phí'],datasets:[{data:[thu,imp,cp],backgroundColor:['#1B6B3A','#0C5460','#856404'],borderWidth:0,hoverOffset:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:8},padding:4,boxWidth:10}}}}});
-  // Bar — top 5 imports, horizontal for better label display
   const names=[...new Set(FIN.imports.map(x=>x.name))].slice(0,5);
   const bd=names.map(n=>({n,v:FIN.imports.filter(x=>x.name===n).reduce((s,x)=>s+x.totalAmt,0)})).sort((a,b)=>b.v-a.v);
   const bar=document.getElementById('barC');
-  if(bar)CHS['barC']=new Chart(bar,{
-    type:'bar',
-    data:{
-      labels:bd.length?bd.map(x=>trunc(x.n)):['Chưa có'],
-      datasets:[{data:bd.length?bd.map(x=>x.v):[0],backgroundColor:['rgba(27,107,58,.8)','rgba(12,84,96,.75)','rgba(133,100,4,.7)','rgba(124,58,237,.65)','rgba(217,79,61,.65)'],borderRadius:5,borderSkipped:false}]
-    },
-    options:{
-      indexAxis:'y',
-      responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' '+axFmt(c.raw)+'đ'}}},
-      scales:{
-        x:{beginAtZero:true,grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>axFmt(v),font:{size:7}}},
-        y:{grid:{display:false},ticks:{font:{size:8},padding:4}}
-      }
-    }
-  });
-  // Line
+  if(bar)CHS['barC']=new Chart(bar,{type:'bar',data:{labels:bd.length?bd.map(x=>trunc(x.n)):['Chưa có'],datasets:[{data:bd.length?bd.map(x=>x.v):[0],backgroundColor:['rgba(27,107,58,.8)','rgba(12,84,96,.75)','rgba(133,100,4,.7)','rgba(124,58,237,.65)','rgba(217,79,61,.65)'],borderRadius:5,borderSkipped:false}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' '+axFmt(c.raw)+'đ'}}},scales:{x:{beginAtZero:true,grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>axFmt(v),font:{size:7}}},y:{grid:{display:false},ticks:{font:{size:8},padding:4}}}}});
   const{days,thu:th,chi:ch}=getChData();
   const line=document.getElementById('lineC');
   if(line)CHS['lineC']=new Chart(line,{type:'line',data:{labels:days,datasets:[{label:'Thu',data:th,borderColor:'#1B6B3A',backgroundColor:'rgba(27,107,58,.08)',tension:.4,fill:true,pointRadius:2,pointBackgroundColor:'#1B6B3A'},{label:'Chi',data:ch,borderColor:'#D94F3D',backgroundColor:'rgba(217,79,61,.06)',tension:.4,fill:true,pointRadius:2,pointBackgroundColor:'#D94F3D'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:8},boxWidth:10}}},scales:{y:{beginAtZero:true,ticks:{callback:v=>axFmt(v),font:{size:8}},grid:{color:'rgba(0,0,0,.05)'}},x:{grid:{display:false},ticks:{font:{size:8}}}}}});
@@ -1232,9 +1100,7 @@ function doHomeChart(){
   CHS['homeChart']=new Chart(c,{type:'line',data:{labels:days,datasets:[{label:'Thu',data:thu,borderColor:'#1B6B3A',backgroundColor:'rgba(27,107,58,.10)',tension:.4,fill:true,pointRadius:3,pointBackgroundColor:'#1B6B3A'},{label:'Chi',data:chi,borderColor:'#D94F3D',backgroundColor:'rgba(217,79,61,.07)',tension:.4,fill:true,pointRadius:3,pointBackgroundColor:'#D94F3D'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:8},boxWidth:10}}},scales:{y:{beginAtZero:true,ticks:{callback:v=>axFmt(v),font:{size:8}},grid:{color:'rgba(0,0,0,.05)'}},x:{grid:{display:false},ticks:{font:{size:8}}}}}});
 }
 
-// ═══════════════════════════════════════════
-//  COMPARE & TAX
-// ═══════════════════════════════════════════
+// ── Compare & Tax ─────────────────────────────────────────────────────────────
 function doCompare(){
   const a=document.getElementById('cmpA').value,b=document.getElementById('cmpB').value;
   if(!a||!b||a===b){toast('⚠️ Chọn 2 tháng khác nhau!',true);return}
@@ -1260,20 +1126,13 @@ function doTax(){
   const bc=pct<60?'pb-safe':pct<90?'pb-warn':'pb-dng';
   pw.innerHTML=`<div style="display:flex;justify-content:space-between;font-size:.67rem;margin-bottom:4px"><span style="font-weight:800;color:var(--g2)">📊 Đã thu ${yr}: ${fmt(yRev)}</span><span style="color:var(--muted)">${pct}%</span></div><div class="progwrap"><div class="progbar ${bc}" style="width:${pct}%">${pct>10?pct+'%':''}</div></div><div style="display:flex;justify-content:space-between;font-size:.64rem;margin-top:3px;color:var(--muted)"><span>0đ</span><span>500 triệu</span></div><div class="g2" style="margin-top:8px"><div style="background:var(--g4);border:1.5px solid var(--g5);border-radius:8px;padding:8px;text-align:center"><div style="font-size:.58rem;font-weight:800;color:var(--muted)">💰 Đã thu</div><div style="font-size:.8rem;font-weight:900;color:var(--g)">${fmt(yRev)}</div></div><div style="background:${rem?'var(--g4)':'var(--rb)'};border:1.5px solid ${rem?'var(--g5)':'var(--r)'};border-radius:8px;padding:8px;text-align:center"><div style="font-size:.58rem;font-weight:800;color:var(--muted)">🛒 Còn được bán</div><div style="font-size:.8rem;font-weight:900;color:${rem?'var(--g)':'var(--r)'}">${fmt(rem)}</div></div></div>`;
   let html='';
-  if(yRev>=TAX_TH){
-    const gT=Math.round(yRev*.01),tncn=Math.round((yRev-TAX_TH)*.005);
-    html=`<div class="taxbox tx-dng"><span class="txicon">⚠️</span><div class="txmsg">Doanh thu vượt 500 triệu!</div><div class="txdet"><strong>DT ${yr}:</strong> ${fmt(yRev)}<br><strong>GTGT ~1%:</strong> ${fmt(gT)}<br><strong>TNCN =(DT-500tr)×0.5%:</strong> ${fmt(tncn)}<br><strong style="color:var(--r)">Tổng nộp: ${fmt(gT+tncn)}</strong><br><br>→ Khai tại: <a href="https://canhan.gdt.gov.vn" target="_blank" style="color:var(--g);font-weight:800">canhan.gdt.gov.vn</a> — Ô <strong>[21]</strong>: ${fmt(yRev)}</div></div>`;
-    html+=`<div style="background:#FFF8E1;border:2px solid #F5A623;border-radius:12px;padding:10px;text-align:center;margin-bottom:10px"><div style="font-size:.78rem;font-weight:800;color:#7A5200;margin-bottom:4px">📋 Sao chép để điền Ô [21]</div><div style="font-size:1.2rem;font-weight:900;color:#D94F3D;margin:4px 0">${fmt(yRev)}</div><div style="display:flex;gap:7px;justify-content:center;flex-wrap:wrap;margin-top:7px"><button onclick="clip('${yRev}','📋 Đã sao chép!')" style="padding:7px 14px;background:#F5A623;color:#1A2E23;border:none;border-radius:16px;font-weight:800;cursor:pointer;font-size:.76rem;font-family:inherit">📋 Sao chép số tiền</button><a href="https://canhan.gdt.gov.vn" target="_blank" style="padding:7px 14px;background:#1B6B3A;color:#fff;border-radius:16px;font-weight:800;font-size:.76rem;text-decoration:none">🌐 Mở trang Thuế</a></div></div>`;
-  } else if(proj>=TAX_TH)
-    html=`<div class="taxbox tx-warn"><span class="txicon">🔔</span><div class="txmsg">Dự báo gần đạt 500 triệu!</div><div class="txdet"><strong>Đã thu:</strong> ${fmt(yRev)}<br><strong>Dự báo cả năm:</strong> ${fmt(Math.round(proj))}<br><strong>Còn được bán thêm:</strong> ${fmt(rem)}</div></div>`;
-  else
-    html=`<div class="taxbox tx-safe"><span class="txicon">😊</span><div class="txmsg">Bà/chú chưa phải nộp thuế!</div><div class="txdet"><strong>Đã thu ${yr}:</strong> ${fmt(yRev)}<br><strong>Còn được bán thêm:</strong> ${fmt(rem)}</div></div>`;
+  if(yRev>=TAX_TH){const gT=Math.round(yRev*.01),tncn=Math.round((yRev-TAX_TH)*.005);html=`<div class="taxbox tx-dng"><span class="txicon">⚠️</span><div class="txmsg">Doanh thu vượt 500 triệu!</div><div class="txdet"><strong>DT ${yr}:</strong> ${fmt(yRev)}<br><strong>GTGT ~1%:</strong> ${fmt(gT)}<br><strong>TNCN =(DT-500tr)×0.5%:</strong> ${fmt(tncn)}<br><strong style="color:var(--r)">Tổng nộp: ${fmt(gT+tncn)}</strong><br><br>→ Khai tại: <a href="https://canhan.gdt.gov.vn" target="_blank" style="color:var(--g);font-weight:800">canhan.gdt.gov.vn</a> — Ô <strong>[21]</strong>: ${fmt(yRev)}</div></div><div style="background:#FFF8E1;border:2px solid #F5A623;border-radius:12px;padding:10px;text-align:center;margin-bottom:10px"><div style="font-size:.78rem;font-weight:800;color:#7A5200;margin-bottom:4px">📋 Sao chép để điền Ô [21]</div><div style="font-size:1.2rem;font-weight:900;color:#D94F3D;margin:4px 0">${fmt(yRev)}</div><div style="display:flex;gap:7px;justify-content:center;flex-wrap:wrap;margin-top:7px"><button onclick="clip('${yRev}','📋 Đã sao chép!')" style="padding:7px 14px;background:#F5A623;color:#1A2E23;border:none;border-radius:16px;font-weight:800;cursor:pointer;font-size:.76rem;font-family:inherit">📋 Sao chép</button><a href="https://canhan.gdt.gov.vn" target="_blank" style="padding:7px 14px;background:#1B6B3A;color:#fff;border-radius:16px;font-weight:800;font-size:.76rem;text-decoration:none">🌐 Mở trang Thuế</a></div></div>`}
+  else if(proj>=TAX_TH)html=`<div class="taxbox tx-warn"><span class="txicon">🔔</span><div class="txmsg">Dự báo gần đạt 500 triệu!</div><div class="txdet"><strong>Đã thu:</strong> ${fmt(yRev)}<br><strong>Dự báo cả năm:</strong> ${fmt(Math.round(proj))}<br><strong>Còn được bán thêm:</strong> ${fmt(rem)}</div></div>`;
+  else html=`<div class="taxbox tx-safe"><span class="txicon">😊</span><div class="txmsg">Bạn chưa phải nộp thuế!</div><div class="txdet"><strong>Đã thu ${yr}:</strong> ${fmt(yRev)}<br><strong>Còn được bán thêm:</strong> ${fmt(rem)}</div></div>`;
   tb.innerHTML=html;
 }
 
-// ═══════════════════════════════════════════
-//  HISTORY
-// ═══════════════════════════════════════════
+// ── History ───────────────────────────────────────────────────────────────────
 let _hcsv=[];
 function renderHist(){
   const months=getMonthOpts(),all=[];
@@ -1296,15 +1155,15 @@ function renderHist(){
 function jumpMon(k){CUR=k;FIN=loadFin(k);buildMonthSel();renderAll();goPage('money',document.querySelectorAll('.nb')[1]);toast(`✅ → ${mLabel(k)}`)}
 function exportCSV(){if(!_hcsv.length){toast('⚠️ Không có dữ liệu!',true);return}const rows=['Ngày,Loại,Tên,Tiền,Tháng',..._hcsv.map(x=>{const loai=x.tt==='ban'?'Bán':x.tt==='nhap'?'Nhập':x.tt==='chiphi'?'Chi phí':'Điều chỉnh';const amt=x.tt==='ban'?x.totalAmt:x.tt==='nhap'?x.totalAmt:(x.amount||0);return`"${x.date}","${loai}","${(x.name||x.desc||'').replace(/"/g,'""')}","${amt}","${x.mk}"`})].join('\n');clip(rows,'📥 Đã sao chép CSV!')}
 
-// ═══════════════════════════════════════════
+// ════════════════════════════════════════════════════════════════════════════
 //  AI CHAT
-// ═══════════════════════════════════════════
-function invSum(){
+// ════════════════════════════════════════════════════════════════════════════
+function invSumForAI(){
   const inv=computeInv();if(!inv.length)return'Kho trống.';
   const out=inv.filter(x=>x.stock===0).map(x=>x.name+(x.unitOut?'('+x.unitOut+')':'')),
     low=inv.filter(x=>x.stock>0&&x.stock<LOW).map(x=>`${x.name}${x.unitOut?'('+x.unitOut+')':''}:${x.stock}`),
     ok=inv.filter(x=>x.stock>=LOW).map(x=>`${x.name}${x.unitOut?'('+x.unitOut+')':''}:${x.stock}`);
-  let s='';if(out.length)s+=`Hết: ${out.join(',')}. `;if(low.length)s+=`Sắp hết: ${low.join(',')}. `;if(ok.length)s+=`Đủ: ${ok.join(',')}.`;return s;
+  let s='';if(out.length)s+=`Hết:[${out.join(',')}] `;if(low.length)s+=`SắpHết:[${low.join(',')}] `;if(ok.length)s+=`Đủ:[${ok.slice(0,8).join(',')}${ok.length>8?'+'+( ok.length-8):''}]`;return s||'Kho ổn.';
 }
 function doAiSt(){
   const el=document.getElementById('aiSt');if(!el)return;
@@ -1315,30 +1174,22 @@ function doAiSt(){
 }
 function scrollMsgs(){const m=document.getElementById('msgs');if(m)m.scrollTop=m.scrollHeight}
 function useChip(btn){const t=btn.textContent.trim(),i=document.getElementById('chatInp');if(i){i.value=t;i.focus();i.style.height='auto';i.style.height=Math.min(i.scrollHeight,100)+'px'}}
-
-function addMsgRaw(html, role){
-  const m=document.getElementById('msgs');if(!m)return;
-  const d=document.createElement('div');d.className='msg '+role;
-  d.innerHTML=html;
-  m.insertBefore(d,document.getElementById('typing'));scrollMsgs();
-}
+function addMsgRaw(html,role){const m=document.getElementById('msgs');if(!m)return;const d=document.createElement('div');d.className='msg '+role;d.innerHTML=html;m.insertBefore(d,document.getElementById('typing'));scrollMsgs()}
 function addMsg(txt,role){addMsgRaw(txt.replace(/\n/g,'<br>'),role)}
-
 function addMsgCfm(txt,data){
   const m=document.getElementById('msgs');if(!m)return;
   const d=document.createElement('div');d.className='msg bot';
   d.innerHTML=txt.replace(/\n/g,'<br>')+`<div class="cpill"><button class="py" onclick="aiCfm(this,true)">✅ Lưu</button><button class="pn" onclick="aiCfm(this,false)">❌ Bỏ</button></div>`;
   d._data=data;m.insertBefore(d,document.getElementById('typing'));scrollMsgs();
 }
-function aiCfm(btn,yes){const d=btn.closest('.msg');const data=d._data;const p=d.querySelector('.cpill');if(p)p.remove();if(yes&&data)aiProcess(data);else addMsg('👍 Bỏ qua!','bot');scrollMsgs()}
+function aiCfm(btn,yes){const d=btn.closest('.msg');const data=d._data;const p=d.querySelector('.cpill');if(p)p.remove();if(yes&&data)aiProcess(data);else addMsg('👍 Bỏ qua rồi nhé!','bot');scrollMsgs()}
 function aiProcess(items){
-  if(!Array.isArray(items))return;
-  const today=nowDT();
+  if(!Array.isArray(items))return;const today=nowDT();
   items.forEach(it=>{
     const name=(it.item||it.name||'').trim();if(!name)return;
     const qty=parseInt(String(it.quantity||1).replace(/\D/g,''))||1,price=parseInt(String(it.price||0).replace(/\D/g,''))||0;
     const isSale=/(bán|thu|sell)/i.test(it.type||'');
-    if(isSale){FIN.sales.push({id:Date.now()+Math.random(),name,type:'hangban',qty,unitPrice:price,totalAmt:qty*price,date:today,desc:'AI: '+name,unitOut:''})}
+    if(isSale)FIN.sales.push({id:Date.now()+Math.random(),name,type:'hangban',qty,unitPrice:price,totalAmt:qty*price,date:today,desc:'AI: '+name,unitOut:''});
     else{FIN.imports.push({id:Date.now()+Math.random(),name,kind:'hangban',qtyIn:qty,unitIn:'',unitOut:'',factor:1,stockAdded:qty,totalAmt:qty*price,date:today});upsertProd({name,kind:'hangban',unitIn:'',unitOut:'',factor:1})}
     persist();
   });
@@ -1352,50 +1203,51 @@ async function sendChat(){
   addMsg(msg,'usr');
   const ty=document.getElementById('typing');if(ty)ty.classList.add('on');scrollMsgs();
 
-  const thu=getRev(CUR),chi=getCost(CUR),yRev=yearRevenue();
-  const yr=new Date().getFullYear();
+  const thu=getRev(CUR),chi=getCost(CUR),yRev=yearRevenue(),yr=new Date().getFullYear();
   const rem=Math.max(0,TAX_TH-yRev);
-  const isTaxQ=/(thuế|nộp|tờ khai|gtgt|tncn|500|canhan|ô 21|o 21|hướng dẫn thuế)/i.test(msg);
   const isOverThreshold=yRev>TAX_TH;
+  const isTaxQ=/(thuế|nộp|tờ khai|gtgt|tncn|500|canhan|ô 21|o 21|khai thuế)/i.test(msg);
+  const taxForced=isOverThreshold&&isTaxQ;
 
-  // === HARD CONDITION: if > 500M and tax-related, always show tax card ===
-  const taxForced = isOverThreshold && isTaxQ;
-
-  const SYSTEM=`Bạn là Trợ lý Hộ Mệnh AI chuyên về thuế và kinh doanh cho hộ tiểu thương Việt Nam.
-Xưng "con", gọi người dùng "bà/cô/chú". Ngắn gọn, thân thiện, dễ hiểu.
+  // ── Build system prompt ──────────────────────────────────────────────────
+  const SYSTEM=`Bạn là Trợ lý AI kinh doanh cho tiểu thương Việt Nam. Tên: Hộ Mệnh.
+Quy tắc giao tiếp:
+- Xưng "mình", gọi người dùng là "bạn"
+- Thân thiện, ngắn gọn, thực tế, dùng emoji vừa phải
+- Trả lời tối đa 4-5 câu, đúng trọng tâm câu hỏi
 
 LUẬT THUẾ 2026:
 - ≤ 500 triệu/năm: MIỄN thuế GTGT và TNCN
 - > 500 triệu: GTGT 1% (bán lẻ) / 3% (ăn uống) + TNCN = (DT-500tr)×0.5%
-- Tờ khai Mẫu 01/CNKD: Ô [21] = Tổng doanh thu; Ô [25] = DT tính thuế (chỉ khi > 500tr)
-- Link: https://canhan.gdt.gov.vn
+- Mẫu 01/CNKD: Ô [21] = Tổng doanh thu; khai tại canhan.gdt.gov.vn
 
-DỮ LIỆU THỰC TẾ:
-- Doanh thu năm ${yr}: ${fmt(yRev)} (${isOverThreshold?'ĐÃ VƯỢT 500 TRIỆU ⚠️':'Chưa đến ngưỡng ✅'})
+DỮ LIỆU THỰC TẾ CỦA BẠN:
+- Doanh thu năm ${yr}: ${fmt(yRev)} ${isOverThreshold?'⚠️ ĐÃ VƯỢT 500TR':'✅ Chưa đến ngưỡng'}
 - Còn được bán thêm: ${fmt(rem)}
 - Tháng ${CUR}: Thu ${fmt(thu)} | Chi ${fmt(chi)} | Lãi ${fmt(thu-chi)}
-- Kho: ${invSum()}
+- Kho: ${invSumForAI()}
 
-${taxForced?`QUAN TRỌNG: Doanh thu đã vượt 500 triệu. BẮT BUỘC phải:
-1. Câu đầu: "Bà ơi, tổng doanh thu năm nay của mình là ${fmt(yRev)}, đã vượt ngưỡng 500 triệu rồi ạ"
-2. Hướng dẫn vào canhan.gdt.gov.vn
-3. Chỉ rõ: "Tại Ô số [21], bà điền con số này: ${fmt(yRev)}"
-4. Kết thúc: "Bà nhấn nút bên dưới để sao chép số tiền và dán vào ô đó là xong ạ!"
-Chỉ trả lời 3-4 câu, không dài dòng.`:''}
-Nếu nhận lệnh giao dịch, trả JSON trong []: [{"item":"tên","quantity":số,"price":đơn_giá,"type":"bán hoặc nhập"}]
-Trả lời tối đa 3-4 câu + emoji. Không giải thích dài.`;
+XỬ LÝ CÁC LOẠI CÂU HỎI:
+1. Câu hỏi giao dịch (bán/nhập hàng) → Xác nhận rồi trả JSON trong []: [{"item":"tên","quantity":số,"price":đơn_giá,"type":"bán hoặc nhập"}]
+2. Câu hỏi kho/doanh thu/thuế → Dùng dữ liệu thực trên để trả lời
+3. Câu hỏi kinh doanh, marketing, bán hàng → Cho 3-4 lời khuyên thực tế ngắn gọn
+4. Câu hỏi cách dùng app → Hướng dẫn tính năng cụ thể
+5. Hỏi bất kỳ chủ đề khác liên quan đến kinh doanh → Trả lời hữu ích, không từ chối
+
+${taxForced?`QUAN TRỌNG - Doanh thu đã vượt 500tr:
+Câu đầu: "Doanh thu năm nay của bạn là ${fmt(yRev)}, đã vượt ngưỡng 500 triệu rồi!"
+Hướng dẫn vào canhan.gdt.gov.vn, điền Ô [21]: ${fmt(yRev)}
+Kết: "Bạn nhấn nút bên dưới để sao chép số tiền và dán vào ô đó là xong!"
+Chỉ 3-4 câu, không dài dòng.`:''}`;
 
   try{
-    const raw=await callAI(SYSTEM,msg,400);
+    const raw=await callAIWithRetry(SYSTEM,msg,500);
     if(ty)ty.classList.remove('on');
 
-    // Check for transaction JSON
+    // Detect JSON transaction
     const jm=raw.match(/\[[\s\S]*?\]/);
-    if(jm){
-      try{const p=JSON.parse(jm[0]);if(p.length){const pv=p.map(x=>`${/(nhập)/i.test(x.type)?'📦':'💰'} ${x.quantity} ${x.item}${x.price?' @ '+fmt(x.price):''}`).join('\n');addMsgCfm((raw.replace(jm[0],'').trim()||'Mình ghi nhận:')+'\n\n'+pv,p);if(taxForced)addMsgRaw(buildTaxCard(yRev),'bot');return}}catch{}
-    }
+    if(jm){try{const p=JSON.parse(jm[0]);if(Array.isArray(p)&&p.length){const pv=p.map(x=>`${/(nhập)/i.test(x.type||'')?'📦':'💰'} ${x.quantity||1} ${x.item}${x.price?' @ '+fmt(x.price):''}`).join('\n');addMsgCfm((raw.replace(jm[0],'').trim()||'Mình ghi nhận:')+'\n\n'+pv,p);if(taxForced)addMsgRaw(buildTaxCard(yRev),'bot');return}}catch{}}
 
-    // Render text + conditional tax card
     let html=raw.replace(/\n/g,'<br>');
     if(taxForced)html+=buildTaxCard(yRev);
     else if(isTaxQ&&!isOverThreshold)html+=buildSafeTaxCard(yRev);
@@ -1403,21 +1255,23 @@ Trả lời tối đa 3-4 câu + emoji. Không giải thích dài.`;
 
   }catch(err){
     if(ty)ty.classList.remove('on');
-    // === FALLBACK MODE — Hộ Mệnh Nội Bộ ===
+    // Smart fallback
     const fb=fallbackResponse(msg);
-    let html=`<span class="offbadge">🛡️ Hộ mệnh Nội bộ</span><br>${fb.text.replace(/\n/g,'<br>')}`;
+    const isQuota=err.code===429||err.code===529;
+    const badge=isQuota
+      ?`<span class="offbadge">⏳ AI đang bận, thử lại sau</span>`
+      :`<span class="offbadge">🛡️ Chế độ Nội bộ</span>`;
+    let html=`${badge}<br>${fb.text.replace(/\n/g,'<br>')}`;
     if(fb.taxCard||taxForced)html+=buildTaxCard(yRev);
     else if(fb.safeTaxCard)html+=buildSafeTaxCard(yRev);
     else if(isTaxQ&&isOverThreshold)html+=buildTaxCard(yRev);
-    else if(isTaxQ&&!isOverThreshold)html+=buildSafeTaxCard(yRev);
+    else if(isTaxQ)html+=buildSafeTaxCard(yRev);
     addMsgRaw(html,'bot');
   }
 }
-function askAIInv(){goPage('ai',document.querySelectorAll('.nb')[4]);setTimeout(()=>{const i=document.getElementById('chatInp');if(i){i.value='Tình hình kho của tôi thế nào?';i.style.height='auto';sendChat()}},200)}
+function askAIInv(){goPage('ai',document.querySelectorAll('.nb')[4]);setTimeout(()=>{const i=document.getElementById('chatInp');if(i){i.value='Tình hình kho hiện tại thế nào?';i.style.height='auto';sendChat()}},200)}
 
-// ═══════════════════════════════════════════
-//  CLIPBOARD
-// ═══════════════════════════════════════════
+// ── Clipboard ─────────────────────────────────────────────────────────────────
 async function clip(text,msg){
   try{
     if(navigator.clipboard?.writeText)await navigator.clipboard.writeText(text);
@@ -1427,12 +1281,10 @@ async function clip(text,msg){
 }
 async function doCopy(boxId,btnId){const b=document.getElementById(boxId);if(!b)return;const t=b.textContent.trim();if(!t){toast('⚠️ Không có nội dung!',true);return}const ok=await clip(t);if(ok){toast('📋 Đã sao chép!');const btn=document.getElementById(btnId);if(btn){const orig=btn.innerHTML;btn.innerHTML='✅ Đã sao chép!';btn.disabled=true;setTimeout(()=>{btn.innerHTML=orig;btn.disabled=false},2000)}}}
 
-// ═══════════════════════════════════════════
-//  INIT
-// ═══════════════════════════════════════════
+// ── Init ──────────────────────────────────────────────────────────────────────
 (function init(){
   refreshDates();
-  ['sDate','iDate','cpDate','adjDate'].forEach(id=>{const el=document.getElementById(id);if(!el)return;el.addEventListener('change',()=>{el._locked=true;setTimeout(()=>{el._locked=false},10*60000)})});
+  ['sDate','iDate','cpDate','adjDate'].forEach(id=>{const el=document.getElementById(id);if(!el)return;el.addEventListener('change',()=>{el._locked=true;setTimeout(()=>{el._locked=false},600000)})});
   buildMonthSel();renderAll();renderToday();renderHomeRecent();doAiSt();
   setTimeout(doHomeChart,120);
 })();
