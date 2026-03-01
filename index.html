@@ -639,7 +639,7 @@ tr:nth-child(even) td{background:var(--g4)}
 <script>
 'use strict';
 const TAX_TH=500_000_000,LOW=5;
-const AI_URL='https://api.anthropic.com/v1/messages';
+// Không cần API key — AI chạy hoàn toàn offline
 
 // ── Storage ──────────────────────────────────────────────────────────────────
 function mGet(k){try{const v=localStorage.getItem(k);return v?JSON.parse(v):null}catch{return null}}
@@ -932,34 +932,203 @@ function addCost(){const desc=gv('cpDesc'),amount=getRaw('cpAmt'),date=gv('cpDat
 function delCp(id){showCfm('Xoá chi phí','Xoá khoản chi này?',()=>{FIN.costs=FIN.costs.filter(x=>x.id!==id);persist();renderAll();renderCpTable();toast('✅ Đã xoá!')})}
 
 // ════════════════════════════════════════════════════════════════════════════
-//  AI LAYER — callAI with 1 retry + smart fallback
+//  LOCAL AI ENGINE — 100% offline, không cần API key
 // ════════════════════════════════════════════════════════════════════════════
 
-async function callAI(sysPr,userMsg,maxTok=700){
-  const res=await fetch(AI_URL,{
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({
-      model:'claude-sonnet-4-20250514',
-      max_tokens:maxTok,
-      system:sysPr,
-      messages:[{role:'user',content:userMsg}]
-    })
-  });
-  if(!res.ok){const err=await res.json().catch(()=>({}));const c=res.status;throw Object.assign(new Error(err?.error?.message||`HTTP ${c}`),{code:c})}
-  const data=await res.json();
-  const txt=(data.content||[]).map(b=>b.text||'').join('');
-  if(!txt)throw new Error('empty');
-  return txt;
+// Chuyển "15k","1tr","2.5tr","300000" → số nguyên
+function parseVNNum(s){
+  if(!s)return 0;
+  s=s.toString().toLowerCase().trim().replace(/\./g,'').replace(/,/g,'.');
+  if(s.includes('tỷ')||s.includes('ty'))return Math.round(parseFloat(s)*1e9);
+  if(s.includes('tr')||s.includes('triệu'))return Math.round(parseFloat(s)*1e6);
+  if(s.includes('k'))return Math.round(parseFloat(s)*1e3);
+  return parseInt(s.replace(/\D/g,''))||0;
 }
 
-// Retry once with 1.5s delay before falling back
-async function callAIWithRetry(sys,msg,maxTok=700){
-  try{return await callAI(sys,msg,maxTok)}
-  catch(e1){
-    if(e1.code===429||e1.code===529){throw e1}// quota/overload — skip retry
-    await new Promise(r=>setTimeout(r,1500));
-    return await callAI(sys,msg,maxTok);// 2nd attempt
+// Tách số + đơn vị ra khỏi chuỗi kiểu "5 gói", "2 thùng", "10"
+function extractQtyUnit(s){
+  const m=s.match(/^(\d+[\.,]?\d*)\s*([a-zđàáâãèéêìíòóôõùúýăắặẳẵắờởỡớợủũụưừứựựặẹếềểễẻẽềếệỉịọộồổỗốớờởỡợủứựụừừửữựẩậầẫẩảạặẹẽéềểệỉịọộốồổỗơớờởỡượúùûüứừửữựý]*)?/i);
+  if(m)return{qty:parseFloat(m[1])||1,unit:(m[2]||'').trim()};
+  return{qty:1,unit:''};
+}
+
+// Nhận diện ý định từ tin nhắn
+function parseIntent(msg){
+  const m=msg.toLowerCase().trim();
+
+  // ── GHI BÁN HÀNG ─────────────────────────────────────────────────────────
+  // Pattern: "bán / ghi bán / đã bán" + số lượng + tên sản phẩm + giá
+  // VD: "bán 5 gói mì 15k", "ghi bán 3 chai nước 10000", "bán mì tôm 5 gói 3k"
+  const sellPat=[
+    /(?:bán|ghi bán|đã bán|vừa bán|sell)\s+(\d+[\.,]?\d*)\s*([^\d]+?)\s+([\d,\.]+\s*(?:k|tr|triệu|đồng|d|đ)?)/i,
+    /(?:bán|ghi bán|đã bán|vừa bán)\s+([^\d]+?)\s+(\d+[\.,]?\d*)\s*(?:cái|gói|chai|lon|kg|hộp|túi|bịch|cân|lít)?\s+([\d,\.]+\s*(?:k|tr|triệu|đồng|d|đ)?)/i,
+    /(?:bán|ghi bán|đã bán|vừa bán)\s+(\d+[\.,]?\d*)\s*([\w\s]+?)\s+(?:giá\s*)?([\d,\.]+\s*(?:k|tr|triệu|đồng|d|đ)?)/i,
+  ];
+  for(const pat of sellPat){
+    const r=msg.match(pat);
+    if(r){
+      let qty,name,priceStr;
+      if(/^\d/.test(r[1])){qty=parseFloat(r[1]);name=(r[2]||'').trim();priceStr=r[3]}
+      else{name=(r[1]||'').trim();qty=parseFloat(r[2])||1;priceStr=r[3]}
+      const price=parseVNNum(priceStr);
+      if(name&&price>0)return{intent:'sell',name,qty:Math.round(qty)||1,price};
+    }
+  }
+  // Fallback sell: "bán mì gói 15k" (không có số lượng → mặc định 1)
+  const sell2=/(?:bán|ghi bán|đã bán)\s+([\w\s]+?)\s+([\d,\.]+\s*(?:k|tr|triệu|đồng|d|đ))/i.exec(msg);
+  if(sell2){const name=(sell2[1]||'').trim(),price=parseVNNum(sell2[2]);if(name&&price>0)return{intent:'sell',name,qty:1,price}}
+
+  // ── GHI NHẬP HÀNG ─────────────────────────────────────────────────────────
+  // VD: "nhập 2 thùng bia 300k", "nhập hàng mì tôm 5 thùng 500k"
+  const impPat=/(?:nhập|nhập hàng|mua vào|nhập kho|đặt hàng)\s+(\d+[\.,]?\d*)\s*([^\d]+?)\s+([\d,\.]+\s*(?:k|tr|triệu|đồng|d|đ)?)/i.exec(msg);
+  if(impPat){
+    const qty=parseFloat(impPat[1])||1,name=(impPat[2]||'').trim(),price=parseVNNum(impPat[3]);
+    if(name&&price>0)return{intent:'import',name,qty:Math.round(qty)||1,totalAmt:price};
+  }
+  const imp2=/(?:nhập|nhập hàng|mua vào)\s+([\w\s]+?)\s+(\d+[\.,]?\d*)\s*(?:cái|gói|chai|thùng|kg|hộp)?\s+([\d,\.]+\s*(?:k|tr|triệu|đồng|d|đ)?)/i.exec(msg);
+  if(imp2){const name=(imp2[1]||'').trim(),qty=parseFloat(imp2[2])||1,price=parseVNNum(imp2[3]);if(name&&price>0)return{intent:'import',name,qty:Math.round(qty)||1,totalAmt:price}}
+
+  // ── KHO / TỒN KHO ────────────────────────────────────────────────────────
+  if(/(kho|tồn kho|còn gì|hết hàng|sắp hết|còn bao nhiêu|kiểm kho|stock|inventory)/i.test(m))
+    return{intent:'inventory'};
+
+  // Hỏi tồn kho một mặt hàng cụ thể
+  const stockQ=/(còn|tồn|stock)\s+(.+?)(?:\s+không|\s+ko|\?|$)/i.exec(msg);
+  if(stockQ&&stockQ[2].length<30)return{intent:'stockItem',name:stockQ[2].trim()};
+
+  // ── DOANH THU / LÃI LỖ ───────────────────────────────────────────────────
+  if(/(doanh thu|lãi|lợi nhuận|thu nhập|bán được|tháng này|hôm nay thu|hôm nay lãi|kết quả|tổng kết|báo cáo nhanh)/i.test(m))
+    return{intent:'revenue'};
+
+  // ── THUẾ ─────────────────────────────────────────────────────────────────
+  if(/(thuế|nộp thuế|tờ khai|gtgt|tncn|500 triệu|canhan|ô 21|o 21|khai thuế|miễn thuế)/i.test(m))
+    return{intent:'tax'};
+
+  // ── HƯỚNG DẪN NỘP THUẾ ───────────────────────────────────────────────────
+  if(/(hướng dẫn.*thuế|cách nộp|nộp ở đâu|nộp như thế nào|từng bước.*thuế|bước.*thuế)/i.test(m))
+    return{intent:'taxGuide'};
+
+  // ── MARKETING / BÁN HÀNG ONLINE ──────────────────────────────────────────
+  if(/(facebook|tiktok|zalo|đăng bài|post|viral|marketing|quảng cáo|quảng bá|content|nội dung)/i.test(m))
+    return{intent:'marketing'};
+
+  // ── MẸO KINH DOANH ───────────────────────────────────────────────────────
+  if(/(mẹo|tip|cách|làm sao|thế nào|chiến lược|tăng doanh|bán nhiều|giữ khách|khách hàng|cạnh tranh|giá|định giá)/i.test(m))
+    return{intent:'bizTip'};
+
+  // ── CHI PHÍ ───────────────────────────────────────────────────────────────
+  if(/(chi phí|điện|nước|tiền thuê|nhân công|vận chuyển|phí|expense)/i.test(m))
+    return{intent:'costTip'};
+
+  // ── HƯỚNG DẪN APP ────────────────────────────────────────────────────────
+  if(/(hướng dẫn|cách dùng|sử dụng|app|ứng dụng|tính năng|làm gì|dùng như thế)/i.test(m))
+    return{intent:'appHelp'};
+
+  // ── CHÀO HỎI ─────────────────────────────────────────────────────────────
+  if(/^(xin chào|chào|hello|hi|alo|hey|chào mình|xin hỏi)[\s!?.,]*$/i.test(m))
+    return{intent:'greet'};
+
+  return{intent:'unknown',msg};
+}
+
+// Sinh phản hồi từ intent
+function localAIResponse(msg){
+  const intent=parseIntent(msg);
+  const yRev=yearRevenue(),thu=getRev(CUR),chi=getCost(CUR),lai=thu-chi;
+  const yr=new Date().getFullYear(),rem=Math.max(0,TAX_TH-yRev);
+  const isOver=yRev>TAX_TH;
+
+  switch(intent.intent){
+
+    case 'sell':{
+      const{name,qty,price}=intent;
+      const total=qty*price;
+      const{stock}=getStock(name,'');
+      const inv=computeInv().find(x=>x.name.toLowerCase()===name.toLowerCase());
+      const realStock=inv?inv.stock:stock;
+      const confirm=[{item:name,quantity:qty,price,type:'bán'}];
+      let txt=`💰 Ghi nhận bán:\n📦 ${qty} ${name} × ${fmt(price)} = ${fmt(total)}`;
+      if(inv&&realStock<qty)txt+=`\n⚠️ Lưu ý: kho chỉ còn ${realStock} ${inv.unitOut||''}`;
+      else if(inv)txt+=`\n📊 Sau bán còn: ${realStock-qty} ${inv.unitOut||''}`;
+      return{text:txt,confirm};
+    }
+
+    case 'import':{
+      const{name,qty,totalAmt}=intent;
+      const confirm=[{item:name,quantity:qty,price:totalAmt,type:'nhập'}];
+      return{text:`📦 Ghi nhận nhập hàng:\n🛒 ${qty} ${name} — Tổng: ${fmt(totalAmt)}\n💡 Sẽ cập nhật tồn kho sau khi xác nhận!`,confirm};
+    }
+
+    case 'inventory':{
+      const inv=computeInv();
+      if(!inv.length)return{text:'📦 Kho đang trống.\nBạn vào Thu/Chi → Nhập hàng để thêm sản phẩm nhé!'};
+      const out=inv.filter(x=>x.stock===0),low=inv.filter(x=>x.stock>0&&x.stock<LOW),ok=inv.filter(x=>x.stock>=LOW);
+      let txt='📦 Tình hình kho hiện tại:\n';
+      if(out.length)txt+=`🔴 Hết hàng (${out.length}): ${out.map(x=>x.name).join(', ')}\n`;
+      if(low.length)txt+=`🟡 Sắp hết (${low.length}): ${low.map(x=>x.name+' còn '+x.stock).join(', ')}\n`;
+      if(ok.length)txt+=`🟢 Đủ hàng (${ok.length}): ${ok.slice(0,5).map(x=>x.name+' ('+x.stock+')').join(', ')}${ok.length>5?' ...':''}`;
+      if(out.length||low.length)txt+=`\n\n💡 Nên nhập thêm các mặt hàng đang hết/sắp hết!`;
+      return{text:txt.trim()};
+    }
+
+    case 'stockItem':{
+      const inv=computeInv();
+      const found=inv.filter(x=>x.name.toLowerCase().includes(intent.name.toLowerCase()));
+      if(!found.length)return{text:`❓ Mình không tìm thấy "${intent.name}" trong kho.\nBạn kiểm tra lại tên hoặc nhập hàng này trước nhé!`};
+      const txt=found.map(x=>`📦 ${x.name}${x.unitOut?' ('+x.unitOut+')':''}: còn ${x.stock}${x.unitOut?' '+x.unitOut:''} ${x.stock===0?'🔴 Hết hàng':x.stock<LOW?'🟡 Sắp hết':'🟢 Đủ'}`).join('\n');
+      return{text:txt};
+    }
+
+    case 'revenue':{
+      const tod=todayISO(),todThu=FIN.sales.filter(x=>x.date&&x.date.slice(0,10)===tod).reduce((s,x)=>s+x.totalAmt,0);
+      const topProd=[...new Map(FIN.sales.map(x=>[x.name,(FIN.sales.filter(s=>s.name===x.name).reduce((a,b)=>a+b.totalAmt,0))])).entries()].sort((a,b)=>b[1]-a[1]).slice(0,3);
+      let txt=`📊 Kết quả kinh doanh:\n\n📅 Hôm nay: ${fmt(todThu)}\n\n📆 Tháng ${CUR}:\n💰 Doanh thu: ${fmt(thu)}\n📉 Chi phí: ${fmt(chi)}\n💼 Lãi/Lỗ: ${(lai>=0?'▲ +':'▼ ')+fmt(lai)}\n\n🗓️ Năm ${yr}: ${fmt(yRev)}`;
+      if(topProd.length)txt+=`\n\n🏆 Bán chạy nhất:\n${topProd.map((x,i)=>`${i+1}. ${x[0]}: ${fmt(x[1])}`).join('\n')}`;
+      return{text:txt};
+    }
+
+    case 'tax':{
+      if(isOver){
+        const gT=Math.round(yRev*.01),tncn=Math.round((yRev-TAX_TH)*.005);
+        return{text:`⚠️ Doanh thu năm ${yr} của bạn là ${fmt(yRev)}, đã vượt ngưỡng 500 triệu!\n\nThuế phải nộp:\n• GTGT ~1%: ${fmt(gT)}\n• TNCN: ${fmt(tncn)}\n• Tổng: ${fmt(gT+tncn)}\n\nBạn nhấn nút bên dưới để sao chép số điền vào Ô [21] nhé!`,taxCard:true,yRev};
+      }
+      const mo=new Date().getMonth()+1,proj=mo?Math.round(yRev/mo*12):0;
+      let txt=`✅ Doanh thu năm ${yr}: ${fmt(yRev)}\nChưa đến ngưỡng 500 triệu — chưa cần nộp thuế!\n\nCòn được bán thêm: ${fmt(rem)}`;
+      if(proj>TAX_TH*0.8)txt+=`\n\n🔔 Lưu ý: Dự báo cả năm ~${fmt(proj)}, sắp đến ngưỡng rồi!`;
+      return{text:txt,safeTaxCard:true,yRev};
+    }
+
+    case 'taxGuide':
+      return{text:`📋 Hướng dẫn nộp thuế điện tử (Mẫu 01/CNKD):\n\n1️⃣ Vào canhan.gdt.gov.vn\n2️⃣ Đăng nhập bằng MST hoặc tài khoản thuế\n3️⃣ Chọn "Khai thuế" → "Thuế khoán" → Mẫu 01/CNKD\n4️⃣ Điền Ô [21] = Tổng doanh thu (${fmt(yRev)})\n5️⃣ Hệ thống tự tính thuế → Xem lại → Nộp\n6️⃣ Lưu biên lai điện tử\n\n💡 Thời hạn: Nộp trước ngày 15 tháng đầu quý tiếp theo.`};
+
+    case 'marketing':
+      return{text:`📣 Mẹo marketing hiệu quả cho tiểu thương:\n\n📱 Facebook/Zalo:\n• Đăng ảnh sản phẩm + giá mỗi sáng 7-8h\n• Quay video ngắn 15-30 giây, để mặt hàng chủ lực\n• Dùng mục Quảng bá trong app để AI viết bài!\n\n🎬 TikTok:\n• Quay lúc mở hàng, lúc đông khách\n• Không cần quá chỉnh chu — tự nhiên, thật là viral\n\n💬 Zalo OA:\n• Tạo nhóm khách quen, báo hàng mới mỗi tuần`};
+
+    case 'bizTip':{
+      const tips=[
+        `💡 Mẹo tăng doanh thu:\n\n• Xếp hàng bán chạy ở vị trí dễ thấy, ngang tầm mắt\n• Tạo combo: "Mua 2 tặng 1" hoặc "Mua kèm giảm 10%"\n• Theo dõi hàng sắp hết → nhập trước khi khách cần\n• Giờ vàng mở cửa: 6-9h sáng và 4-7h chiều\n• Nhớ tên khách quen → tạo cảm giác thân thiết`,
+        `📈 Chiến lược định giá thông minh:\n\n• Giá lẻ tâm lý: 19.000đ thay vì 20.000đ\n• Hàng thiết yếu (gạo, mì): giữ giá cạnh tranh\n• Hàng đặc biệt (nhập khẩu, hiếm): có thể lãi cao hơn\n• Giảm giá hàng sắp hết hạn để quay vốn nhanh\n• Khuyến mãi cuối tuần để kéo khách`,
+        `🛒 Quản lý kho hiệu quả:\n\n• Nhập hàng theo nguyên tắc FIFO (vào trước bán trước)\n• Đặt mức tồn kho tối thiểu cho từng mặt hàng\n• Kiểm kê kho mỗi tuần 1 lần\n• Theo dõi hàng bán chậm → xả kho kịp thời\n• Dùng tab Kho trong app để biết chính xác số lượng!`
+      ];
+      return{text:tips[Math.floor(Date.now()/1000)%tips.length]};
+    }
+
+    case 'costTip':
+      return{text:`💰 Quản lý chi phí thông minh:\n\n• Ghi đầy đủ mọi chi phí (điện, nước, thuê mặt bằng) vào mục Chi phí\n• So sánh chi phí tháng này vs tháng trước trong Báo cáo\n• Chi phí cố định (thuê, nhân công): đàm phán lại mỗi năm\n• Chi phí biến đổi (điện, nước): tiết kiệm bằng cách tắt thiết bị khi không cần\n• Nhập hàng số lượng lớn thường được giá tốt hơn`};
+
+    case 'appHelp':
+      return{text:`📱 Tính năng chính của app:\n\n💰 Thu/Chi:\n• Ghi bán hàng, nhập kho, chi phí vận hành\n• Theo dõi tồn kho tự động\n\n📊 Báo cáo:\n• Biểu đồ doanh thu, so sánh tháng, kiểm tra thuế\n\n📣 Quảng bá:\n• AI viết bài Facebook và hướng dẫn TikTok\n\n🤖 AI Chat (đây):\n• Nói tự nhiên để ghi giao dịch: "bán 5 mì 15k"\n• Hỏi kho, doanh thu, thuế bất kỳ lúc nào!`};
+
+    case 'greet':
+      return{text:`👋 Xin chào! Mình là Trợ lý Hộ Mệnh 💚\n\nMình có thể giúp bạn:\n• Ghi bán hàng: "bán 5 gói mì 15k"\n• Nhập kho: "nhập 2 thùng bia 300k"\n• Kiểm tra: "kho còn gì?", "tháng này lãi bao nhiêu?"\n• Tư vấn thuế và kinh doanh\n\nBạn cần gì cứ nhắn nhé!`};
+
+    default:{
+      // Cố tìm xem có phải giao dịch không rõ format
+      const hasNum=/\d/.test(msg),hasMoney=/(k|tr|triệu|đồng|đ)\b/i.test(msg);
+      if(hasNum&&hasMoney&&/(bán|nhập|mua)/i.test(msg))
+        return{text:`❓ Mình chưa hiểu rõ giao dịch này.\n\nBạn thử viết theo mẫu:\n• Bán: "bán 5 gói mì 15k"\n• Nhập: "nhập 2 thùng bia 300k"\n\nHoặc dùng tab Thu/Chi để nhập trực tiếp!`};
+      return{text:`💬 Bạn hỏi về "${msg.slice(0,50)}${msg.length>50?'...':''}"?\n\nMình có thể giúp về:\n📦 Kho hàng · 💰 Doanh thu · 🧾 Thuế · 📣 Marketing · 💡 Mẹo kinh doanh\n\nHoặc ghi giao dịch: "bán 5 mì 15k", "nhập 2 thùng bia 300k"`};
+    }
   }
 }
 
@@ -1196,78 +1365,33 @@ function aiProcess(items){
   renderAll();renderInv();doAiSt();renderToday();toast(`✅ Ghi ${items.length} giao dịch!`);
 }
 
-async function sendChat(){
+function sendChat(){
   const inp=document.getElementById('chatInp'),msg=inp?inp.value.trim():'';
   if(!msg)return;
   if(inp){inp.value='';inp.style.height='auto'}
   addMsg(msg,'usr');
   const ty=document.getElementById('typing');if(ty)ty.classList.add('on');scrollMsgs();
-
-  const thu=getRev(CUR),chi=getCost(CUR),yRev=yearRevenue(),yr=new Date().getFullYear();
-  const rem=Math.max(0,TAX_TH-yRev);
-  const isOverThreshold=yRev>TAX_TH;
-  const isTaxQ=/(thuế|nộp|tờ khai|gtgt|tncn|500|canhan|ô 21|o 21|khai thuế)/i.test(msg);
-  const taxForced=isOverThreshold&&isTaxQ;
-
-  // ── Build system prompt ──────────────────────────────────────────────────
-  const SYSTEM=`Bạn là Trợ lý AI kinh doanh cho tiểu thương Việt Nam. Tên: Hộ Mệnh.
-Quy tắc giao tiếp:
-- Xưng "mình", gọi người dùng là "bạn"
-- Thân thiện, ngắn gọn, thực tế, dùng emoji vừa phải
-- Trả lời tối đa 4-5 câu, đúng trọng tâm câu hỏi
-
-LUẬT THUẾ 2026:
-- ≤ 500 triệu/năm: MIỄN thuế GTGT và TNCN
-- > 500 triệu: GTGT 1% (bán lẻ) / 3% (ăn uống) + TNCN = (DT-500tr)×0.5%
-- Mẫu 01/CNKD: Ô [21] = Tổng doanh thu; khai tại canhan.gdt.gov.vn
-
-DỮ LIỆU THỰC TẾ CỦA BẠN:
-- Doanh thu năm ${yr}: ${fmt(yRev)} ${isOverThreshold?'⚠️ ĐÃ VƯỢT 500TR':'✅ Chưa đến ngưỡng'}
-- Còn được bán thêm: ${fmt(rem)}
-- Tháng ${CUR}: Thu ${fmt(thu)} | Chi ${fmt(chi)} | Lãi ${fmt(thu-chi)}
-- Kho: ${invSumForAI()}
-
-XỬ LÝ CÁC LOẠI CÂU HỎI:
-1. Câu hỏi giao dịch (bán/nhập hàng) → Xác nhận rồi trả JSON trong []: [{"item":"tên","quantity":số,"price":đơn_giá,"type":"bán hoặc nhập"}]
-2. Câu hỏi kho/doanh thu/thuế → Dùng dữ liệu thực trên để trả lời
-3. Câu hỏi kinh doanh, marketing, bán hàng → Cho 3-4 lời khuyên thực tế ngắn gọn
-4. Câu hỏi cách dùng app → Hướng dẫn tính năng cụ thể
-5. Hỏi bất kỳ chủ đề khác liên quan đến kinh doanh → Trả lời hữu ích, không từ chối
-
-${taxForced?`QUAN TRỌNG - Doanh thu đã vượt 500tr:
-Câu đầu: "Doanh thu năm nay của bạn là ${fmt(yRev)}, đã vượt ngưỡng 500 triệu rồi!"
-Hướng dẫn vào canhan.gdt.gov.vn, điền Ô [21]: ${fmt(yRev)}
-Kết: "Bạn nhấn nút bên dưới để sao chép số tiền và dán vào ô đó là xong!"
-Chỉ 3-4 câu, không dài dòng.`:''}`;
-
-  try{
-    const raw=await callAIWithRetry(SYSTEM,msg,500);
+  // Giả lập độ trễ tự nhiên 300-600ms
+  setTimeout(()=>{
     if(ty)ty.classList.remove('on');
-
-    // Detect JSON transaction
-    const jm=raw.match(/\[[\s\S]*?\]/);
-    if(jm){try{const p=JSON.parse(jm[0]);if(Array.isArray(p)&&p.length){const pv=p.map(x=>`${/(nhập)/i.test(x.type||'')?'📦':'💰'} ${x.quantity||1} ${x.item}${x.price?' @ '+fmt(x.price):''}`).join('\n');addMsgCfm((raw.replace(jm[0],'').trim()||'Mình ghi nhận:')+'\n\n'+pv,p);if(taxForced)addMsgRaw(buildTaxCard(yRev),'bot');return}}catch{}}
-
-    let html=raw.replace(/\n/g,'<br>');
-    if(taxForced)html+=buildTaxCard(yRev);
-    else if(isTaxQ&&!isOverThreshold)html+=buildSafeTaxCard(yRev);
-    addMsgRaw(html,'bot');
-
-  }catch(err){
-    if(ty)ty.classList.remove('on');
-    // Smart fallback
-    const fb=fallbackResponse(msg);
-    const isQuota=err.code===429||err.code===529;
-    const badge=isQuota
-      ?`<span class="offbadge">⏳ AI đang bận, thử lại sau</span>`
-      :`<span class="offbadge">🛡️ Chế độ Nội bộ</span>`;
-    let html=`${badge}<br>${fb.text.replace(/\n/g,'<br>')}`;
-    if(fb.taxCard||taxForced)html+=buildTaxCard(yRev);
-    else if(fb.safeTaxCard)html+=buildSafeTaxCard(yRev);
-    else if(isTaxQ&&isOverThreshold)html+=buildTaxCard(yRev);
-    else if(isTaxQ)html+=buildSafeTaxCard(yRev);
-    addMsgRaw(html,'bot');
-  }
+    const res=localAIResponse(msg);
+    const yRev=yearRevenue();
+    const isTaxQ=/(thuế|nộp|tờ khai|gtgt|tncn|500|canhan|ô 21|khai thuế)/i.test(msg);
+    if(res.confirm&&res.confirm.length){
+      // Giao dịch cần xác nhận
+      const pv=res.confirm.map(x=>`${/(nhập)/i.test(x.type)?'📦':'💰'} ${x.quantity} ${x.item}${x.price?' × '+fmt(x.price):''}${/(nhập)/i.test(x.type)?' — Tổng: '+fmt(x.price*x.quantity):' = '+fmt(x.price*x.quantity)}`).join('\n');
+      // Map confirm data cho aiProcess
+      const pd=res.confirm.map(x=>({item:x.item,quantity:x.quantity,price:x.price,type:x.type}));
+      addMsgCfm(res.text+'\n\n'+pv,pd);
+    }else{
+      let html=res.text.replace(/\n/g,'<br>');
+      if(res.taxCard)html+=buildTaxCard(yRev);
+      else if(res.safeTaxCard)html+=buildSafeTaxCard(yRev);
+      else if(isTaxQ&&yRev>TAX_TH)html+=buildTaxCard(yRev);
+      else if(isTaxQ)html+=buildSafeTaxCard(yRev);
+      addMsgRaw(html,'bot');
+    }
+  },300+Math.random()*300);
 }
 function askAIInv(){goPage('ai',document.querySelectorAll('.nb')[4]);setTimeout(()=>{const i=document.getElementById('chatInp');if(i){i.value='Tình hình kho hiện tại thế nào?';i.style.height='auto';sendChat()}},200)}
 
